@@ -1,6 +1,6 @@
 package by.kukshinov.hotel.connection;
 
-import by.kukshinov.hotel.dao.DaoException;
+import by.kukshinov.hotel.exceptions.DaoException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

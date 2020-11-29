@@ -1,4 +1,4 @@
-package by.kukshinov.hotel.dao;
+package by.kukshinov.hotel.exceptions;
 
 public class DaoException extends Exception {
 

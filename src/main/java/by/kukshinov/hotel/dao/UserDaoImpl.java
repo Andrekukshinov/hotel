@@ -1,5 +1,6 @@
 package by.kukshinov.hotel.dao;
 
+import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.mapper.UserObjectMapper;
 import by.kukshinov.hotel.model.User;
 

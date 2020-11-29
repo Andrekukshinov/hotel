@@ -1,24 +1,21 @@
 package by.kukshinov.hotel.service;
 
-import by.kukshinov.hotel.connection.Connections;
-import by.kukshinov.hotel.dao.DaoException;
-import by.kukshinov.hotel.dao.UserDao;
-import by.kukshinov.hotel.dao.UserDaoImpl;
+import by.kukshinov.hotel.dao.*;
+import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.exceptions.ServiceException;
-import by.kukshinov.hotel.exceptions.UserNotFoundException;
 import by.kukshinov.hotel.model.User;
 
-import javax.servlet.ServletException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Properties;
 
 public class UserServiceImpl implements UserService {
 
+    private DaoHelperFactory helperFactory;
+
+    public UserServiceImpl(DaoHelperFactory helperFactory) {
+        this.helperFactory = helperFactory;
+    }
 
     @Override
     public List<User> getAllUsers() {
@@ -36,10 +33,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findByCredentials(String login, String pass) throws ServiceException {
-        try (Connection connection = Connections.getConnection()){
-            UserDao userDao = new UserDaoImpl(connection);
+        try (UserDaoHelper daoHelper = ((UserDaoHelper)helperFactory.createHelper("user"))){
+            UserDao userDao = daoHelper.createDao();
             return userDao.findByCredentials(login, pass);
-        } catch (DaoException | SQLException e) {
+        } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
     }

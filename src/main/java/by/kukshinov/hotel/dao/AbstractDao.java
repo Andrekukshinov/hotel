@@ -1,7 +1,7 @@
 package by.kukshinov.hotel.dao;
 
+import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.mapper.ObjectMapper;
-import by.kukshinov.hotel.model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

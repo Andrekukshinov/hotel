@@ -1,15 +1,11 @@
 package by.kukshinov.hotel.command.impl;
 
 import by.kukshinov.hotel.command.Command;
-import by.kukshinov.hotel.dao.DaoException;
-import by.kukshinov.hotel.dao.UserDao;
 import by.kukshinov.hotel.exceptions.ServiceException;
-import by.kukshinov.hotel.exceptions.UserNotFoundException;
 import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.model.User;
 import by.kukshinov.hotel.service.UserService;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;

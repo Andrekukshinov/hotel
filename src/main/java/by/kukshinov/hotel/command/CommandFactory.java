@@ -4,7 +4,12 @@ import by.kukshinov.hotel.command.impl.BookingCommand;
 import by.kukshinov.hotel.command.impl.ForwardCommand;
 import by.kukshinov.hotel.command.impl.LoginCommand;
 import by.kukshinov.hotel.command.impl.UsersCommand;
+import by.kukshinov.hotel.connection.Connections;
+import by.kukshinov.hotel.dao.DaoHelperFactory;
+import by.kukshinov.hotel.dao.UserDaoHelper;
 import by.kukshinov.hotel.service.UserServiceImpl;
+
+import java.sql.Connection;
 
 public class CommandFactory {
 
@@ -19,7 +24,7 @@ public class CommandFactory {
     public static Command createCommand(String commandParam) {
         switch (commandParam) {
             case LOGIN:
-                return new LoginCommand(new UserServiceImpl());
+                return new LoginCommand(new UserServiceImpl(new DaoHelperFactory()));
             case BOOKING:
                 return new BookingCommand();
             case HOME:
@@ -27,7 +32,7 @@ public class CommandFactory {
             case PROFILE_HISTORY:
                 return new ForwardCommand(USER_HISTORY);
             case ALL_USERS:
-                return new UsersCommand(new UserServiceImpl());
+                return new UsersCommand(new UserServiceImpl(new DaoHelperFactory()));
             default:
                 throw new IllegalArgumentException();
         }
