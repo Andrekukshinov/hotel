@@ -4,12 +4,8 @@ import by.kukshinov.hotel.command.impl.BookingCommand;
 import by.kukshinov.hotel.command.impl.ForwardCommand;
 import by.kukshinov.hotel.command.impl.LoginCommand;
 import by.kukshinov.hotel.command.impl.UsersCommand;
-import by.kukshinov.hotel.connection.Connections;
 import by.kukshinov.hotel.dao.DaoHelperFactory;
-import by.kukshinov.hotel.dao.UserDaoHelper;
 import by.kukshinov.hotel.service.UserServiceImpl;
-
-import java.sql.Connection;
 
 public class CommandFactory {
 

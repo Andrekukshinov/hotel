@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findByCredentials(String login, String pass) throws ServiceException {
-        try (UserDaoHelper daoHelper = ((UserDaoHelper)helperFactory.createHelper("user"))){
+        try (UserDaoHelper daoHelper = helperFactory.createUserDaoHelper()){
             UserDao userDao = daoHelper.createDao();
             return userDao.findByCredentials(login, pass);
         } catch (DaoException e) {

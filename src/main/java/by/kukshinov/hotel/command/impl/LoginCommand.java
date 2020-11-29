@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 public class LoginCommand implements Command {
+
     private static final String HOME_PAGE = "/hotel/controller?command=home";
     private static final String LOGIN_PAGE = "WEB-INF/view/login.jsp";
     private static final String PASSWORD_PARAM = "password";

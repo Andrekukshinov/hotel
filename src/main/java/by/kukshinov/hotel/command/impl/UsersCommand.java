@@ -21,9 +21,7 @@ public class UsersCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest req, HttpServletResponse resp) {
         List<User> users = userService.getAllUsers();
-//        User user = userService.getUser();
         req.setAttribute("users", users);
-//        req.setAttribute("user", user);
         return CommandResult.forward(ALL_USERS);
     }
 }

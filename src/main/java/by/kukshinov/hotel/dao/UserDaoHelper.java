@@ -1,28 +1,28 @@
 package by.kukshinov.hotel.dao;
 
-import by.kukshinov.hotel.connection.Connections;
+import by.kukshinov.hotel.connection.ConnectionPool;
 import by.kukshinov.hotel.exceptions.DaoException;
-import by.kukshinov.hotel.model.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 
-public class UserDaoHelper implements DaoHelper<User, UserDao> {
+
+public class UserDaoHelper implements AutoCloseable {
+    private static final Logger LOGGER = LogManager.getLogger();
+
     private Connection connection;
 
     public UserDaoHelper() {
-        try {
-            connection = Connections.getConnection();
-        } catch (DaoException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
+        ConnectionPool connectionPool = ConnectionPool.getInstance();
+        connection = connectionPool.getConnection();
     }
 
-    @Override
+
     public UserDao createDao() {
         return new UserDaoImpl(connection);
     }
 
-    @Override
     public void close() throws DaoException {
         try {
             connection.close();
