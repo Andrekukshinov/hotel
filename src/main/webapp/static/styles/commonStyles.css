@@ -5,6 +5,14 @@
     text-align: center;
 }
 
+.languages {
+    display: flex;
+}
+
+.languages > form {
+    margin: 20% 20% 0 -15%;
+}
+
 .body{
     margin: 0;
     padding: 0;
@@ -53,6 +61,7 @@ div.loginForm {
 }
 
 #toBeFound {
+    min-height: 80%;
     display: flex;
 }
 
@@ -63,10 +72,11 @@ body.stdColor {
 
 .pagination {
     display: inline-block;
-    margin-left: 46%;
+    margin-left: 41%;
 }
 
-.pagination a {
+.paginationChildren {
+    width: 20px;
     color: black;
     float: left;
     padding: 8px 16px;
@@ -257,5 +267,17 @@ p.alignCenter {
         text-align: center;
         flex-basis: 100%;
     }
+    .languages {
+        display: block;
+        flex: none;
+    }
 
+    .languages > form{
+        float: left;
+        margin: 2% 12% 0 0;
+    }
+
+    .languages:first-child{
+        margin: 2% 0 0 -40%;
+    }
 }

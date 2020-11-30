@@ -7,8 +7,7 @@
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<fmt:setLocale value="ru" />
-<%--<fmt:setLocale value="${param.lang}" />--%>
+<fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="locale"/>
 <html>
 <head>

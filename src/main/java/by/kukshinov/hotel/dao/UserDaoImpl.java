@@ -11,6 +11,8 @@ import java.util.Optional;
 public class UserDaoImpl extends AbstractDao<User> implements UserDao {
 
     private static final String GET_USER_BY_CREDENTIALS = "SELECT * FROM user WHERE login=? AND pass=SHA1(?)";
+    private static final String GET_USERS = "SELECT * FROM user";
+    private static final String GET_USERS_FOR_TABLE = "SELECT * FROM user limit ?, ?";
 
     public UserDaoImpl(Connection connection) {
         super(connection, new UserObjectMapper());
@@ -21,16 +23,20 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
         return executeForSingleItem(GET_USER_BY_CREDENTIALS, login, pass);
     }
 
+    @Override
+    public List<User> findRangeUsers(int startFrom, int finishWith) throws DaoException {
+        return executeQuery(GET_USERS_FOR_TABLE, (startFrom - 1) * finishWith, finishWith);
+    }
 
 
     @Override
-    public Optional<User> getById(Long id) {
+    public Optional<User> findById(Long id) {
         return Optional.empty();
     }
 
     @Override
-    public List<User> getAll() {
-        return null;
+    public List<User> findAll() throws DaoException {
+        return executeQuery(GET_USERS);
     }
 
     @Override

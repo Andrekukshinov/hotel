@@ -8,8 +8,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<fmt:setLocale value="${param.lang}"/>
-<%--<fmt:setLocale value="en"/>--%>
+<fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="locale"/>
 <html>
 <head>
@@ -48,11 +47,31 @@
                 </tr>
             </c:forEach>
         </table>
-        <div class="pagination">
-            <a href="#">❮</a>
-            <a href="#">#</a>
-            <a href="#">❯</a>
-        </div>
+        <form method="post"
+              action="${requestScope['javax.servlet.forward.request_uri']}?${pageContext.request.queryString}"
+              class="pagination">
+            <c:choose>
+                <c:when test="${(page - 1) == 0}">
+                    <button type="submit" disabled class="paginationChildren">❮</button>
+                </c:when>
+                <c:otherwise>
+                    <button type="submit" class="paginationChildren">❮</button>
+                </c:otherwise>
+            </c:choose>
+            <input type="hidden" name="page" value="${page}"/>
+            <div class="paginationChildren">${page}</div>
+            <c:choose>
+                <c:when test="${users.size() != 7}">
+                    <button type="submit" disabled name="+" class="paginationChildren">❯</button>
+                </c:when>
+                <c:otherwise>
+                    <button type="submit" name="+" class="paginationChildren">❯</button>
+                </c:otherwise>
+            </c:choose>
+
+        </form>
+
+
     </div>
 
 </div>

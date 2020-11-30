@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<fmt:setLocale value="ru"/>
+<fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="locale"/>
 
 <ul class="leftMenuUl">

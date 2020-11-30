@@ -5,7 +5,6 @@ import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.User;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,18 +17,35 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUsers() {
-
-        return Arrays.asList(
-                new User(1, "admin", "password", false),
-                new User(2, "Billy", "password", false),
-                new User(3, "Harrington", "password", false),
-                new User(4, "Van", "password", true),
-                new User(5, "Darkholme", "password", false),
-                new User(6, "Slave", "password", true),
-                new User(7, "Smith", "password", true)
-        );
+    public List<User> getAllUsers() throws ServiceException {
+        try (UserDaoHelper daoHelper = helperFactory.createUserDaoHelper()){
+            UserDao userDao = daoHelper.createDao();
+            return userDao.findAll();
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
     }
+
+    @Override
+    public List<User> getRangeUsers(int startFrom, int finishWith) throws ServiceException {
+        try (UserDaoHelper daoHelper = helperFactory.createUserDaoHelper()){
+            UserDao userDao = daoHelper.createDao();
+            return userDao.findRangeUsers(startFrom, finishWith);
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+//        return Arrays.asList(
+//                new User(1, "admin", "password", false),
+//                new User(2, "Billy", "password", false),
+//                new User(3, "Harrington", "password", false),
+//                new User(4, "Van", "password", true),
+//                new User(5, "Darkholme", "password", false),
+//                new User(6, "Slave", "password", true),
+//                new User(7, "Smith", "password", true)
+//        );
+//    }
 
     @Override
     public Optional<User> findByCredentials(String login, String pass) throws ServiceException {
