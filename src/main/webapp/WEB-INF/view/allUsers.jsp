@@ -32,7 +32,7 @@
             </tr>
             <c:forEach var="user" items="${users}" varStatus="index">
                 <tr>
-                    <td>${index.count}</td>
+                    <td>${(7)*(page - 1) + index.count}</td>
                     <td>${user.login}</td>
                     <td>${user.isDisabled}</td>
                     <td>User</td>
