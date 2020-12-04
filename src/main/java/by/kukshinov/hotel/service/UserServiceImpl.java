@@ -18,8 +18,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUsers() throws ServiceException {
-        try (UserDaoHelper daoHelper = helperFactory.createUserDaoHelper()){
-            UserDao userDao = daoHelper.createDao();
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()){
+            UserDao userDao = daoHelper.createUserDao();
             return userDao.findAll();
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
@@ -28,30 +28,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getRangeUsers(int startFrom, int finishWith) throws ServiceException {
-        try (UserDaoHelper daoHelper = helperFactory.createUserDaoHelper()){
-            UserDao userDao = daoHelper.createDao();
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()){
+            UserDao userDao = daoHelper.createUserDao();
             return userDao.findRangeUsers(startFrom, finishWith);
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
     }
 
-//        return Arrays.asList(
-//                new User(1, "admin", "password", false),
-//                new User(2, "Billy", "password", false),
-//                new User(3, "Harrington", "password", false),
-//                new User(4, "Van", "password", true),
-//                new User(5, "Darkholme", "password", false),
-//                new User(6, "Slave", "password", true),
-//                new User(7, "Smith", "password", true)
-//        );
-//    }
-
     @Override
     public Optional<User> findByCredentials(String login, String pass) throws ServiceException {
-        try (UserDaoHelper daoHelper = helperFactory.createUserDaoHelper()){
-            UserDao userDao = daoHelper.createDao();
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()){
+            UserDao userDao = daoHelper.createUserDao();
             return userDao.findByCredentials(login, pass);
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void updateUser(User user) throws ServiceException {
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()){
+            UserDao dao = daoHelper.createUserDao();
+            dao.update(user);
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }

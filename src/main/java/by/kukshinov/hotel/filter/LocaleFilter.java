@@ -1,4 +1,4 @@
-package by.kukshinov.hotel;
+package by.kukshinov.hotel.filter;
 
 
 import javax.servlet.*;

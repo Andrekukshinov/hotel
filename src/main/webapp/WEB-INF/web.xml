@@ -16,11 +16,32 @@
     </servlet-mapping>
     <filter>
         <filter-name>language</filter-name>
-        <filter-class>by.kukshinov.hotel.LocaleFilter</filter-class>
+        <filter-class>by.kukshinov.hotel.filter.LocaleFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>language</filter-name>
         <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>authentication</filter-name>
+        <filter-class>by.kukshinov.hotel.filter.AuthenticationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>authentication</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+<!--  todo  add filter for authorization-->
+<!--  todo  error page-->
+    <filter>
+        <filter-name>logout</filter-name>
+        <filter-class>by.kukshinov.hotel.filter.LogoutFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>logout</filter-name>
+        <url-pattern>/logout</url-pattern>
     </filter-mapping>
 
 </web-app>

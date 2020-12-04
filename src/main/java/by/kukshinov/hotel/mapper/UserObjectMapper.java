@@ -1,10 +1,10 @@
 package by.kukshinov.hotel.mapper;
 
+import by.kukshinov.hotel.model.Role;
 import by.kukshinov.hotel.model.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
 
 public class UserObjectMapper implements ObjectMapper<User> {
 
@@ -14,6 +14,8 @@ public class UserObjectMapper implements ObjectMapper<User> {
         String login = resultSet.getString("login");
         String password = resultSet.getString("pass");
         boolean isDisabled = resultSet.getBoolean("is_disabled");
-        return new User(id, login, password, isDisabled);
+        String roleString = resultSet.getString("role");
+        Role role = Enum.valueOf(Role.class, roleString);
+        return new User(id, login, password, isDisabled, role);
     }
 }

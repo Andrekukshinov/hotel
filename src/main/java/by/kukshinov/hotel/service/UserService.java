@@ -10,4 +10,5 @@ public interface UserService {
     List<User> getAllUsers() throws ServiceException;
     List<User> getRangeUsers(int startFrom, int finishWith) throws ServiceException;
     Optional<User> findByCredentials(String login, String pass) throws ServiceException;
+    void updateUser(User user) throws ServiceException;
 }

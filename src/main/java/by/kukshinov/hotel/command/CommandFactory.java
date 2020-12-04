@@ -1,9 +1,6 @@
 package by.kukshinov.hotel.command;
 
-import by.kukshinov.hotel.command.impl.BookingCommand;
-import by.kukshinov.hotel.command.impl.ForwardCommand;
-import by.kukshinov.hotel.command.impl.LoginCommand;
-import by.kukshinov.hotel.command.impl.UsersCommand;
+import by.kukshinov.hotel.command.impl.*;
 import by.kukshinov.hotel.dao.DaoHelperFactory;
 import by.kukshinov.hotel.service.UserServiceImpl;
 
@@ -16,6 +13,7 @@ public class CommandFactory {
     private static final String USER_HISTORY = "WEB-INF/view/profileHistory.jsp";
     private static final String PROFILE_HISTORY = "profile.history";
     private static final String ALL_USERS = "all.users";
+    private static final String UPDATE = "updateUser";
 
     public static Command createCommand(String commandParam) {
         switch (commandParam) {
@@ -29,6 +27,8 @@ public class CommandFactory {
                 return new ForwardCommand(USER_HISTORY);
             case ALL_USERS:
                 return new UsersCommand(new UserServiceImpl(new DaoHelperFactory()));
+            case UPDATE:
+                return new UpdateUserCommand(new UserServiceImpl(new DaoHelperFactory()));
             default:
                 throw new IllegalArgumentException();
         }

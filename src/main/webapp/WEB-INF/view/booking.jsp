@@ -19,28 +19,28 @@
 </head>
 <body class="booking">
 <jsp:include page="templates/header.jsp"/>
-<div id="toBeFound">
+<div id="to-be-found">
     <jsp:include page="templates/leftMenu.jsp"/>
-        <form method="post" class="bookingDiv" action="${pageContext.request.contextPath}/controller?command=booking">
-            <h2 class="alignCenter"><fmt:message key="booking.book.room"/></h2>
-            <p class="alignCenter"><fmt:message key="booking.book.select.people"/></p>
-            <label class="floatingRadio firstLabel">
+        <form method="post" class="booking-div" action="${pageContext.request.contextPath}/controller?command=booking">
+            <h2 class="align-center"><fmt:message key="booking.book.room"/></h2>
+            <p class="align-center"><fmt:message key="booking.book.select.people"/></p>
+            <label class="floating-radio first-label">
                 <input name="personAmount" type="radio">
                 1
             </label>
-            <label class="floatingRadio">
+            <label class="floating-radio">
                 <input name="personAmount" type="radio">
                 2
             </label>
-            <label class="floatingRadio">
+            <label class="floating-radio">
                 <input name="personAmount" type="radio">
                 3
             </label>
-            <label class="floatingRadio">
+            <label class="floating-radio">
                 <input name="personAmount" type="radio">
                 4
             </label>
-            <label class="floatingRadio lastLabel">
+            <label class="floating-radio last-label">
                 <input name="personAmount" type="radio">
                 5
             </label>
@@ -48,8 +48,8 @@
                 <br>
                 <br>
             </div>
-            <label class="inputBookingStyle" for="cars"><fmt:message key="booking.book.room.type"/>
-                <select class="apartmentType" id="cars" name="apartment">
+            <label class="input-booking" for="cars"><fmt:message key="booking.book.room.type"/>
+                <select class="apartment-type" id="cars" name="apartment">
                     <option value="standard"><fmt:message key="booking.book.room.type.op1"/></option>
                     <option value="business"><fmt:message key="booking.book.room.type.op2"/></option>
                     <option value="skyWalker"><fmt:message key="booking.book.room.type.op3"/></option>
@@ -60,21 +60,21 @@
                 <br>
                 <br>
             </div>
-            <label class="inputBookingStyle" for="arrivalDate"><fmt:message key="booking.book.date.arrival"/>
-                <input class="dateInputArr" type="datetime-local" id="arrivalDate" name="arrivalDate">
+            <label class="input-booking" for="arrivalDate"><fmt:message key="booking.book.date.arrival"/>
+                <input class="date-input-arr" type="datetime-local" id="arrivalDate" name="arrivalDate">
             </label>
             <div>
                 <br>
                 <br>
             </div>
-            <label class="inputBookingStyle" for="leavingDate"><fmt:message key="booking.book.date.leave"/>
-                <input class="dateInputLeave" type="datetime-local" id="leavingDate" name="leavingDate">
+            <label class="input-booking" for="leavingDate"><fmt:message key="booking.book.date.leave"/>
+                <input class="date-input-leave" type="datetime-local" id="leavingDate" name="leavingDate">
             </label>
             <div>
                 <br>
                 <br>
             </div>
-            <button class="loginSubmit" type="submit"><fmt:message key="booking.book.button.leave"/></button>
+            <button class="login-submit" type="submit"><fmt:message key="booking.book.button.leave"/></button>
         </form>
     </div>
 

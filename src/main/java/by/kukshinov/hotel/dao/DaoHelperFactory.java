@@ -2,7 +2,7 @@ package by.kukshinov.hotel.dao;
 
 public class DaoHelperFactory {
 
-    public UserDaoHelper createUserDaoHelper() {
-        return new UserDaoHelper();
+    public DaoHelper createDaoHelper() {
+        return new DaoHelper();
     }
 }

@@ -2,7 +2,10 @@ package by.kukshinov.hotel;
 
 import by.kukshinov.hotel.command.Command;
 import by.kukshinov.hotel.command.CommandFactory;
+import by.kukshinov.hotel.connection.ConnectionPool;
 import by.kukshinov.hotel.model.CommandResult;
+import by.kukshinov.hotel.request.context.RequestContext;
+import by.kukshinov.hotel.request.context.RequestContextManager;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 public class HotelController extends HttpServlet {
     @Override
@@ -23,10 +27,13 @@ public class HotelController extends HttpServlet {
     }
 
     private void process(HttpServletRequest req, HttpServletResponse resp) {
+        RequestContextManager contextManager = new RequestContextManager();
+        RequestContext requestContext = contextManager.create(req);
         try {
             String commandParam = req.getParameter("command");
             Command command = CommandFactory.createCommand(commandParam);
-            CommandResult commandResult = command.execute(req, resp);
+            CommandResult commandResult = command.execute(requestContext);
+            contextManager.updateRequest(req, requestContext);
             dispatchRequest(req, resp, commandResult);
         } catch (Exception e) {
             e.printStackTrace();
@@ -42,6 +49,13 @@ public class HotelController extends HttpServlet {
             RequestDispatcher dispatcher = req.getRequestDispatcher(urlToGoTo);
             dispatcher.forward(req, resp);
         }
+    }
+
+    @Override
+    public void destroy() {
+        ConnectionPool instance = ConnectionPool.getInstance();
+        instance.killConnections();
+        super.destroy();
     }
 }
 

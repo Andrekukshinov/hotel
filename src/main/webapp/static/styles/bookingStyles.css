@@ -1,8 +1,8 @@
-.firstLabel {
+.first-label {
     padding-left: 2%;
 }
 
-.firstDate{
+.first-date{
     margin-left: 1%;
 }
 
@@ -11,21 +11,21 @@ body.booking {
     background-color: #A7AFEF;
 }
 
-.floatingRadio {
+.floating-radio {
     float: left;
     margin-left: 10%;
 }
 
-.marginDate {
+.margin-date {
     margin-left: 20%;
     margin-top: 20%;
 }
 
-.lastLabel{
+.last-label{
     float: none;
 }
 
-.bookingDiv {
+.booking-div {
     box-shadow: 0 0 10px #111111;
     width: 50%;
     margin-left: 17%;
@@ -33,13 +33,13 @@ body.booking {
     background-color: #f2f2f2;
 }
 
-.inputBookingStyle {
+.input-booking {
     margin-left: 13%;
     margin-top: 2%;
     font-size: larger;
 }
 
-.apartmentType {
+.apartment-type {
     width: 33%;
     padding: 7px 20px;
     border: none;
@@ -50,7 +50,7 @@ body.booking {
     font-family: "Times New Roman", serif;
 }
 
-.dateInputArr{
+.date-input-arr{
     width: 32%;
     padding: 4px 5px;
     border: none;
@@ -61,7 +61,7 @@ body.booking {
     font-family: "Times New Roman", serif;
 }
 
-.dateInputLeave{
+.date-input-leave{
     width: 32%;
     padding: 4px 5px;
     border: none;
@@ -72,34 +72,33 @@ body.booking {
     font-family: "Times New Roman", serif;
 }
 
-
 @media screen and (max-width: 700px) {
-    .firstLabel {
+    .first-label {
         padding-left: 0;
     }
 
-    .floatingRadio {
+    .floating-radio {
         float: left;
         margin-left: 10%;
     }
 
-    .firstLabel {
+    .first-label {
         padding-left: 0;
     }
 
-    .inputBookingStyle {
+    .input-booking {
         margin-left: 12%;
         margin-top: 2%;
         font-size: medium;
     }
 
-    .bookingDiv {
+    .booking-div {
         background-color: #A7AFEF;
         width: 84%;
         margin-left: 8%;
     }
 
-    .apartmentType {
+    .apartment-type {
         width: 30%;
     }
 }

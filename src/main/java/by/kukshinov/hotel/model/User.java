@@ -1,19 +1,30 @@
 package by.kukshinov.hotel.model;
 
+
 public class User {
     private long userId;
     private String login;
     private String password;
     private boolean isDisabled;
+    private Role role;
 
-    public User(long userId, String login, String password, boolean isDisabled) {
+    public User(long userId, String login, String password, boolean isDisabled, Role role) {
         this.userId = userId;
         this.login = login;
         this.password = password;
         this.isDisabled = isDisabled;
+        this.role = role;
     }
 
     public User() {
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public long getUserId() {
@@ -36,8 +47,16 @@ public class User {
         return isDisabled;
     }
 
-    public void setDisabled(boolean disabled) {
+    public void setIsDisabled(boolean disabled) {
         isDisabled = disabled;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
@@ -47,6 +66,7 @@ public class User {
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", isDisabled=" + isDisabled +
+                ", role=" + role +
                 '}';
     }
 
@@ -71,16 +91,20 @@ public class User {
         if (getLogin() != null ? !getLogin().equals(thatUserLogin) : thatUserLogin != null) {
             return false;
         }
-        return password != null ? password.equals(user.password) : user.password == null;
+        String thatUserPassword = user.getPassword();
+        if (getPassword() != null ? !getPassword().equals(thatUserPassword) : thatUserPassword != null) {
+            return false;
+        }
+        return getRole() == user.getRole();
     }
 
     @Override
     public int hashCode() {
         int result = (int) (getUserId() ^ (getUserId() >>> 32));
         result = 31 * result + (getLogin() != null ? getLogin().hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
         result = 31 * result + (isDisabled ? 1 : 0);
+        result = 31 * result + (getRole() != null ? getRole().hashCode() : 0);
         return result;
     }
-
 }

@@ -2,9 +2,11 @@ package by.kukshinov.hotel.command.impl;
 
 import by.kukshinov.hotel.command.Command;
 import by.kukshinov.hotel.model.CommandResult;
+import by.kukshinov.hotel.request.context.RequestContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 public class BookingCommand implements Command {
     private static final String BOOKING_PAGE = "WEB-INF/view/booking.jsp";
@@ -13,8 +15,9 @@ public class BookingCommand implements Command {
 
 
     @Override
-    public CommandResult execute(HttpServletRequest req, HttpServletResponse resp) {
-        String personAmount = req.getParameter(PERSON_AMOUNT);
+    public CommandResult execute(RequestContext context) {
+        Map<String, String> req = context.getRequestParameters();
+        String personAmount = req.get(PERSON_AMOUNT);
         // TODO: 25.11.2020 correct logics
         if (personAmount != null) {
             return CommandResult.redirect(USER_HISTORY);

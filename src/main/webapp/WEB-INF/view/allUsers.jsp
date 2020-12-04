@@ -19,9 +19,9 @@
 </head>
 <body class="body">
 <jsp:include page="templates/header.jsp"/>
-<div id="toBeFound">
+<div id="to-be-found">
     <jsp:include page="templates/leftMenu.jsp"/>
-    <div class="tableWrapper">
+    <div class="table-wrapper">
         <table id="customers">
             <tr>
                 <th>#</th>
@@ -38,42 +38,51 @@
                     <td>User</td>
                     <td>
                         <c:if test="${user.isDisabled}">
-                            <button><fmt:message key="admin.user.status.enable"/></button>
+                            <form method="post"
+                                  action="${pageContext.request.contextPath}/controller?command=updateUser"
+                                  class="admin-users-form">
+                                <input type="hidden" value="${user.login}" name="login">
+                                <input type="hidden" value="${user.userId}" name="userId">
+                                <input type="hidden" value="${user.password}" name="pass">
+                                <input type="hidden" value="${user.isDisabled}" name="isDisabled">
+                                <button type="submit"><fmt:message key="admin.user.status.enable"/></button>
+                            </form>
                         </c:if>
                         <c:if test="${!user.isDisabled}">
-                            <button><fmt:message key="admin.user.status.disable"/></button>
+                            <form method="post"
+                                  action="${pageContext.request.contextPath}/controller?command=updateUser"
+                                  class="admin-users-form">
+                                <input type="hidden" value="${user.login}" name="login">
+                                <input type="hidden" value="${user.userId}" name="userId">
+                                <input type="hidden" value="${user.password}" name="pass">
+                                <input type="hidden" value="${user.isDisabled}" name="isDisabled">
+                                <button type="submit"><fmt:message key="admin.user.status.disable"/></button>
+                            </form>
                         </c:if>
                     </td>
                 </tr>
             </c:forEach>
         </table>
-        <form method="post"
-              action="${requestScope['javax.servlet.forward.request_uri']}?${pageContext.request.queryString}"
-              class="pagination">
-            <c:choose>
-                <c:when test="${(page - 1) == 0}">
-                    <button type="submit" disabled class="paginationChildren">❮</button>
-                </c:when>
-                <c:otherwise>
-                    <button type="submit" class="paginationChildren">❮</button>
-                </c:otherwise>
-            </c:choose>
-            <input type="hidden" name="page" value="${page}"/>
-            <div class="paginationChildren">${page}</div>
-            <c:choose>
-                <c:when test="${users.size() != 7}">
-                    <button type="submit" disabled name="+" class="paginationChildren">❯</button>
-                </c:when>
-                <c:otherwise>
-                    <button type="submit" name="+" class="paginationChildren">❯</button>
-                </c:otherwise>
-            </c:choose>
-
-        </form>
-
-
+        <c:choose>
+            <c:when test="${(page - 1) == 0}">
+                <a href="" type="submit" class="pagination-children">❮</a>
+            </c:when>
+            <c:otherwise>
+                <a href="${pageContext.request.contextPath}/controller?command=all.users&page=${page-1}" type="submit"
+                   name="+" class="pagination-children">❮</a>
+            </c:otherwise>
+        </c:choose>
+        <div class="pagination-children">${page}</div>
+        <c:choose>
+            <c:when test="${users.size() != 7}">
+                <a href="" type="submit" class="pagination-children">❯</a>
+            </c:when>
+            <c:otherwise>
+                <a href="${pageContext.request.contextPath}/controller?command=all.users&page=${page+1}" type="submit"
+                   name="+" class="pagination-children">❯</a>
+            </c:otherwise>
+        </c:choose>
     </div>
-
 </div>
 
 <jsp:include page="templates/footer.jsp"/>

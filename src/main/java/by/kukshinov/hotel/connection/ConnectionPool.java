@@ -1,8 +1,7 @@
 package by.kukshinov.hotel.connection;
 
+import by.kukshinov.hotel.exceptions.ConnectionPoolException;
 import by.kukshinov.hotel.exceptions.DaoException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,63 +9,51 @@ import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.Properties;
 import java.util.Queue;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
+
+// TODO: 03.12.2020 kill connections somewhere
 public class ConnectionPool {
-    private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
     private static final int POOL_SIZE = 10;
+    private static final ReentrantLock SINGLETON_LOCKER = new ReentrantLock();
+    private static final ReentrantLock LOCKER = new ReentrantLock();
     private static ConnectionPool pool;
 
     private final Queue<ProxyConnection> availableConnections;
     private final Queue<ProxyConnection> connectionsInUse;
-    private static final ReentrantLock LOCKER = new ReentrantLock();
+    private final ConnectionFactory connectionFactory;
 
     private ConnectionPool() throws DaoException {
         this.availableConnections = new ArrayDeque<>();
+        this.connectionFactory = new ConnectionFactory();
         this.connectionsInUse = new ArrayDeque<>();
         for (int runner = 0; runner < POOL_SIZE; ++runner) {
-            ProxyConnection e = new ProxyConnection(createConnection());
+            ProxyConnection e = new ProxyConnection(connectionFactory.createConnection());
             availableConnections.add(e);
         }
     }
 
     public static ConnectionPool getInstance() {
-        if (pool == null) {
+        AtomicBoolean isNullInstance = new AtomicBoolean(pool == null);
+        if (isNullInstance.get()) {
             try {
-                LOCKER.lock();
+                SINGLETON_LOCKER.lock();
                 ConnectionPool localInstance;
-                if (pool == null) {
+                if (isNullInstance.get()) {
                     localInstance = new ConnectionPool();
                     pool = localInstance;
                 }
             } catch (DaoException e) {
-                LOGGER.error(e.getMessage(), e);
+                throw new ConnectionPoolException(e.getMessage(), e);
             } finally {
-                LOCKER.unlock();
+                SINGLETON_LOCKER.unlock();
             }
         }
         return pool;
     }
 
-
-    private Connection createConnection() throws DaoException {
-        String url = "jdbc:mysql://localhost:3306/hotel_management?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true";
-        Properties prop = new Properties();
-        prop.put("user", "root");
-        prop.put("password", "root");
-        prop.put("autoReconnect", "true");
-        prop.put("characterEncoding", "UTF-8");
-        prop.put("useUnicode", "true");
-        try {
-            DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-            return DriverManager.getConnection(url, prop);
-
-        } catch (SQLException e) {
-            throw new DaoException(e.getMessage(), e);
-        }
-    }
-
-    public Connection getConnection() {
+    public ProxyConnection getConnection() {
         LOCKER.lock();
         try {
             ProxyConnection proxyConnection = availableConnections.poll();
@@ -90,16 +77,18 @@ public class ConnectionPool {
     }
     
     public void killConnections() {
-        for (int runner = 0; runner < POOL_SIZE; ++runner) {
-            ProxyConnection activeConnection = connectionsInUse.poll();
-            availableConnections.offer(activeConnection);
-            ProxyConnection availableConnection = availableConnections.poll();
+        connectionsInUse.forEach(this::releaseConnection);
+        closeQueueConnections(availableConnections);
+    }
+
+    private void closeQueueConnections(Queue<ProxyConnection> availableConnections) {
+        availableConnections.forEach(connection -> {
             try {
-                availableConnection.killConnection();
-            } catch (SQLException e) {
-                LOGGER.error(e.getMessage(), e);
+                connection.killConnection();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
-        }
+        });
     }
 
 }

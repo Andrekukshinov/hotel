@@ -14,7 +14,7 @@
 </head>
 <body class="body">
 <jsp:include page="templates/header.jsp"/>
-<div id="toBeFound">
+<div id="to-be-found">
     <jsp:include page="templates/leftMenu.jsp"/>
     <p>welcome ${login}</p>
 <%--    todo implem--%>

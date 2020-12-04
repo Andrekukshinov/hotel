@@ -2,6 +2,7 @@ package by.kukshinov.hotel.dao;
 
 import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.mapper.ObjectMapper;
+import by.kukshinov.hotel.model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,12 +13,30 @@ import java.util.List;
 import java.util.Optional;
 
 public abstract class AbstractDao<T> implements Dao<T> {
+
+    private static final String GET_USERS = "SELECT * FROM ";
+    private final String tableName;
     private Connection connection;
     private ObjectMapper<T> objectMapper;
 
-    protected AbstractDao(Connection connection, ObjectMapper<T> objectMapper) {
+
+    protected AbstractDao(String tableName, Connection connection, ObjectMapper<T> objectMapper) {
+        this.tableName = tableName;
         this.connection = connection;
         this.objectMapper = objectMapper;
+    }
+
+    protected void executeUpdate(String query, Object... params) throws DaoException {
+        try (PreparedStatement preparedStatement = prepareStatement(query, params)) {
+            preparedStatement.executeUpdate();
+        } catch (SQLException throwables) {
+            throw new DaoException(throwables.getMessage(), throwables);
+        }
+    }
+
+    @Override
+    public List<T> findAll() throws DaoException {
+        return executeQuery(GET_USERS + tableName);
     }
 
     protected List<T> executeQuery(String query, Object... params) throws DaoException {

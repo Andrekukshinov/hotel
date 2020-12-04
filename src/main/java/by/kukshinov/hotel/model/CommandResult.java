@@ -24,4 +24,36 @@ public class CommandResult {
     public boolean isRedirect() {
         return isRedirect;
     }
+
+    @Override
+    public String toString() {
+        return "CommandResult{" +
+                "pageUrl='" + pageUrl + '\'' +
+                ", isRedirect=" + isRedirect +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        CommandResult that = (CommandResult) o;
+
+        if (isRedirect() != that.isRedirect()) {
+            return false;
+        }
+        return getPageUrl() != null ? getPageUrl().equals(that.getPageUrl()) : that.getPageUrl() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getPageUrl() != null ? getPageUrl().hashCode() : 0;
+        result = 31 * result + (isRedirect() ? 1 : 0);
+        return result;
+    }
 }

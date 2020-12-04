@@ -10,20 +10,20 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/styles/commonStyles.css">
     <title>Login</title>
 </head>
-<body class="stdColor">
+<body class="standard-color">
 <jsp:include page="templates/header.jsp"/>
-<div class="loginForm">
-    <h3 class="alignCenter"><fmt:message key="login.writing"/></h3>
+<div class="login-form">
+    <h3 class="align-center"><fmt:message key="login.writing"/></h3>
     <p class="error">${errorMassage}</p>
     <form method="post" action="${pageContext.request.contextPath}/controller?command=login">
-        <label class="loginLabel" for="fname"><fmt:message key="login.button"/></label>
-        <input class="loginText" type="text" id="fname" name="login" placeholder="<fmt:message key="input.name"/>">
+        <label class="login-label" for="fname"><fmt:message key="login.button"/></label>
+        <input class="login-text" type="text" id="fname" name="login" placeholder="<fmt:message key="input.name"/>">
 
-        <label class="loginLabel" for="lname"><fmt:message key="pass"/></label>
-        <input class="loginText" type="password" id="lname" name="password"
+        <label class="login-label" for="lname"><fmt:message key="pass"/></label>
+        <input class="login-text" type="password" id="lname" name="password"
                placeholder="<fmt:message key="input.pass"/>">
 
-        <button class="loginSubmit" type="submit"><fmt:message key="submit"/></button>
+        <button class="login-submit" type="submit"><fmt:message key="submit"/></button>
     </form>
 </div>
 <jsp:include page="templates/footer.jsp"/>
