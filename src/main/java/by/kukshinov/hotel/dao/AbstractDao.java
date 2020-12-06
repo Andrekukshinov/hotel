@@ -1,7 +1,8 @@
 package by.kukshinov.hotel.dao;
 
+import by.kukshinov.hotel.dao.extractor.FieldsExtractor;
 import by.kukshinov.hotel.exceptions.DaoException;
-import by.kukshinov.hotel.mapper.ObjectMapper;
+import by.kukshinov.hotel.dao.mapper.ObjectMapper;
 import by.kukshinov.hotel.model.User;
 
 import java.sql.Connection;
@@ -10,20 +11,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public abstract class AbstractDao<T> implements Dao<T> {
 
     private static final String GET_USERS = "SELECT * FROM ";
     private final String tableName;
+
     private Connection connection;
     private ObjectMapper<T> objectMapper;
+    private FieldsExtractor<T> fieldsExtractor;
 
 
-    protected AbstractDao(String tableName, Connection connection, ObjectMapper<T> objectMapper) {
+    protected AbstractDao(String tableName, Connection connection, ObjectMapper<T> objectMapper, FieldsExtractor<T> fieldsExtractor) {
         this.tableName = tableName;
         this.connection = connection;
         this.objectMapper = objectMapper;
+        this.fieldsExtractor = fieldsExtractor;
     }
 
     protected void executeUpdate(String query, Object... params) throws DaoException {
@@ -37,6 +42,13 @@ public abstract class AbstractDao<T> implements Dao<T> {
     @Override
     public List<T> findAll() throws DaoException {
         return executeQuery(GET_USERS + tableName);
+    }
+
+    @Override
+    public void save(T item) throws DaoException {
+        List<Object> fields = fieldsExtractor.extract(item);
+        Object[] values = fields.toArray();
+        executeUpdate(getUpdateQuery(), values);
     }
 
     protected List<T> executeQuery(String query, Object... params) throws DaoException {
@@ -69,5 +81,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
             return Optional.empty();
         }
     }
+
+    protected abstract String getUpdateQuery();
 
 }

@@ -1,7 +1,10 @@
 package by.kukshinov.hotel.connection;
 
+import by.kukshinov.hotel.HotelController;
 import by.kukshinov.hotel.exceptions.ConnectionPoolException;
 import by.kukshinov.hotel.exceptions.DaoException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,6 +18,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 // TODO: 03.12.2020 kill connections somewhere
 public class ConnectionPool {
+    private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
     private static final int POOL_SIZE = 10;
     private static final ReentrantLock SINGLETON_LOCKER = new ReentrantLock();
     private static final ReentrantLock LOCKER = new ReentrantLock();
@@ -85,8 +89,8 @@ public class ConnectionPool {
         availableConnections.forEach(connection -> {
             try {
                 connection.killConnection();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+            } catch (SQLException e) {
+                LOGGER.error(e.getMessage(), e);
             }
         });
     }

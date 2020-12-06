@@ -15,41 +15,41 @@
     <title>Title</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/styles/commonStyles.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/styles/bookingStyles.css">
-    <script src="${pageContext.request.contextPath}/js/main.js"></script>
+    <script src="${pageContext.request.contextPath}/static/js/main.js"></script>
 </head>
 <body class="booking">
 <jsp:include page="templates/header.jsp"/>
 <div id="to-be-found">
     <jsp:include page="templates/leftMenu.jsp"/>
-        <form method="post" class="booking-div" action="${pageContext.request.contextPath}/controller?command=booking">
+        <form method="post" class="booking-div" action="${pageContext.request.contextPath}/controller?command=bookRoom">
             <h2 class="align-center"><fmt:message key="booking.book.room"/></h2>
             <p class="align-center"><fmt:message key="booking.book.select.people"/></p>
             <label class="floating-radio first-label">
-                <input name="personAmount" type="radio">
+                <input name=personAmount type="radio" value="1">
                 1
             </label>
             <label class="floating-radio">
-                <input name="personAmount" type="radio">
+                <input name=personAmount type="radio" value="2">
                 2
             </label>
-            <label class="floating-radio">
-                <input name="personAmount" type="radio">
+            <label class="floating-radio" >
+                <input name=personAmount type="radio" value="3">
                 3
-            </label>
-            <label class="floating-radio">
-                <input name="personAmount" type="radio">
+            </label >
+            <label class="floating-radio" >
+                <input name=personAmount type="radio" value="4">
                 4
             </label>
             <label class="floating-radio last-label">
-                <input name="personAmount" type="radio">
+                <input name=personAmount type="radio" value="5">
                 5
             </label>
             <div>
                 <br>
                 <br>
             </div>
-            <label class="input-booking" for="cars"><fmt:message key="booking.book.room.type"/>
-                <select class="apartment-type" id="cars" name="apartment">
+            <label class="input-booking" for="rooms"><fmt:message key="booking.book.room.type"/>
+                <select class="apartment-type" id="rooms" name="apartment">
                     <option value="standard"><fmt:message key="booking.book.room.type.op1"/></option>
                     <option value="business"><fmt:message key="booking.book.room.type.op2"/></option>
                     <option value="skyWalker"><fmt:message key="booking.book.room.type.op3"/></option>
@@ -82,3 +82,7 @@
 
 </body>
 </html>
+<%--prsonAmount--%>
+<%--apartment--%>
+<%--arrivalDate--%>
+<%--leavingDate--%>

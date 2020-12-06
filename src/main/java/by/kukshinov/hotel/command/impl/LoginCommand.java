@@ -5,7 +5,7 @@ import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.model.Role;
 import by.kukshinov.hotel.model.User;
-import by.kukshinov.hotel.request.context.RequestContext;
+import by.kukshinov.hotel.context.RequestContext;
 import by.kukshinov.hotel.service.UserService;
 
 import java.util.Map;
@@ -28,26 +28,23 @@ public class LoginCommand implements Command {
 
     @Override
     public CommandResult execute(RequestContext context) throws ServiceException {
-        Map<String, String> requestParameters = context.getRequestParameters();
-        Map<String, Object> requestAttributes = context.getRequestAttributes();
-        Map<String, Object> sessionAttributes = context.getSessionAttributes();
-        String login = requestParameters.get(LOGIN_PARAM);
-        String password = requestParameters.get(PASSWORD_PARAM);
+        String login = context.getRequestParameter(LOGIN_PARAM);
+        String password = context.getRequestParameter(PASSWORD_PARAM);
         Optional<User> userOptional = userService.findByCredentials(login, password);
         if (userOptional.isPresent()) {
             // TODO: 04.12.2020 check user activity
-            setAuthorizationData(sessionAttributes, login, userOptional);
+            setAuthorizationData(context, login, userOptional);
             return CommandResult.redirect(HOME_PAGE);
         } else {
-            requestAttributes.put(ERROR_MASSAGE_ATTRIBUTE, ERROR_MASSAGE_VALUE);
+            context.setSessionAttribute(ERROR_MASSAGE_ATTRIBUTE, ERROR_MASSAGE_VALUE);
             return CommandResult.forward(LOGIN_PAGE);
         }
     }
 
-    private void setAuthorizationData(Map<String, Object> sessionAttributes, String login, Optional<User> userOptional) {
+    private void setAuthorizationData(RequestContext context, String login, Optional<User> userOptional) {
         User user = userOptional.get();
         Role role = user.getRole();
-        sessionAttributes.put(LOGIN_PARAM, login);
-        sessionAttributes.put(ROLE, role);
+        context.setSessionAttribute(LOGIN_PARAM, login);
+        context.setSessionAttribute(ROLE, role.toString());
     }
 }

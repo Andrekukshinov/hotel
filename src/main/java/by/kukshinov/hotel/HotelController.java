@@ -4,8 +4,10 @@ import by.kukshinov.hotel.command.Command;
 import by.kukshinov.hotel.command.CommandFactory;
 import by.kukshinov.hotel.connection.ConnectionPool;
 import by.kukshinov.hotel.model.CommandResult;
-import by.kukshinov.hotel.request.context.RequestContext;
-import by.kukshinov.hotel.request.context.RequestContextManager;
+import by.kukshinov.hotel.context.RequestContext;
+import by.kukshinov.hotel.context.RequestContextHelper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,9 +15,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Map;
 
 public class HotelController extends HttpServlet {
+    private static final Logger LOGGER = LogManager.getLogger(HotelController.class);
+    private static final String COMMAND = "command";
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         process(req, resp);
@@ -27,16 +31,17 @@ public class HotelController extends HttpServlet {
     }
 
     private void process(HttpServletRequest req, HttpServletResponse resp) {
-        RequestContextManager contextManager = new RequestContextManager();
+        RequestContextHelper contextManager = new RequestContextHelper();
         RequestContext requestContext = contextManager.create(req);
         try {
-            String commandParam = req.getParameter("command");
+            String commandParam = req.getParameter(COMMAND);
             Command command = CommandFactory.createCommand(commandParam);
             CommandResult commandResult = command.execute(requestContext);
             contextManager.updateRequest(req, requestContext);
             dispatchRequest(req, resp, commandResult);
         } catch (Exception e) {
-            e.printStackTrace();
+            // TODO: 05.12.2020 redirect to error page
+            LOGGER.error(e.getMessage(), e);
         }
     }
 
@@ -58,40 +63,3 @@ public class HotelController extends HttpServlet {
         super.destroy();
     }
 }
-
-
-//class J {
-//    public static void main(String[] args) throws SQLException {
-//
-//        String url = "jdbc:mysql://localhost:3306/hotel_management?serverTimezone=UTC&useSSL=false";
-//        Properties prop = new Properties();
-//        prop.put("user", "root");
-//        prop.put("password", "root");
-//        prop.put("autoReconnect", "true");
-//        prop.put("characterEncoding", "UTF-8");
-//        prop.put("useUnicode", "true");
-//        Connection cn = null;
-//        Statement st = null;
-//        ResultSet rs = null;
-//        UserDao userDao;
-////        DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-//        try {
-//            cn = DriverManager.getConnection(url, prop);
-//            userDao = new UserDaoImpl(cn);
-//            Optional<User> user = userDao.findByCredentials("admin", "pass");
-//            System.out.println(user.get());
-//        } catch (SQLException | DaoException e) {
-//            System.err.println("DB connection error: " + e);
-//
-//        } finally {
-//            if (cn != null) {
-//                try {
-//                    cn.close();
-//                } catch
-//                (SQLException e) {
-//                    System.err.println("Сonnection close error:" + e);
-//                }
-//            }
-//        }
-//    }
-//}

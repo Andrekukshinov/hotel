@@ -1,20 +1,10 @@
-set foreign_key_checks =0;
-drop table User_Room;
-CREATE TABLE IF NOT EXISTS Role
-(
-    id   TINYINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    name VARCHAR(20)
-);
-
-
 CREATE TABLE IF NOT EXISTS User
 (
     id          BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    login       VARCHAR(25)        NOT NULL,
+    login       VARCHAR(25) UNIQUE NOT NULL,
     pass        VARCHAR(50)        NOT NULL,
     is_disabled BIT                         DEFAULT 0,
-    role_id     TINYINT            NOT NULL DEFAULT 1,
-    FOREIGN KEY (role_id) REFERENCES Role (id)
+    role     ENUM ('USER', 'ADMIN') DEFAULT ('USER')
 );
 
 CREATE TABLE IF NOT EXISTS Room

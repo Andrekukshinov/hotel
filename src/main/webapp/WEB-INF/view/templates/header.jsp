@@ -4,19 +4,41 @@
 <fmt:setLocale value="${sessionScope.lang}"/>
 <%--<fmt:setLocale value="en"/>--%>
 <fmt:setBundle basename="locale"/>
-
+<%--todo ask about go back protecion--%>
 <header>
     <ul class="topnav">
         <li><img class="logo" src="${pageContext.request.contextPath}/static/imgs/logo.bmp" width="46" height="40"
                  alt=""></li>
-        <li class="center"><a href="#contact">HOTEL BOOKIN'.OV</a></li>
-        <li class="right "><a href="${pageContext.request.contextPath}/logout"><fmt:message
-                key="header.authorized.logout"/></a></li>
-        <li class="right"><a href="${pageContext.request.contextPath}/controller?command=home"><fmt:message
-                key="header.authorized.profile"/></a></li>
-        <li class="right left-border"><a href="${pageContext.request.contextPath}/controller?command=booking">
-            <fmt:message key="header.authorized.booking"/>
-        </a></li>
+        <li class="center"><a href="#">HOTEL BOOKIN'.OV</a></li>
+        <c:choose>
+            <c:when test="${sessionScope.login != null}">
+                <li class="right "><a href="${pageContext.request.contextPath}/logout"><fmt:message
+                        key="header.authorized.logout"/></a>
+                </li>
+            </c:when>
+            <c:otherwise>
+                <li class="right "><a href="${pageContext.request.contextPath}/"><fmt:message
+                        key="header.unauthorized.login"/></a>
+                </li>
+            </c:otherwise>
+        </c:choose>
+        <c:choose>
+            <c:when test="${sessionScope.login != null}">
+                <li class="right"><a href="${pageContext.request.contextPath}/controller?command=home"><fmt:message
+                        key="header.authorized.profile"/></a>
+                </li>
+            </c:when>
+            <c:otherwise>
+                <li class="right left-border"><a href="${pageContext.request.contextPath}/"><fmt:message
+                        key="header.unauthorized.signup"/></a>
+                </li>
+            </c:otherwise>
+        </c:choose>
+        <c:if test="${sessionScope.login != null}">
+            <li class="right left-border"><a href="${pageContext.request.contextPath}/controller?command=booking">
+                <fmt:message key="header.authorized.booking"/></a>
+            </li>
+        </c:if>
         <li class="right select-container">
             <ul>
                 <!--todo add to properties lang-->

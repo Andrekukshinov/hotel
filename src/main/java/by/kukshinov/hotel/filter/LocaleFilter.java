@@ -6,15 +6,18 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 public class LocaleFilter implements Filter {
+
+    private static final String LANGUAGE = "lang";
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {}
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
-        String language = req.getParameter("lang");
+        String language = req.getParameter(LANGUAGE);
         if(language != null) {
-            req.getSession().setAttribute("lang", language);
+            req.getSession().setAttribute(LANGUAGE, language);
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }

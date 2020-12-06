@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     public void updateUser(User user) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()){
             UserDao dao = daoHelper.createUserDao();
-            dao.update(user);
+            dao.save(user);
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }

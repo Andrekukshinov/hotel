@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class AuthenticationFilter implements Filter {
 
-    private static final String LOGIN = "login";
+    private static final String LOGIN_COMMAND = "login";
     private static final String COMMAND = "command";
     private static final String LOGIN_PAGE = "WEB-INF/view/login.jsp";
 
@@ -22,17 +22,19 @@ public class AuthenticationFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpSession session = req.getSession();
-        Object login = session.getAttribute(LOGIN);
+        Object login = session.getAttribute(LOGIN_COMMAND);
         String command = req.getParameter(COMMAND);
-        if (login != null) {
-            filterChain.doFilter(servletRequest, servletResponse);
-        } else if (LOGIN.equals(command)) {
+        String requestURL = req.getRequestURL().toString();
+        if (login != null || LOGIN_COMMAND.equals(command) || isResourcesAccess(command, requestURL)) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
             RequestDispatcher requestDispatcher = req.getRequestDispatcher(LOGIN_PAGE);
             requestDispatcher.forward(servletRequest, servletResponse);
         }
+    }
 
+    private boolean isResourcesAccess(String command, String requestURL) {
+        return (requestURL.contains("/static/")) && command == null;
     }
 
     @Override

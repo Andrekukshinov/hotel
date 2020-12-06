@@ -2,10 +2,7 @@ package by.kukshinov.hotel.command.impl;
 
 import by.kukshinov.hotel.command.Command;
 import by.kukshinov.hotel.model.CommandResult;
-import by.kukshinov.hotel.request.context.RequestContext;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import by.kukshinov.hotel.context.RequestContext;
 
 public class ForwardCommand implements Command {
     private final String pageUrl;

@@ -1,13 +1,27 @@
-INSERT INTO role(name) VALUES('admin');
-INSERT INTO role(name) VALUES('user');
-
-
-INSERT INTO user(login, pass, is_disabled, role_id) VALUES('admin', SHA1('pass'), false, 0);
-INSERT INTO user(login, pass, is_disabled, role_id) VALUES('billy', SHA1('random word'), false, 1);
-INSERT INTO user(login, pass, is_disabled, role_id) VALUES('harrington', SHA1('nico nico doga'), true, 1);
-INSERT INTO user(login, pass, is_disabled, role_id) VALUES('dieHard', SHA1('228'), false, 1);
-INSERT INTO user(login, pass, is_disabled, role_id) VALUES('Ronald', SHA1('322'), false, 1);
-
+INSERT INTO user(login, pass, is_disabled, role)
+VALUES ('admin', SHA1('pass'), false, 'ADMIN');
+INSERT INTO user(login, pass, is_disabled)
+VALUES ('billy', SHA1('random word'), false);
+INSERT INTO user(login, pass, is_disabled)
+VALUES ('harrington', SHA1('nico nico doga'), true);
+INSERT INTO user(login, pass, is_disabled)
+VALUES ('dieHard', SHA1('228'), false);
+INSERT INTO user(login, pass, is_disabled, role)
+VALUES ('Ronald', SHA1('322'), false,'USER');
+INSERT INTO user(login, pass, is_disabled, role)
+VALUES ('adminy', SHA1('pass'), false,'USER');
+INSERT INTO user(login, pass, is_disabled, role)
+VALUES ('bill', SHA1('random word'), false,'USER');
+INSERT INTO user(login, pass, is_disabled, role)
+VALUES ('harringtony', SHA1('nico nico doga'), true,'USER');
+INSERT INTO user(login, pass, is_disabled, role)
+VALUES ('dieHardy', SHA1('228'), false,'USER');
+INSERT INTO user(login, pass, is_disabled, role)
+VALUES ('Geronald', SHA1('322'), false,'USER');
+INSERT INTO user(login, pass, is_disabled, role)
+VALUES ('Roony', SHA1('228'), false,'USER');
+INSERT INTO user(login, pass, is_disabled, role)
+VALUES ('RayCarter', SHA1('322'), false,'USER');
 
 INSERT INTO room(apartment_type, person_amount, room_status, room_price) VALUES('standard', 2, 'available', 150.2);
 INSERT INTO room(apartment_type, person_amount, room_status, room_price) VALUES('business', 1, 'occupied', 200.1);

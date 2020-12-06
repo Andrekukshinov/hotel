@@ -12,9 +12,7 @@ public interface Dao<T> {
 
     List<T> findAll() throws DaoException;
 
-    void save(T item);
-
-    void update(T item) throws DaoException;
+    void save(T item) throws DaoException;
 
     void delete(T item);
 }

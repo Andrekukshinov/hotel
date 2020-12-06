@@ -10,9 +10,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+<%--    <title>Title</title>--%>
+<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/styles/commonStyles.css">--%>
+<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/styles/profileStyles.css">--%>
 </head>
 <body>
-<jsp:forward page="WEB-INF/view/login.jsp" />
+
+    <c:redirect url="/logout"/>
 </body>
 </html>

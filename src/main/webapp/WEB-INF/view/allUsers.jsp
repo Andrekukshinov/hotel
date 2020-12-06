@@ -32,29 +32,30 @@
             </tr>
             <c:forEach var="user" items="${users}" varStatus="index">
                 <tr>
-                    <td>${(7)*(page - 1) + index.count}</td>
+                    <td>${(10)*(page - 1) + index.count}</td>
                     <td>${user.login}</td>
-                    <td>${user.isDisabled}</td>
+                    <td>${!user.isDisabled}</td>
                     <td>User</td>
                     <td>
                         <c:if test="${user.isDisabled}">
                             <form method="post"
-                                  action="${pageContext.request.contextPath}/controller?command=updateUser"
+                                  action="${pageContext.request.contextPath}/controller?command=admin_update_user"
                                   class="admin-users-form">
                                 <input type="hidden" value="${user.login}" name="login">
                                 <input type="hidden" value="${user.userId}" name="userId">
-                                <input type="hidden" value="${user.password}" name="pass">
                                 <input type="hidden" value="${user.isDisabled}" name="isDisabled">
+                                <input type="hidden" value="${user.role}" name="role">
                                 <button type="submit"><fmt:message key="admin.user.status.enable"/></button>
                             </form>
                         </c:if>
                         <c:if test="${!user.isDisabled}">
                             <form method="post"
-                                  action="${pageContext.request.contextPath}/controller?command=updateUser"
+                                  action="${pageContext.request.contextPath}/controller?command=admin_update_user"
                                   class="admin-users-form">
                                 <input type="hidden" value="${user.login}" name="login">
                                 <input type="hidden" value="${user.userId}" name="userId">
                                 <input type="hidden" value="${user.password}" name="pass">
+                                <input type="hidden" value="${user.role}" name="role">
                                 <input type="hidden" value="${user.isDisabled}" name="isDisabled">
                                 <button type="submit"><fmt:message key="admin.user.status.disable"/></button>
                             </form>
@@ -68,17 +69,17 @@
                 <a href="" type="submit" class="pagination-children">❮</a>
             </c:when>
             <c:otherwise>
-                <a href="${pageContext.request.contextPath}/controller?command=all.users&page=${page-1}" type="submit"
+                <a href="${pageContext.request.contextPath}/controller?command=admin_users&page=${page-1}" type="submit"
                    name="+" class="pagination-children">❮</a>
             </c:otherwise>
         </c:choose>
         <div class="pagination-children">${page}</div>
         <c:choose>
-            <c:when test="${users.size() != 7}">
+            <c:when test="${users.size() != 10}">
                 <a href="" type="submit" class="pagination-children">❯</a>
             </c:when>
             <c:otherwise>
-                <a href="${pageContext.request.contextPath}/controller?command=all.users&page=${page+1}" type="submit"
+                <a href="${pageContext.request.contextPath}/controller?command=admin_users&page=${page+1}" type="submit"
                    name="+" class="pagination-children">❯</a>
             </c:otherwise>
         </c:choose>

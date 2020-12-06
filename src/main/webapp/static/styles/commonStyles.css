@@ -57,11 +57,12 @@ div.login-form {
     margin: 1% 20% 2% 20%;
     border-radius: 5px;
     background-color: #f2f2f2;
-    padding: 5% 0;
+    padding: 7% 0 4% 0;
+    min-height: 60%;
 }
 
 #to-be-found {
-    min-height: 80%;
+    min-height: 90%;
     display: flex;
 }
 
@@ -284,5 +285,9 @@ p.align-center {
 
     .languages:first-child {
         margin: 2% 0 0 -40%;
+    }
+
+    button.login-submit{
+        width: 35%;
     }
 }
