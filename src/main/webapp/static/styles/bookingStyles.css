@@ -72,7 +72,11 @@ body.booking {
     font-family: "Times New Roman", serif;
 }
 
-@media screen and (max-width: 700px) {
+.small-letters {
+    text-transform: lowercase;
+}
+
+@media screen and (max-width: 780px) {
     .first-label {
         padding-left: 0;
     }
@@ -100,5 +104,9 @@ body.booking {
 
     .apartment-type {
         width: 30%;
+    }
+
+    .small-font{
+        font-size: 10px;
     }
 }

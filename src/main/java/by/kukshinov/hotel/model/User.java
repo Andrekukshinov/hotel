@@ -1,6 +1,8 @@
 package by.kukshinov.hotel.model;
 
 
+import by.kukshinov.hotel.model.enums.Role;
+
 public class User {
     private long userId;
     private String login;

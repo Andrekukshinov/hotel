@@ -2,7 +2,7 @@ package by.kukshinov.hotel.context;
 
 import java.util.Map;
 
-// TODO: 04.12.2020 ASK
+
 public class RequestContext {
     private final Map<String, String> requestParameters;
     private final Map<String, Object> requestAttributes;
@@ -14,6 +14,7 @@ public class RequestContext {
         this.sessionAttributes = sessionAttributes;
     }
 
+
     public String getRequestParameter(String key) {
         return requestParameters.get(key);
     }
@@ -24,6 +25,10 @@ public class RequestContext {
 
     public Object getSessionAttribute(String key) {
         return sessionAttributes.get(key);
+    }
+
+    public void removeSessionAttribute(String key) {
+        sessionAttributes.remove(key);
     }
 
     public void setRequestParameter(String key, String value) {
@@ -38,6 +43,8 @@ public class RequestContext {
         sessionAttributes.put(key, value);
     }
 
+
+
     Map<String, String> getRequestParameters() {
         return requestParameters;
     }
@@ -50,4 +57,3 @@ public class RequestContext {
         return sessionAttributes;
     }
 }
-

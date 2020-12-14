@@ -224,7 +224,11 @@ p.align-center {
     margin: 0;
 }
 
-@media screen and (max-width: 700px) {
+.pages{
+    margin-left: 44%;
+ }
+
+@media screen and (max-width: 780px) {
 
     .logo {
         border-right: none;
@@ -289,5 +293,9 @@ p.align-center {
 
     button.login-submit{
         width: 35%;
+    }
+
+    .pages{
+        margin-left: 30%;
     }
 }

@@ -4,7 +4,6 @@
 <fmt:setLocale value="${sessionScope.lang}"/>
 <%--<fmt:setLocale value="en"/>--%>
 <fmt:setBundle basename="locale"/>
-<%--todo ask about go back protecion--%>
 <header>
     <ul class="topnav">
         <li><img class="logo" src="${pageContext.request.contextPath}/static/imgs/logo.bmp" width="46" height="40"
@@ -12,7 +11,7 @@
         <li class="center"><a href="#">HOTEL BOOKIN'.OV</a></li>
         <c:choose>
             <c:when test="${sessionScope.login != null}">
-                <li class="right "><a href="${pageContext.request.contextPath}/logout"><fmt:message
+                <li class="right "><a href="${pageContext.request.contextPath}/controller?command=logout"><fmt:message
                         key="header.authorized.logout"/></a>
                 </li>
             </c:when>

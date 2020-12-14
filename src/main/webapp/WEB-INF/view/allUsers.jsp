@@ -15,6 +15,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/styles/commonStyles.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/styles/bookingStyles.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/styles/profileStyles.css">
 </head>
 <body class="body">
@@ -25,7 +26,7 @@
         <table id="customers">
             <tr>
                 <th>#</th>
-                <th><fmt:message key="admin.user.login"/></th>
+                <th class="small-font"><fmt:message key="admin.user.login"/></th>
                 <th><fmt:message key="admin.user.status"/></th>
                 <th><fmt:message key="admin.user.role"/></th>
                 <th><fmt:message key="admin.user.status.change"/></th>
@@ -33,56 +34,49 @@
             <c:forEach var="user" items="${users}" varStatus="index">
                 <tr>
                     <td>${(10)*(page - 1) + index.count}</td>
-                    <td>${user.login}</td>
-                    <td>${!user.isDisabled}</td>
-                    <td>User</td>
+                    <td class="small-font">${user.login}</td>
+                    <td class="small-font"><fmt:message key="admin.user.status.state.${user.isDisabled}"/></td>
+                    <td class="small-font small-letters">
+                        <fmt:message key="admin.user.role.${user.role}"/>
+                    </td>
                     <td>
-                        <c:if test="${user.isDisabled}">
-                            <form method="post"
-                                  action="${pageContext.request.contextPath}/controller?command=admin_update_user"
-                                  class="admin-users-form">
-                                <input type="hidden" value="${user.login}" name="login">
-                                <input type="hidden" value="${user.userId}" name="userId">
-                                <input type="hidden" value="${user.isDisabled}" name="isDisabled">
-                                <input type="hidden" value="${user.role}" name="role">
-                                <button type="submit"><fmt:message key="admin.user.status.enable"/></button>
-                            </form>
-                        </c:if>
-                        <c:if test="${!user.isDisabled}">
-                            <form method="post"
-                                  action="${pageContext.request.contextPath}/controller?command=admin_update_user"
-                                  class="admin-users-form">
-                                <input type="hidden" value="${user.login}" name="login">
-                                <input type="hidden" value="${user.userId}" name="userId">
-                                <input type="hidden" value="${user.password}" name="pass">
-                                <input type="hidden" value="${user.role}" name="role">
-                                <input type="hidden" value="${user.isDisabled}" name="isDisabled">
-                                <button type="submit"><fmt:message key="admin.user.status.disable"/></button>
-                            </form>
-                        </c:if>
+                        <form method="post"
+                              action="${pageContext.request.contextPath}/controller?command=admin_update_user"
+                              class="admin-users-form">
+                            <input type="hidden" value="${user.login}" name="login">
+                            <input type="hidden" value="${user.userId}" name="userId">
+                            <input type="hidden" value="${user.password}" name="pass">
+                            <input type="hidden" value="${user.role}" name="role">
+                            <input type="hidden" value="${user.isDisabled}" name="isDisabled">
+                            <button type="submit"><fmt:message key="admin.user.status.${user.isDisabled}"/></button>
+                        </form>
                     </td>
                 </tr>
             </c:forEach>
         </table>
-        <c:choose>
-            <c:when test="${(page - 1) == 0}">
-                <a href="" type="submit" class="pagination-children">❮</a>
-            </c:when>
-            <c:otherwise>
-                <a href="${pageContext.request.contextPath}/controller?command=admin_users&page=${page-1}" type="submit"
-                   name="+" class="pagination-children">❮</a>
-            </c:otherwise>
-        </c:choose>
-        <div class="pagination-children">${page}</div>
-        <c:choose>
-            <c:when test="${users.size() != 10}">
-                <a href="" type="submit" class="pagination-children">❯</a>
-            </c:when>
-            <c:otherwise>
-                <a href="${pageContext.request.contextPath}/controller?command=admin_users&page=${page+1}" type="submit"
-                   name="+" class="pagination-children">❯</a>
-            </c:otherwise>
-        </c:choose>
+        <div class="pages">
+            <c:choose>
+                <c:when test="${(page - 1) == 0}">
+                    <a href="" type="submit" class="pagination-children">❮</a>
+                </c:when>
+                <c:otherwise>
+                    <a href="${pageContext.request.contextPath}/controller?command=admin_users&page=${page-1}"
+                       type="submit"
+                       name="+" class="pagination-children">❮</a>
+                </c:otherwise>
+            </c:choose>
+            <div class="pagination-children">${page}</div>
+            <c:choose>
+                <c:when test="${users.size() != 10}">
+                    <a href="" type="submit" class="pagination-children">❯</a>
+                </c:when>
+                <c:otherwise>
+                    <a href="${pageContext.request.contextPath}/controller?command=admin_users&page=${page+1}"
+                       type="submit"
+                       name="+" class="pagination-children">❯</a>
+                </c:otherwise>
+            </c:choose>
+        </div>
     </div>
 </div>
 

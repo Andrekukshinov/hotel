@@ -1,4 +1,4 @@
-package by.kukshinov.hotel.dao;
+package by.kukshinov.hotel.dao.api;
 
 import by.kukshinov.hotel.exceptions.DaoException;
 
@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface Dao<T> {
     // TODO: 04.12.2020 write tests
 
-    Optional<T> findById(Long id);
+    Optional<T> findById(Long id) throws DaoException;
 
     List<T> findAll() throws DaoException;
 

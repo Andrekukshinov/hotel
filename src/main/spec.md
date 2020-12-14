@@ -6,6 +6,7 @@
     1) Booking history
     2) Payment page
 4) Home page with info
+
 *Admin*
 5) Room
 6) Filters 

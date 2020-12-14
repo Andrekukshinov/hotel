@@ -1,0 +1,42 @@
+#applications {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    text-align: center;
+    box-shadow: 0 0 10px #111111;
+    margin-bottom: 3%;
+    width: 100%;
+}
+
+#applications td, #applications th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+#applications tr:nth-child(even){background-color: #538bf3;}
+#applications tr:nth-child(odd){background-color: rgba(151, 197, 248, 0.3);}
+
+#applications tr:hover { background-color: #ddd;}
+
+#applications th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #2D2F59;
+    color: white;
+}
+
+.table-wrapper {
+    width: 70%;
+    margin: 2% 10%;
+}
+
+@media screen and (max-width: 780px) {
+    .table-wrapper {
+        width: 80%;
+        /*margin: 2% 2%;*/
+    }
+    #applications {
+        width: 100%;
+    }
+}

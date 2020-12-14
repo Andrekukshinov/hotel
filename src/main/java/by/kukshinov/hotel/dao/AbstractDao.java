@@ -1,9 +1,9 @@
 package by.kukshinov.hotel.dao;
 
+import by.kukshinov.hotel.dao.api.Dao;
 import by.kukshinov.hotel.dao.extractor.FieldsExtractor;
 import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.dao.mapper.ObjectMapper;
-import by.kukshinov.hotel.model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,6 +17,7 @@ import java.util.Optional;
 public abstract class AbstractDao<T> implements Dao<T> {
 
     private static final String GET_USERS = "SELECT * FROM ";
+    private static final String ID = "id";
     private final String tableName;
 
     private Connection connection;
@@ -31,11 +32,11 @@ public abstract class AbstractDao<T> implements Dao<T> {
         this.fieldsExtractor = fieldsExtractor;
     }
 
-    protected void executeUpdate(String query, Object... params) throws DaoException {
+    protected void executeForSave(String query, Object... params) throws DaoException {
         try (PreparedStatement preparedStatement = prepareStatement(query, params)) {
             preparedStatement.executeUpdate();
-        } catch (SQLException throwables) {
-            throw new DaoException(throwables.getMessage(), throwables);
+        } catch (SQLException e) {
+            throw new DaoException(e.getMessage(), e);
         }
     }
 
@@ -46,9 +47,15 @@ public abstract class AbstractDao<T> implements Dao<T> {
 
     @Override
     public void save(T item) throws DaoException {
-        List<Object> fields = fieldsExtractor.extract(item);
+        Map<String, Object> extracted = fieldsExtractor.extract(item);
+        Object id = extracted.get(ID);
+        List<Object> fields  = new ArrayList<>(extracted.values());
         Object[] values = fields.toArray();
-        executeUpdate(getUpdateQuery(), values);
+        if(id == null) {
+            executeForSave(getSaveQuery(), values);
+        } else {
+            executeForSave(getUpdateQuery(), values);
+        }
     }
 
     protected List<T> executeQuery(String query, Object... params) throws DaoException {
@@ -73,8 +80,8 @@ public abstract class AbstractDao<T> implements Dao<T> {
         return result;
     }
 
-    protected Optional<T> executeForSingleItem(String query, String login, String pass) throws DaoException {
-        List<T> users = executeQuery(query, login, pass);
+    protected Optional<T> executeForSingleItem(String query, Object... params) throws DaoException {
+        List<T> users = executeQuery(query, params);
         if (users.size() == 1) {
             return Optional.of(users.get(0));
         } else {
@@ -83,5 +90,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
     }
 
     protected abstract String getUpdateQuery();
+
+    protected abstract String getSaveQuery();
 
 }

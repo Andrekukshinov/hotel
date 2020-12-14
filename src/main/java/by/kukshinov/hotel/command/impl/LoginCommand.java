@@ -3,12 +3,11 @@ package by.kukshinov.hotel.command.impl;
 import by.kukshinov.hotel.command.Command;
 import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.CommandResult;
-import by.kukshinov.hotel.model.Role;
+import by.kukshinov.hotel.model.enums.Role;
 import by.kukshinov.hotel.model.User;
 import by.kukshinov.hotel.context.RequestContext;
-import by.kukshinov.hotel.service.UserService;
+import by.kukshinov.hotel.service.api.UserService;
 
-import java.util.Map;
 import java.util.Optional;
 
 public class LoginCommand implements Command {
@@ -20,6 +19,7 @@ public class LoginCommand implements Command {
     private static final String ERROR_MASSAGE_ATTRIBUTE = "errorMassage";
     private static final String ERROR_MASSAGE_VALUE = "User not found";
     private static final String ROLE = "role";
+    private static final String USER_ID = "user_id";
     private final UserService userService;
 
     public LoginCommand(UserService loginService) {
@@ -33,7 +33,7 @@ public class LoginCommand implements Command {
         Optional<User> userOptional = userService.findByCredentials(login, password);
         if (userOptional.isPresent()) {
             // TODO: 04.12.2020 check user activity
-            setAuthorizationData(context, login, userOptional);
+            setAuthorizationData(context, login, userOptional.get());
             return CommandResult.redirect(HOME_PAGE);
         } else {
             context.setSessionAttribute(ERROR_MASSAGE_ATTRIBUTE, ERROR_MASSAGE_VALUE);
@@ -41,10 +41,11 @@ public class LoginCommand implements Command {
         }
     }
 
-    private void setAuthorizationData(RequestContext context, String login, Optional<User> userOptional) {
-        User user = userOptional.get();
+    private void setAuthorizationData(RequestContext context, String login, User user) {
         Role role = user.getRole();
+        long userId = user.getUserId();
         context.setSessionAttribute(LOGIN_PARAM, login);
+        context.setSessionAttribute(USER_ID, userId);
         context.setSessionAttribute(ROLE, role.toString());
     }
 }

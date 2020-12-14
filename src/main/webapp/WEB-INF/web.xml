@@ -14,6 +14,7 @@
         <servlet-name>controller</servlet-name>
         <url-pattern>/controller</url-pattern>
     </servlet-mapping>
+
     <filter>
         <filter-name>language</filter-name>
         <filter-class>by.kukshinov.hotel.filter.LocaleFilter</filter-class>
@@ -42,13 +43,5 @@
     </filter-mapping>
 
 <!--  todo  error page-->
-    <filter>
-        <filter-name>logout</filter-name>
-        <filter-class>by.kukshinov.hotel.filter.LogoutFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>logout</filter-name>
-        <url-pattern>/logout</url-pattern>
-    </filter-mapping>
 
 </web-app>

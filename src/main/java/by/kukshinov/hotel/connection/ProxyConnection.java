@@ -6,10 +6,12 @@ import java.util.Properties;
 import java.util.concurrent.Executor;
 
 public class ProxyConnection implements Connection {
+    private final ConnectionPool pool;
     private final Connection connection;
 
 
-    ProxyConnection(Connection connection) {
+    ProxyConnection(Connection connection, ConnectionPool pool) {
+        this.pool = pool;
         this.connection = connection;
     }
 
@@ -59,7 +61,7 @@ public class ProxyConnection implements Connection {
 
     @Override
     public void close() {
-        ConnectionPool pool = ConnectionPool.getInstance();
+
         pool.releaseConnection(this);
     }
 

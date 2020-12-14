@@ -9,13 +9,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<head>
-<%--    <title>Title</title>--%>
-<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/styles/commonStyles.css">--%>
-<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/styles/profileStyles.css">--%>
-</head>
 <body>
 
-    <c:redirect url="/logout"/>
+    <c:redirect url="/controller?command=logout"/>
 </body>
 </html>

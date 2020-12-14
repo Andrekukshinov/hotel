@@ -22,6 +22,7 @@
 <div id="to-be-found">
     <jsp:include page="templates/leftMenu.jsp"/>
         <form method="post" class="booking-div" action="${pageContext.request.contextPath}/controller?command=bookRoom">
+            <input type="hidden" name="userId" value="${sessionScope.user_id}"/>
             <h2 class="align-center"><fmt:message key="booking.book.room"/></h2>
             <p class="align-center"><fmt:message key="booking.book.select.people"/></p>
             <label class="floating-radio first-label">
@@ -50,10 +51,10 @@
             </div>
             <label class="input-booking" for="rooms"><fmt:message key="booking.book.room.type"/>
                 <select class="apartment-type" id="rooms" name="apartment">
-                    <option value="standard"><fmt:message key="booking.book.room.type.op1"/></option>
-                    <option value="business"><fmt:message key="booking.book.room.type.op2"/></option>
-                    <option value="skyWalker"><fmt:message key="booking.book.room.type.op3"/></option>
-                    <option value="lux"><fmt:message key="booking.book.room.type.op4"/></option>
+                    <option value="STANDARD"><fmt:message key="booking.book.room.type.op1"/></option>
+                    <option value="BUSINESS"><fmt:message key="booking.book.room.type.op2"/></option>
+                    <option value="SKY_WALKER"><fmt:message key="booking.book.room.type.op3"/></option>
+                    <option value="LUX"><fmt:message key="booking.book.room.type.op4"/></option>
                 </select>
             </label>
             <div>
@@ -74,6 +75,7 @@
                 <br>
                 <br>
             </div>
+            <input type="hidden" name="state" value="IN_ORDER">
             <button class="login-submit" type="submit"><fmt:message key="booking.book.button.leave"/></button>
         </form>
     </div>

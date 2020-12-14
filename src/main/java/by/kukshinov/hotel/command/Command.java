@@ -8,5 +8,5 @@ import javax.servlet.ServletException;
 
 public interface Command {
     // TODO: 04.12.2020 change signature abd write tests
-    CommandResult execute(RequestContext context) throws ServletException, ServiceException;
+    CommandResult execute(RequestContext context) throws ServiceException;
 }

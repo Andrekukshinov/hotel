@@ -4,5 +4,5 @@ import java.util.List;
 import java.util.Map;
 
 public interface FieldsExtractor<T> {
-    List<Object> extract(T t);
+    Map<String, Object> extract(T t);
 }

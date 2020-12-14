@@ -29,9 +29,12 @@ public class AuthorizationFilter implements Filter {
             Object role = session.getAttribute(ROLE);
             if(!ROLE_ADMIN.equalsIgnoreCase((String) role)){
                 resp.sendError(FORBIDDEN);
+            } else {
+                filterChain.doFilter(servletRequest, servletResponse);
             }
+        } else {
+            filterChain.doFilter(servletRequest, servletResponse);
         }
-        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override

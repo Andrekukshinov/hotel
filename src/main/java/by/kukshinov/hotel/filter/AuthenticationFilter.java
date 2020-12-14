@@ -34,7 +34,8 @@ public class AuthenticationFilter implements Filter {
     }
 
     private boolean isResourcesAccess(String command, String requestURL) {
-        return (requestURL.contains("/static/")) && command == null;
+        boolean b = (requestURL.contains("/static/")) && command == null;
+        return b;
     }
 
     @Override

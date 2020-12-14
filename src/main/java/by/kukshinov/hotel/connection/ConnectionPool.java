@@ -33,7 +33,7 @@ public class ConnectionPool {
         this.connectionFactory = new ConnectionFactory();
         this.connectionsInUse = new ArrayDeque<>();
         for (int runner = 0; runner < POOL_SIZE; ++runner) {
-            ProxyConnection e = new ProxyConnection(connectionFactory.createConnection());
+            ProxyConnection e = new ProxyConnection(connectionFactory.createConnection(), this);
             availableConnections.add(e);
         }
     }
@@ -58,6 +58,7 @@ public class ConnectionPool {
     }
 
     public ProxyConnection getConnection() {
+        //semaphore
         LOCKER.lock();
         try {
             ProxyConnection proxyConnection = availableConnections.poll();
