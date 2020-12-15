@@ -24,13 +24,12 @@ public class AllRoomsCommand implements Command {
         this.validator = validator;
     }
 
-    // TODO: 11.12.2020 move 31-38 to anoth class
     // TODO: 11.12.2020 add validation for the page
     @Override
     public CommandResult execute(RequestContext context) throws ServiceException {
         String currentPage = context.getRequestParameter(PAGE);
         int pageInt = validator.gatValidPage(currentPage);
-        List<Room> rooms = service.getRangeRooms((pageInt - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
+        List<Room> rooms = service.getRangeEntities((pageInt - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
         context.setRequestAttribute(ROOMS, rooms);
         context.setRequestAttribute(PAGE, pageInt);
         return CommandResult.forward(ALL_ROOMS);

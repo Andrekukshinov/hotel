@@ -45,9 +45,9 @@ public class UserServiceImplTest {
         UserService userService = new UserServiceImpl(helperFactory);
         when(helperFactory.createDaoHelper()).thenReturn(helper);
         when(helper.createUserDao()).thenReturn(dao);
-        when(dao.findRangeUsers(anyInt(), anyInt())).thenReturn(USERS);
+//        when(dao.findRangeUsers(anyInt(), anyInt())).thenReturn(USERS);
 
-        List<User> actual = userService.getRangeUsers(START_FROM, FINISH_WITH);
+        List<User> actual = userService.getRangeEntities(START_FROM, FINISH_WITH);
 
         Assert.assertEquals(actual, USERS);
     }
@@ -60,9 +60,9 @@ public class UserServiceImplTest {
         UserService userService = new UserServiceImpl(helperFactory);
         when(helperFactory.createDaoHelper()).thenReturn(helper);
         when(helper.createUserDao()).thenReturn(dao);
-        when(dao.findRangeUsers(anyInt(), anyInt())).thenThrow(DaoException.class);
+//        when(dao.findRangeUsers(anyInt(), anyInt())).thenThrow(DaoException.class);
 
-        userService.getRangeUsers(START_FROM, FINISH_WITH);
+        userService.getRangeEntities(START_FROM, FINISH_WITH);
     }
 
     @Test
@@ -74,7 +74,7 @@ public class UserServiceImplTest {
         when(helperFactory.createDaoHelper()).thenReturn(helper);
         when(helper.createUserDao()).thenReturn(dao);
 
-        List<User> actual = userService.getRangeUsers(START_FROM, FINISH_WITH);
+        List<User> actual = userService.getRangeEntities(START_FROM, FINISH_WITH);
 
         Assert.assertEquals(actual, Collections.emptyList());
     }

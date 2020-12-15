@@ -28,7 +28,7 @@ public class AllUsersCommand implements Command {
     public CommandResult execute(RequestContext context) throws ServiceException {
         String currentPage = context.getRequestParameter(PAGE);
         int pageInt = validator.gatValidPage(currentPage);
-        List<User> users = userService.getRangeUsers((pageInt - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
+        List<User> users = userService.getRangeEntities((pageInt - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
         context.setRequestAttribute(USERS, users);
         context.setRequestAttribute(PAGE, pageInt);
         return CommandResult.forward(ALL_USERS);

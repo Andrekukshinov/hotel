@@ -4,6 +4,7 @@ import by.kukshinov.hotel.dao.api.Dao;
 import by.kukshinov.hotel.dao.extractor.FieldsExtractor;
 import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.dao.mapper.ObjectMapper;
+import by.kukshinov.hotel.model.Application;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -25,6 +25,7 @@ public class UpdateRoomCommand implements Command {
         this.roomService = roomService;
     }
 
+    // TODO: 15.12.2020 change to get by id + update
     @Override
     public CommandResult execute(RequestContext context) throws ServiceException {
         String personAmount = context.getRequestParameter(PERSON_AMOUNT);

@@ -5,10 +5,11 @@ import by.kukshinov.hotel.context.RequestContext;
 import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.Application;
 import by.kukshinov.hotel.model.CommandResult;
-import by.kukshinov.hotel.model.creators.ApplicationCreator;
+import by.kukshinov.hotel.model.Room;
+import by.kukshinov.hotel.model.enums.ApplicationStatus;
 import by.kukshinov.hotel.service.api.ApplicationService;
 
-import java.text.ParseException;
+import java.util.Optional;
 
 public class UpdateApplication implements Command {
     private static final String APPLICATIONS = "/hotel/controller?command=admin_applications";
@@ -20,31 +21,29 @@ public class UpdateApplication implements Command {
     private static final String USER_ID = "userId";
     private static final String ID = "id";
     private static final String PATTERN = "yyyy-MM-dd";
+    private static final String ERROR_MESSAGE = "such application doesn't exist";
     private final ApplicationService service;
-    private final ApplicationCreator creator;
 
 
-    public UpdateApplication(ApplicationService service, ApplicationCreator creator) {
+    public UpdateApplication(ApplicationService service) {
         this.service = service;
-        this.creator = creator;
     }
 
 
     @Override
     public CommandResult execute(RequestContext context) throws ServiceException {
-        String stringState = context.getRequestParameter(STATUS);
         String stringId = context.getRequestParameter(ID);
-        String personAmount = context.getRequestParameter(PERSON_AMOUNT);
-        String apartment = context.getRequestParameter(TYPE);
-        String arrivalDate = context.getRequestParameter(ARRIVAL_DATE);
-        String leavingDate = context.getRequestParameter(LEAVING_DATE);
-        String userIdString = context.getRequestParameter(USER_ID);
-        try {
-            Application userApplication = creator.getApplication(stringState, personAmount, apartment, arrivalDate, leavingDate, userIdString, stringId, PATTERN);
-            service.save(userApplication);
+        String stringStatus = context.getRequestParameter(STATUS);
+        ApplicationStatus applicationStatus = ApplicationStatus.valueOf(stringStatus);
+        long id = Long.parseLong(stringId);
+        Optional<Application> optionalApplication = service.findQueuedApplicationById(id);
+        if (optionalApplication.isPresent()) {
+            Application userApplication = optionalApplication.get();
+            userApplication.setStatus(applicationStatus);
+            service.updateApplication(userApplication);
             return CommandResult.redirect(APPLICATIONS);
-        } catch (ParseException e) {
-            throw new ServiceException(e.getMessage(),e);
+        } else {
+            throw new ServiceException(ERROR_MESSAGE);
         }
     }
 }

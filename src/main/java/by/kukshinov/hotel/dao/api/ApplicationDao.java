@@ -5,8 +5,10 @@ import by.kukshinov.hotel.model.Application;
 import by.kukshinov.hotel.model.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ApplicationDao extends Dao<Application> {
-    List<Application> findRangeApplications(int startFrom, int finishWith) throws DaoException;
+    Optional<Application> findQueuedById(Long id) throws DaoException;
+
 
 }

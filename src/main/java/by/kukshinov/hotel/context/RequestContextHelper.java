@@ -15,6 +15,7 @@ public class RequestContextHelper {
 
     public RequestContext create(HttpServletRequest req) {
         HttpSession session = req.getSession();
+
         Enumeration<String> parameterNames = req.getParameterNames();
         Enumeration<String> attributeNames = req.getAttributeNames();
         Enumeration<String> sessionAttributeNames = session.getAttributeNames();

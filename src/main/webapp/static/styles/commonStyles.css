@@ -219,6 +219,11 @@ p.align-center {
     color: white;
     align-items: stretch;
 }
+body.no-margin {
+    margin: 0;
+    /*background-color: #A7AFEF;*/
+}
+
 
 .admin-users-form {
     margin: 0;

@@ -23,6 +23,7 @@ public class UpdateUserCommand implements Command {
     @Override
     public CommandResult execute(RequestContext context) throws ServiceException {
 // TODO: 11.12.2020 validation
+        // TODO: 15.12.2020 change to get by id + update
         String login = context.getRequestParameter(LOGIN);
         String stringId = context.getRequestParameter(ID);
         String stringRole = context.getRequestParameter(ROLE);

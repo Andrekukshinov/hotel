@@ -30,8 +30,7 @@ public class AllApplicationsCommand implements Command {
     public CommandResult execute(RequestContext context) throws ServiceException {
         String currentPage = context.getRequestParameter(PAGE);
         int pageInt = validator.gatValidPage(currentPage);
-        // TODO: 14.12.2020 get applications that are in order
-        List<Application> applications = applicationService.getRangeApplications((pageInt - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
+        List<Application> applications = applicationService.getRangeEntities((pageInt - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
         context.setRequestAttribute(APPLICATIONS, applications);
         context.setRequestAttribute(PAGE, pageInt);
         return CommandResult.forward(ALL_APPLICATIONS);

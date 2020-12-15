@@ -38,7 +38,7 @@ public class AllRoomsCommandTest {
           param.put(PAGE, FIRST);
           RequestContext context = new RequestContext(param, new HashMap<>(), null);
           RoomService service = Mockito.mock(RoomServiceImpl.class);
-          when(service.getRangeRooms(anyInt(), anyInt())).thenReturn(new ArrayList<>());
+          when(service.getRangeEntities(anyInt(), anyInt())).thenReturn(new ArrayList<>());
           PageValidatorImpl pageValidator = Mockito.mock(PageValidatorImpl.class);
           when(pageValidator.gatValidPage(anyString())).thenReturn(FIRST_PAGE);
           Command command = new AllRoomsCommand(service, pageValidator);
@@ -56,7 +56,7 @@ public class AllRoomsCommandTest {
           param.put(PAGE, FIRST);
           RequestContext context = new RequestContext(param, new HashMap<>(), null);
           RoomService service = Mockito.mock(RoomServiceImpl.class);
-          when(service.getRangeRooms(anyInt(), anyInt())).thenThrow(ServiceException.class);
+          when(service.getRangeEntities(anyInt(), anyInt())).thenThrow(ServiceException.class);
           PageValidatorImpl pageValidator = Mockito.mock(PageValidatorImpl.class);
           when(pageValidator.gatValidPage(anyString())).thenReturn(FIRST_PAGE);
           Command command = new AllRoomsCommand(service, pageValidator);
@@ -71,7 +71,7 @@ public class AllRoomsCommandTest {
           RequestContext context = new RequestContext(param, new HashMap<>(), null);
           RoomService service = Mockito.mock(RoomServiceImpl.class);
           List<Room> expected = Collections.singletonList(ROOM);
-          when(service.getRangeRooms(anyInt(), anyInt())).thenReturn(expected);
+          when(service.getRangeEntities(anyInt(), anyInt())).thenReturn(expected);
           PageValidatorImpl pageValidator = Mockito.mock(PageValidatorImpl.class);
           when(pageValidator.gatValidPage(anyString())).thenReturn(FIRST_PAGE);
           Command command = new AllRoomsCommand(service, pageValidator);

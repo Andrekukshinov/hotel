@@ -46,19 +46,14 @@
                     <td>
 <%--                        todo impl the logics--%>
                         <form method="post"
-                              action="${pageContext.request.contextPath}/controller?command=admin_suggest_room"
+                              action="${pageContext.request.contextPath}/controller?command=admin_suggest_room&applicationId=${application.id}"
                               class="admin-users-form">
-                            <input type="hidden" value="${application.id}" name="id">
                             <button type="submit">suggest</button>
                         </form>
                         <br>
                         <form method="post"
                               action="${pageContext.request.contextPath}/controller?command=admin_update_application"
                               class="admin-users-form">
-                            <input type="hidden" value="${application.personAmount}" name="personAmount">
-                            <input type="hidden" value="${application.type}" name="type">
-                            <input type="hidden" value="${application.arrivalDate}" name="arrivalDate">
-                            <input type="hidden" value="${application.leavingDate}" name="leavingDate">
                             <input type="hidden" value="DENIED" name="status">
                             <input type="hidden" value="${application.userId}" name="userId">
                             <input type="hidden" value="${application.id}" name="id">

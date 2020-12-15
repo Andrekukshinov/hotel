@@ -3,6 +3,7 @@ package by.kukshinov.hotel.command;
 import by.kukshinov.hotel.command.impl.*;
 import by.kukshinov.hotel.dao.DaoHelperFactory;
 import by.kukshinov.hotel.model.creators.ApplicationCreatorImpl;
+import by.kukshinov.hotel.service.impl.ApplicationRoomServiceImpl;
 import by.kukshinov.hotel.service.impl.ApplicationServiceImpl;
 import by.kukshinov.hotel.service.impl.RoomServiceImpl;
 import by.kukshinov.hotel.service.impl.UserServiceImpl;
@@ -25,6 +26,8 @@ public class CommandFactory {
     private static final String LOGOUT = "logout";
     private static final String APPLICATIONS = "admin_applications";
     private static final String UPDATE_APPLICATION = "admin_update_application";
+    private static final String ADMIN_SUGGEST_ROOM = "admin_suggest_room";
+    private static final String APPROVE_APPLICATION = "admin_approve_application";
 
     public static Command createCommand(String commandParam) {
         switch (commandParam) {
@@ -38,10 +41,22 @@ public class CommandFactory {
                 return new ForwardCommand(HOME_LOCATION);
             case ROOMS:
                 return new AllRoomsCommand(new RoomServiceImpl(new DaoHelperFactory()), new PageValidatorImpl());
+            case ADMIN_SUGGEST_ROOM:
+                return new AvailableRoomsCommand(
+                        new ApplicationServiceImpl(new DaoHelperFactory()),
+                        new RoomServiceImpl(new DaoHelperFactory()),
+                        new PageValidatorImpl()
+                );
             case APPLICATIONS:
                 return new AllApplicationsCommand(new ApplicationServiceImpl(new DaoHelperFactory()), new PageValidatorImpl());
             case UPDATE_APPLICATION:
-                return new UpdateApplication(new ApplicationServiceImpl(new DaoHelperFactory()), new ApplicationCreatorImpl());
+                return new UpdateApplication(new ApplicationServiceImpl(new DaoHelperFactory()));
+            case APPROVE_APPLICATION:
+                return new ApproveApplicationCommand(
+                        new ApplicationServiceImpl(new DaoHelperFactory()),
+                        new RoomServiceImpl(new DaoHelperFactory()),
+                        new ApplicationRoomServiceImpl(new DaoHelperFactory())
+                );
             case PROFILE_HISTORY:
                 return new ForwardCommand(USER_HISTORY);
             case BOOK_ROOM:

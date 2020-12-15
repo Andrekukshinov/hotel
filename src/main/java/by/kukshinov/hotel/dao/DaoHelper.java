@@ -2,10 +2,7 @@ package by.kukshinov.hotel.dao;
 
 import by.kukshinov.hotel.connection.ConnectionPool;
 import by.kukshinov.hotel.connection.ProxyConnection;
-import by.kukshinov.hotel.dao.api.ApplicationDao;
-import by.kukshinov.hotel.dao.api.Dao;
-import by.kukshinov.hotel.dao.api.RoomDao;
-import by.kukshinov.hotel.dao.api.UserDao;
+import by.kukshinov.hotel.dao.api.*;
 import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.model.User;
 import org.apache.logging.log4j.LogManager;
@@ -33,6 +30,10 @@ public class DaoHelper implements AutoCloseable {
 
     public RoomDao createRoomDao() {
         return new RoomDaoImpl(connection);
+    }
+
+    public ApplicationRoomDao createApplicationRoomDao() {
+        return new ApplicationRoomDaoImpl(connection);
     }
 
     public void close() throws DaoException {

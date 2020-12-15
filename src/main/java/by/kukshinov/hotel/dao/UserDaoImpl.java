@@ -1,5 +1,6 @@
 package by.kukshinov.hotel.dao;
 
+import by.kukshinov.hotel.dao.api.RangeDao;
 import by.kukshinov.hotel.dao.api.UserDao;
 import by.kukshinov.hotel.dao.extractor.UserFieldExtractor;
 import by.kukshinov.hotel.dao.mapper.UserObjectMapper;
@@ -10,7 +11,7 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.Optional;
 
-public class UserDaoImpl extends AbstractDao<User> implements UserDao {
+public class UserDaoImpl extends AbstractDao<User> implements UserDao, RangeDao<User> {
 
     private static final String GET_USER_BY_CREDENTIALS = "SELECT * FROM user WHERE login=? AND password=SHA1(?)";
     private static final String GET_USER_BY_ID = "SELECT * FROM user WHERE id=? ";
@@ -30,7 +31,7 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     }
 
     @Override
-    public List<User> findRangeUsers(int startFrom, int finishWith) throws DaoException {
+    public List<User> findRange(int startFrom, int finishWith) throws DaoException {
         return executeQuery(GET_USERS_FOR_TABLE, startFrom, finishWith);
     }
 
