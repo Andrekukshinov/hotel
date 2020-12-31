@@ -16,7 +16,7 @@
                 </li>
             </c:when>
             <c:otherwise>
-                <li class="right "><a href="${pageContext.request.contextPath}/"><fmt:message
+                <li class="right "><a href="${pageContext.request.contextPath}"><fmt:message
                         key="header.unauthorized.login"/></a>
                 </li>
             </c:otherwise>
@@ -28,7 +28,7 @@
                 </li>
             </c:when>
             <c:otherwise>
-                <li class="right left-border"><a href="${pageContext.request.contextPath}/"><fmt:message
+                <li class="right left-border"><a href="${pageContext.request.contextPath}/controller?command=logout"><fmt:message
                         key="header.unauthorized.signup"/></a>
                 </li>
             </c:otherwise>
@@ -40,22 +40,21 @@
         </c:if>
         <li class="right select-container">
             <ul>
-                <!--todo add to properties lang-->
                 <li class="languages">
                     <form method="post"
                           action="${requestScope['javax.servlet.forward.request_uri']}?${pageContext.request.queryString}">
                         <input type="hidden" name="lang" value="en"/>
-                        <button type="submit">en</button>
+                        <button type="submit"><fmt:message key="lang.en"/></button>
                     </form>
                     <form method="post"
                           action="${requestScope['javax.servlet.forward.request_uri']}?${pageContext.request.queryString}">
                         <input type="hidden" name="lang" value="ru"/>
-                        <button type="submit">ru</button>
+                        <button type="submit"><fmt:message key="lang.ru"/></button>
                     </form>
                     <form method="post"
                           action="${requestScope['javax.servlet.forward.request_uri']}?${pageContext.request.queryString}">
                         <input type="hidden" name="lang" value="by"/>
-                        <button type="submit">by</button>
+                        <button type="submit"><fmt:message key="lang.by"/></button>
                     </form>
                 </li>
             </ul>

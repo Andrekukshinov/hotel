@@ -5,6 +5,7 @@ import by.kukshinov.hotel.dao.extractor.FieldsExtractor;
 import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.dao.mapper.ObjectMapper;
 import by.kukshinov.hotel.model.Application;
+import by.kukshinov.hotel.model.ApplicationRoom;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -53,10 +54,18 @@ public abstract class AbstractDao<T> implements Dao<T> {
         List<Object> fields  = new ArrayList<>(extracted.values());
         Object[] values = fields.toArray();
         if(id == null) {
+            // TODO: 26.12.2020 ask about this
             executeForSave(getSaveQuery(), values);
         } else {
             executeForSave(getUpdateQuery(), values);
         }
+    }
+
+    @Override
+    public void delete(T item) throws DaoException {
+        Map<String, Object> extracted = fieldsExtractor.extract(item);
+        Object deleteParam = extracted.get(getDeleteParam());
+        executeForSave(getDeleteQuery(), deleteParam);
     }
 
     protected List<T> executeQuery(String query, Object... params) throws DaoException {
@@ -93,5 +102,9 @@ public abstract class AbstractDao<T> implements Dao<T> {
     protected abstract String getUpdateQuery();
 
     protected abstract String getSaveQuery();
+
+    protected abstract String getDeleteQuery();
+
+    protected abstract String getDeleteParam();
 
 }

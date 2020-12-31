@@ -7,6 +7,5 @@ import by.kukshinov.hotel.context.RequestContext;
 import javax.servlet.ServletException;
 
 public interface Command {
-    // TODO: 04.12.2020 change signature abd write tests
     CommandResult execute(RequestContext context) throws ServiceException;
 }

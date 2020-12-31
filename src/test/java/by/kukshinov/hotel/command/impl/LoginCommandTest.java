@@ -107,7 +107,7 @@ public class LoginCommandTest {
 
         loginCommand.execute(context);
 
-        String actualError = (String) context.getSessionAttribute(ERROR_MASSAGE_ATTRIBUTE);
+        String actualError = (String) context.getRequestAttribute(ERROR_MASSAGE_ATTRIBUTE);
         Assert.assertEquals(actualError, ERROR_MASSAGE_VALUE);
     }
 

@@ -8,6 +8,8 @@ import by.kukshinov.hotel.model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.sql.SQLException;
+
 
 public class DaoHelper implements AutoCloseable {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -18,6 +20,33 @@ public class DaoHelper implements AutoCloseable {
         ConnectionPool connectionPool = ConnectionPool.getInstance();
         connection = connectionPool.getConnection();
     }
+
+    public void startTransaction() throws DaoException {
+        try {
+            connection.setAutoCommit(false);
+        } catch (SQLException e) {
+            throw new DaoException(e.getMessage(), e);
+        }
+    }
+
+    public void endTransaction() throws DaoException {
+        try {
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException exc) {
+                throw new DaoException(exc);
+            }
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new DaoException(e);
+            }
+        }
+    }
+
 
 
     public UserDao createUserDao() {
@@ -36,7 +65,8 @@ public class DaoHelper implements AutoCloseable {
         return new ApplicationRoomDaoImpl(connection);
     }
 
-    public void close() throws DaoException {
+    @Override
+    public void close() {
         connection.close();
     }
 }

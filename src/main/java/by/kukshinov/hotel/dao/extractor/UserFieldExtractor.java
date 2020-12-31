@@ -16,13 +16,15 @@ public class UserFieldExtractor implements FieldsExtractor<User> {
 
     @Override
     public Map<String, Object> extract(User user) {
-        Map<String, Object> result = new LinkedHashMap<>();
         long userId = user.getUserId();
         String login = user.getLogin();
         String password = user.getPassword();
         boolean isDisabled = user.getIsDisabled();
         Role role = user.getRole();
         int falseInt = parseBooleanToInt(isDisabled);
+
+        Map<String, Object> result = new LinkedHashMap<>();
+
         if(password != null) {
             result.put(PASSWORD, password);
         }
@@ -32,6 +34,7 @@ public class UserFieldExtractor implements FieldsExtractor<User> {
         if(userId > 0) {
             result.put(ID, userId);
         }
+
         return result;
     }
 

@@ -36,7 +36,7 @@ public class LoginCommand implements Command {
             setAuthorizationData(context, login, userOptional.get());
             return CommandResult.redirect(HOME_PAGE);
         } else {
-            context.setSessionAttribute(ERROR_MASSAGE_ATTRIBUTE, ERROR_MASSAGE_VALUE);
+            context.setRequestAttribute(ERROR_MASSAGE_ATTRIBUTE, ERROR_MASSAGE_VALUE);
             return CommandResult.forward(LOGIN_PAGE);
         }
     }

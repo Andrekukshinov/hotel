@@ -28,13 +28,17 @@ VALUES ('RayCartery', SHA1('322'), 'USER', false);
 INSERT INTO room(apartment_type, room_number, capacity, status, price)
 VALUES ('STANDARD', 202, 2, 'AVAILABLE', 150.2);
 INSERT INTO room(apartment_type, room_number, capacity, status, price)
-VALUES ('BUSINESS', 105,1, 'OCCUPIED', 200.1);
+VALUES ('BUSINESS', 105, 1, 'OCCUPIED', 200.1);
 INSERT INTO room(apartment_type, room_number, capacity, status, price)
 VALUES ('LUX', 306, 4, 'DISABLED', 450.2);
 INSERT INTO room(apartment_type, room_number, capacity, status, price)
 VALUES ('STANDARD', 104, 5, 'AVAILABLE', 400.2);
 INSERT INTO room(apartment_type, room_number, capacity, status, price)
 VALUES ('SKY_WALKER', 101, 2, 'AVAILABLE', 150.2);
+INSERT INTO room(apartment_type, room_number, capacity, status, price)
+VALUES ('STANDARD', 106, 5, 'AVAILABLE', 400.2);
+INSERT INTO room(apartment_type, room_number, capacity, status, price)
+VALUES ('SKY_WALKER', 109, 2, 'AVAILABLE', 150.2);
 
 
 INSERT INTO application(person_amount, apartment_type, arrival_date, leaving_date, application_state, user_id)
@@ -47,14 +51,14 @@ INSERT INTO application(person_amount, apartment_type, arrival_date, leaving_dat
 VALUES (1, 'SKY_WALKER', '2020-12-22', '2021-02-05', 1);
 
 
-INSERT INTO application_room(application_id, room_id)
-VALUES (1, 1);
-INSERT INTO application_room(application_id, room_id)
-VALUES (1, 2);
-INSERT INTO application_room(application_id, room_id)
-VALUES (2, 1);
-INSERT INTO application_room(application_id, room_id)
-VALUES (3, 3);
-INSERT INTO application_room(application_id, room_id)
-VALUES (4, 3);
+INSERT INTO application_room(application_id, room_id, total_cost)
+VALUES (1, 1, 2345);
+INSERT INTO application_room(application_id, room_id, total_cost)
+VALUES (1, 2, 760);
+INSERT INTO application_room(application_id, room_id, total_cost)
+VALUES (2, 1, 3883);
+INSERT INTO application_room(application_id, room_id, total_cost)
+VALUES (3, 3, 7435);
+INSERT INTO application_room(application_id, room_id, total_cost)
+VALUES (4, 3, 958);
 

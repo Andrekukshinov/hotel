@@ -7,6 +7,8 @@ import by.kukshinov.hotel.model.enums.ApplicationStatus;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class ApplicationObjectMapper implements ObjectMapper<Application> {
 
@@ -24,10 +26,12 @@ public class ApplicationObjectMapper implements ObjectMapper<Application> {
         ApplicationStatus applicationState = ApplicationStatus.valueOf(applicationStateString);
         long id = resultSet.getLong(ID);
         long userId = resultSet.getLong(USER_ID);
-        ApartmentType apartmentType = ApartmentType.valueOf(apartment);
         byte person_amount = resultSet.getByte("person_amount");
-        Date arrival_date = resultSet.getDate(ARRIVAL_DATE);
-        Date leaving_date = resultSet.getDate(LEAVING_DATE);
-        return new Application(id,person_amount, apartmentType, arrival_date, leaving_date, applicationState, userId);
+        LocalDate arrival_date = resultSet.getObject(ARRIVAL_DATE, LocalDate.class);
+        LocalDate leaving_date = resultSet.getObject(LEAVING_DATE, LocalDate.class);
+
+        ApartmentType apartmentType = ApartmentType.valueOf(apartment);
+
+        return new Application(id, person_amount, apartmentType, arrival_date, leaving_date, applicationState, userId);
     }
 }

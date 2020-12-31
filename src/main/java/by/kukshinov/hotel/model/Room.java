@@ -123,10 +123,12 @@ public class Room {
         if (getRoomStatus() != thatRoom.getRoomStatus()) {
             return false;
         }
-        if (getPrice() != null ? !getPrice().equals(thatRoom.getPrice()) : thatRoom.getPrice() != null) {
+        BigDecimal roomPrice = thatRoom.getPrice();
+        if (getPrice() != null ? !getPrice().equals(roomPrice) : roomPrice != null) {
             return false;
         }
-        return getPictureUrl() != null ? getPictureUrl().equals(thatRoom.getPictureUrl()) : thatRoom.getPictureUrl() == null;
+        String roomPictureUrl = thatRoom.getPictureUrl();
+        return getPictureUrl() != null ? getPictureUrl().equals(roomPictureUrl) : roomPictureUrl == null;
     }
 
     @Override

@@ -16,8 +16,6 @@
 #applications tr:nth-child(even){background-color: #538bf3;}
 #applications tr:nth-child(odd){background-color: rgba(151, 197, 248, 0.3);}
 
-#applications tr:hover { background-color: #ddd;}
-
 #applications th {
     padding-top: 12px;
     padding-bottom: 12px;
@@ -34,8 +32,8 @@
 @media screen and (max-width: 780px) {
     .table-wrapper {
         width: 80%;
-        /*margin: 2% 2%;*/
     }
+
     #applications {
         width: 100%;
     }

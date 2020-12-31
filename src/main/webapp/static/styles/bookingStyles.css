@@ -6,6 +6,56 @@
     margin-left: 1%;
 }
 
+.verdict-app-button {
+    box-shadow: 0 0 10px #111111;
+    background-color: #255a94;
+    color: white;
+    padding: 8px 8px;
+    margin: 2% 0 1% 2%;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.history-button {
+    box-shadow: 0 0 10px #111111;
+    background-color: #255a94;
+    color: white;
+    padding: 6px 8px 7px 8px;
+    margin-left:30%;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: "Times New Roman", serif;
+    font-size: x-large;
+}
+
+.check-the-bill-button {
+    box-shadow: 0 0 10px #111111;
+    background-color: #255a94;
+    color: white;
+    padding: 5px 10%;
+    margin: 3% 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+
+.history-button:hover {
+    background-color: #1f4975;
+}
+
+.user-approve-link{
+    display: inline-block;
+    margin-top: 0;
+    text-decoration: none;
+    font-size: x-large;
+    padding: 6px 8px 7px 8px ;
+}
+
 body.booking {
     margin: 0;
     background-color: #A7AFEF;
@@ -72,6 +122,29 @@ body.booking {
     font-family: "Times New Roman", serif;
 }
 
+.room-number{
+    width: 32%;
+    padding: 4px 5px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgba(102, 172, 224, 0.5);
+    font-size: large;
+    margin-left: 25%;
+    font-family: "Times New Roman", serif;
+}
+
+
+.room-price{
+    width: 32%;
+    padding: 4px 5px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgba(102, 172, 224, 0.5);
+    font-size: large;
+    margin-left: 27%;
+    font-family: "Times New Roman", serif;
+}
+
 .small-letters {
     text-transform: lowercase;
 }
@@ -108,5 +181,10 @@ body.booking {
 
     .small-font{
         font-size: 10px;
+    }
+
+    .for-user-approve-link {
+        display: inline-block;
+        padding-top: 0;
     }
 }

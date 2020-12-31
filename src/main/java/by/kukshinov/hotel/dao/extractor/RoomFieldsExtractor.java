@@ -26,17 +26,20 @@ public class RoomFieldsExtractor implements FieldsExtractor<Room> {
         int number = room.getNumber();
         String pictureUrl = room.getPictureUrl();
         byte capacity = room.getCapacity();
-        long id = room.getId();
+        Long id = room.getId();
+
         Map<String, Object> result = new LinkedHashMap<>();
+
         result.put(ROOM_TYPE, roomType.toString());
         result.put(ROOM_STATUS, roomStatus.toString());
         result.put(PRICE, price);
         result.put(ROOM_NUMBER, number);
         result.put(CAPACITY, capacity);
+
         if (pictureUrl != null) {
             result.put(URL, capacity);
         }
-        if (id != 0) {
+        if (id > 0) {
             result.put(ID, id);
         }
 

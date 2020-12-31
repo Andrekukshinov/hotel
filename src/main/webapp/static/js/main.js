@@ -16,3 +16,10 @@ function edit() {
         )
     }
 }
+
+
+function tooLate() {
+    let error = document.getElementById("error-massage");
+    error.classList.remove("error-massage-hide").add("mystyle");
+    error.classList.add("error-massage-display");
+}

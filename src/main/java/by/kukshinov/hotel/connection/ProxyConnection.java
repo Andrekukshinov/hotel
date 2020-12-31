@@ -1,6 +1,7 @@
 package by.kukshinov.hotel.connection;
 
 import java.sql.*;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
@@ -61,7 +62,6 @@ public class ProxyConnection implements Connection {
 
     @Override
     public void close() {
-
         pool.releaseConnection(this);
     }
 

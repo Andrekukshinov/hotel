@@ -34,20 +34,21 @@ public class CommandResult {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object that) {
+        if (this == that) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (that == null || getClass() != that.getClass()) {
             return false;
         }
 
-        CommandResult that = (CommandResult) o;
+        CommandResult thatCommandResult = (CommandResult) that;
 
-        if (isRedirect() != that.isRedirect()) {
+        if (isRedirect() != thatCommandResult.isRedirect()) {
             return false;
         }
-        return getPageUrl() != null ? getPageUrl().equals(that.getPageUrl()) : that.getPageUrl() == null;
+        String thatCommandResultPageUrl = thatCommandResult.getPageUrl();
+        return getPageUrl() != null ? getPageUrl().equals(thatCommandResultPageUrl) : thatCommandResultPageUrl == null;
     }
 
     @Override

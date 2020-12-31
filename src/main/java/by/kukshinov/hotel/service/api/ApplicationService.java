@@ -13,9 +13,9 @@ public interface ApplicationService {
 
     List<Application> getRangeEntities(int startFrom, int finishWith) throws ServiceException;
 
-    void updateApplication(Application application) throws ServiceException;
+    void rejectApplication(Application application) throws ServiceException;
 
-    Optional<Application> findQueuedApplicationById(long id) throws ServiceException;
+    Optional<Application> findInOrderApplicationById(long id) throws ServiceException;
 
-
+    List<Application> getRangeInOrderApplications(long userId, int startFrom, int finishWith) throws ServiceException;
 }

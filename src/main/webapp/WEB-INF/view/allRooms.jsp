@@ -7,6 +7,7 @@
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "ex" uri = "custom-tags"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="locale"/>
@@ -29,7 +30,7 @@
                 <div class="item">
                     <div><fmt:message key="admin.room.capacity"/> ${room.capacity}</div>
                     <div><fmt:message key="admin.room.status"/> <fmt:message key="admin.room.status.${room.roomStatus}"/></div>
-                    <div><fmt:message key="admin.room.price"/> ${room.price}</div>
+                    <div><fmt:message key="admin.room.price"/><ex:money-format money="${room.price}"/> </div>
                     <div><fmt:message key="admin.room.Number"/> ${room.number}</div>
                     <div><fmt:message key="admin.room.type"/> <fmt:message
                             key="admin.room.type.${room.roomType}"/></div>
@@ -85,7 +86,7 @@
                             </div>
                             <div><fmt:message key="admin.room.price"/>
                                 <label class="floating-radio last-label">
-                                    <input name=price type="text">
+                                    <input name=price type="number">
                                 </label>
                             </div>
                             <div><fmt:message key="admin.room.type"/>
@@ -115,7 +116,6 @@
             </c:forEach>
 
         </div>
-        <div class="item item5"></div>
         <div class="pages">
             <c:choose>
                 <c:when test="${(page - 1) == 0}">

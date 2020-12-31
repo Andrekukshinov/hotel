@@ -9,13 +9,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class RequestContextHelper {
-    private static final String LOGIN = "login";
-    private static final String USER_ID = "user_id";
-    private static final String ROLE = "role";
+    private static final String INVALIDATE_SESSION = "invalidateSession";
 
     public RequestContext create(HttpServletRequest req) {
         HttpSession session = req.getSession();
-
+//        String referer = req.getHeader("Referer");
         Enumeration<String> parameterNames = req.getParameterNames();
         Enumeration<String> attributeNames = req.getAttributeNames();
         Enumeration<String> sessionAttributeNames = session.getAttributeNames();
@@ -48,17 +46,16 @@ public class RequestContextHelper {
     }
 
     private void fillingSession(Map<String, Object> sessionAttributes, Set<String> sessionAttrsKeys, HttpSession session) {
-        if(isUserAuthorized(sessionAttributes)) {
+        if(isSessionInvalid(sessionAttributes)) {
+            session.invalidate();
+        } else {
             sessionAttrsKeys.forEach(key -> {
                 Object attribute = sessionAttributes.get(key);
                 session.setAttribute(key, attribute);
             });
-        } else {
-            session.invalidate();
         }
     }
-    private boolean isUserAuthorized(Map<String, Object> sessionAttributes) {
-        return sessionAttributes.get(LOGIN) != null && sessionAttributes.get(ROLE) != null &&
-                sessionAttributes.get(USER_ID) != null;
+    private boolean isSessionInvalid(Map<String, Object> sessionAttributes) {
+        return sessionAttributes.get(INVALIDATE_SESSION) != null;
     }
 }

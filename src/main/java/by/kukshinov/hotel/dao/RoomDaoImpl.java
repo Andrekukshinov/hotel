@@ -13,12 +13,13 @@ import java.util.Optional;
 
 public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao, RangeDao<Room> {
     private static final String TABLE_NAME = "Room";
-    private static final String GET_ROOMS_PAGINATION = "SELECT * FROM room limit ?,?";
-    private static final String GET_AVAILABLE_ROOMS_PAGINATION = "SELECT * FROM room WHERE status='AVAILABLE' limit ?,?";
+    private static final String SAVE_APPLICATION = "INSERT INTO Room (apartment_type, status, price, room_number, capacity) VALUES(?, ?, ?, ?, ?)";
+    private static final String GET_ROOMS_PAGINATION = "SELECT * FROM room LIMIT ?,?";
+    private static final String GET_AVAILABLE_ROOMS_PAGINATION = "SELECT * FROM room WHERE status='AVAILABLE' LIMIT ?,?";
     private static final String UPDATE_ROOM = "UPDATE Room SET apartment_type=?, status=?, price=?, room_number=?,capacity=? WHERE id=?";
     private static final String GET_AVAILABLE_ROOM_BY_ID = "SELECT * FROM Room WHERE id=? AND status = 'AVAILABLE'  ";
-
-
+    private static final String GET_BY_ID = "SELECT * FROM Room WHERE id=?";
+    private static final String ID = "id";
 
     protected RoomDaoImpl( Connection connection) {
         super(TABLE_NAME, connection, new RoomObjectMapper(), new RoomFieldsExtractor());
@@ -41,12 +42,12 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao, RangeDao<
 
     @Override
     protected String getSaveQuery() {
-        return null;
+        return SAVE_APPLICATION;
     }
 
     @Override
-    public Optional<Room> findById(Long id) {
-        return Optional.empty();
+    public Optional<Room> findById(Long id) throws DaoException {
+        return executeForSingleItem(GET_BY_ID, id);
     }
 
     @Override
@@ -55,5 +56,15 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao, RangeDao<
     @Override
     public Optional<Room> findByAvailableById(Long id) throws DaoException {
         return executeForSingleItem(GET_AVAILABLE_ROOM_BY_ID, id);
+    }
+
+    @Override
+    protected String getDeleteQuery() {
+        return null;
+    }
+
+    @Override
+    protected String getDeleteParam() {
+        return ID;
     }
 }

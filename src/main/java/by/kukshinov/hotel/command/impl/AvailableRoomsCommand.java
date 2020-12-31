@@ -6,7 +6,6 @@ import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.Application;
 import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.model.Room;
-import by.kukshinov.hotel.service.api.ApplicationRoomService;
 import by.kukshinov.hotel.service.api.ApplicationService;
 import by.kukshinov.hotel.service.api.RoomService;
 import by.kukshinov.hotel.validators.PageValidator;
@@ -38,7 +37,7 @@ public class AvailableRoomsCommand implements Command {
         String applicationIdParam = context.getRequestParameter(APPLICATION_ID);
         long applicationId = Long.parseLong(applicationIdParam);
         int pageInt = validator.gatValidPage(currentPage);
-        Optional<Application> optionalApplication = applicationService.findQueuedApplicationById(applicationId);
+        Optional<Application> optionalApplication = applicationService.findInOrderApplicationById(applicationId);
         List<Room> rooms = roomService.getRangeAvailableRooms((pageInt - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
         if (optionalApplication.isPresent()) {
             context.setRequestAttribute(ROOMS, rooms);

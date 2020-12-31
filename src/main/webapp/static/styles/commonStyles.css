@@ -1,9 +1,24 @@
 .error {
+    width: 100%;
     font-family: "Times New Roman", serif;
     color: red;
-    font-size: larger;
+    font-size: large;
     text-align: center;
 }
+
+.error-page-img-div {
+    margin: 2% 15% 10% 22%;
+}
+
+.error-page-massage {
+    width: 100%;
+    text-align: center;
+}
+
+.error-page-code {
+    font-size: 50px;
+}
+
 
 .languages {
     display: flex;
@@ -96,7 +111,6 @@ body.standard-color {
     background-color: #ddd;
 }
 
-/*header*/
 ul.topnav {
     box-shadow: 0 0 10px #111111;
     list-style-type: none;
@@ -167,7 +181,6 @@ ul.topnav li.right {
     padding: 0 1% 0 1%;
 }
 
-/*/header*/
 footer {
     left: 0;
     height: 70px;
@@ -219,9 +232,9 @@ p.align-center {
     color: white;
     align-items: stretch;
 }
+
 body.no-margin {
     margin: 0;
-    /*background-color: #A7AFEF;*/
 }
 
 
@@ -229,9 +242,15 @@ body.no-margin {
     margin: 0;
 }
 
-.pages{
+.margin-bill-form {
+    display: inline-block;
+    margin-left: -15%;
+}
+
+.pages {
+    margin-top: 3%;
     margin-left: 44%;
- }
+}
 
 @media screen and (max-width: 780px) {
 
@@ -296,11 +315,11 @@ body.no-margin {
         margin: 2% 0 0 -40%;
     }
 
-    button.login-submit{
+    button.login-submit {
         width: 35%;
     }
 
-    .pages{
+    .pages {
         margin-left: 30%;
     }
 }

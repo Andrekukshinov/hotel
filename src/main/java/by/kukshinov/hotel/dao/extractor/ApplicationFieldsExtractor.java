@@ -5,6 +5,7 @@ import by.kukshinov.hotel.model.Application;
 import by.kukshinov.hotel.model.enums.ApplicationStatus;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
 
 public class ApplicationFieldsExtractor implements FieldsExtractor<Application> {
@@ -21,18 +22,21 @@ public class ApplicationFieldsExtractor implements FieldsExtractor<Application> 
     public Map<String, Object> extract(Application application) {
         byte personAmount = application.getPersonAmount();
         ApartmentType type = application.getType();
-        Date arrivalDate = application.getArrivalDate();
-        Date leavingDate = application.getLeavingDate();
+        LocalDate arrivalDate = application.getArrivalDate();
+        LocalDate leavingDate = application.getLeavingDate();
         long userId = application.getUserId();
         ApplicationStatus status = application.getStatus();
         long id = application.getId();
+
         Map<String, Object> result = new LinkedHashMap<>();
+
         result.put(PERSON_AMOUNT, personAmount);
         result.put(TYPE, type.toString());
         result.put(ARRIVAL_DATE, arrivalDate);
         result.put(LEAVING_DATE, leavingDate);
         result.put(APPLICATION_STATE, status.toString());
         result.put(USER_ID, userId);
+
         if (id > 0) {
             result.put(ID, id);
         }

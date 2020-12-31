@@ -3,6 +3,7 @@ package by.kukshinov.hotel.filter;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class LocaleFilter implements Filter {
@@ -17,7 +18,8 @@ public class LocaleFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         String language = req.getParameter(LANGUAGE);
         if(language != null) {
-            req.getSession().setAttribute(LANGUAGE, language);
+            HttpSession session = req.getSession();
+            session.setAttribute(LANGUAGE, language);
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }

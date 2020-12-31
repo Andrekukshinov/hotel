@@ -22,7 +22,6 @@
 <div id="to-be-found">
     <jsp:include page="templates/leftMenu.jsp"/>
         <form method="post" class="booking-div" action="${pageContext.request.contextPath}/controller?command=bookRoom">
-            <input type="hidden" name="userId" value="${sessionScope.user_id}"/>
             <h2 class="align-center"><fmt:message key="booking.book.room"/></h2>
             <p class="align-center"><fmt:message key="booking.book.select.people"/></p>
             <label class="floating-radio first-label">
@@ -62,14 +61,14 @@
                 <br>
             </div>
             <label class="input-booking" for="arrivalDate"><fmt:message key="booking.book.date.arrival"/>
-                <input class="date-input-arr" type="datetime-local" id="arrivalDate" name="arrivalDate">
+                <input class="date-input-arr" type="date" id="arrivalDate" name="arrivalDate">
             </label>
             <div>
                 <br>
                 <br>
             </div>
             <label class="input-booking" for="leavingDate"><fmt:message key="booking.book.date.leave"/>
-                <input class="date-input-leave" type="datetime-local" id="leavingDate" name="leavingDate">
+                <input class="date-input-leave" type="date" id="leavingDate" name="leavingDate">
             </label>
             <div>
                 <br>

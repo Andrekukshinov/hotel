@@ -16,8 +16,6 @@
 #customers tr:nth-child(even){background-color: #538bf3;}
 #customers tr:nth-child(odd){background-color: rgba(151, 197, 248, 0.3);}
 
-#customers tr:hover { background-color: #ddd;}
-
 #customers th {
     padding-top: 12px;
     padding-bottom: 12px;
@@ -31,11 +29,15 @@
     margin: 2% 10%;
 }
 
+
+
 @media screen and (max-width: 780px) {
     .table-wrapper {
         width: 50%;
-        /*margin: 2% 2%;*/
     }
+
+
+
     #customers {
         width: 60%;
     }

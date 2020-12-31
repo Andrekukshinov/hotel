@@ -1,28 +1,26 @@
 package by.kukshinov.hotel.connection;
 
-import by.kukshinov.hotel.HotelController;
 import by.kukshinov.hotel.exceptions.ConnectionPoolException;
 import by.kukshinov.hotel.exceptions.DaoException;
+import by.kukshinov.hotel.exceptions.PoolOverflowException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayDeque;
-import java.util.Properties;
 import java.util.Queue;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
 
-// TODO: 03.12.2020 kill connections somewhere
 public class ConnectionPool {
     private static final Logger LOGGER = LogManager.getLogger(ConnectionPool.class);
     private static final int POOL_SIZE = 10;
     private static final ReentrantLock SINGLETON_LOCKER = new ReentrantLock();
     private static final ReentrantLock LOCKER = new ReentrantLock();
     private static ConnectionPool pool;
+    private static final Semaphore CONNECTION_SEMAPHORE = new Semaphore(10);
 
     private final Queue<ProxyConnection> availableConnections;
     private final Queue<ProxyConnection> connectionsInUse;
@@ -58,12 +56,14 @@ public class ConnectionPool {
     }
 
     public ProxyConnection getConnection() {
-        //semaphore
-        LOCKER.lock();
         try {
+            CONNECTION_SEMAPHORE.acquire();
+            LOCKER.lock();
             ProxyConnection proxyConnection = availableConnections.poll();
             connectionsInUse.offer(proxyConnection);
             return proxyConnection;
+        } catch (InterruptedException e) {
+            throw new PoolOverflowException(e.getMessage(), e);
         } finally {
             LOCKER.unlock();
         }
@@ -72,15 +72,16 @@ public class ConnectionPool {
     public void releaseConnection(ProxyConnection connection) {
         LOCKER.lock();
         try {
-            if(connectionsInUse.contains(connection)) {
+            if (connectionsInUse.contains(connection)) {
                 connectionsInUse.remove(connection);
                 availableConnections.offer(connection);
+                CONNECTION_SEMAPHORE.release();
             }
         } finally {
             LOCKER.unlock();
         }
     }
-    
+
     public void killConnections() {
         connectionsInUse.forEach(this::releaseConnection);
         closeQueueConnections(availableConnections);

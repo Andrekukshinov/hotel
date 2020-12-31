@@ -5,6 +5,8 @@ import by.kukshinov.hotel.command.Command;
 import by.kukshinov.hotel.context.RequestContext;
 import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.CommandResult;
+import by.kukshinov.hotel.model.Room;
+import by.kukshinov.hotel.model.User;
 import by.kukshinov.hotel.service.api.UserService;
 import by.kukshinov.hotel.service.impl.UserServiceImpl;
 import org.mockito.Mockito;
@@ -13,6 +15,7 @@ import org.testng.annotations.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -41,6 +44,8 @@ public class UpdateUserCommandTest {
          doNothing().when(service).updateUser(any());
          Command command = new UpdateUserCommand(service);
          CommandResult expected = CommandResult.redirect(ALL_USERS);
+         when(service.findById(anyLong())).thenReturn(Optional.of(new User()));
+
 
          CommandResult actual = command.execute(context);
 

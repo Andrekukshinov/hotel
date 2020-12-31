@@ -45,7 +45,7 @@ public class BookingCommandTest {
         requestParameters.put(LEAVING_DATE, LEAVING_DATE_VALUE);
         requestParameters.put(USER_ID, USER_ID_VALUE);
         RequestContext context = new RequestContext(requestParameters, new HashMap<>(), new HashMap<>());
-        when(creator.getApplication(anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(new Application());
+        when(creator.getApplication(any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyString())).thenReturn(new Application());
         doNothing().when(service).save(any());
         Command command = new BookingCommand(service, creator);
         CommandResult expected = CommandResult.redirect(USER_HISTORY);
@@ -66,7 +66,7 @@ public class BookingCommandTest {
         requestParameters.put(LEAVING_DATE, LEAVING_DATE_VALUE);
         requestParameters.put(USER_ID, USER_ID_VALUE);
         RequestContext context = new RequestContext(requestParameters, new HashMap<>(), new HashMap<>());
-        when(creator.getApplication(anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), anyString(), anyString())).thenReturn(new Application());
+        when(creator.getApplication(any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyString())).thenReturn(new Application());
         doThrow(ServiceException.class).when(service).save(any());
         Command command = new BookingCommand(service, creator);
 

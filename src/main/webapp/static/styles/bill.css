@@ -1,0 +1,34 @@
+.bill-container {
+    margin-left: 5%;
+    margin-right: 5%;
+    display: grid;
+    grid-template-columns:  50% auto;
+    grid-gap: 20px;
+    grid-template-rows: auto auto;
+    background-color: #2196F3;
+    padding: 10px;
+}
+
+.bill-application-font {
+    font-size: x-large;
+}
+
+@media screen and (max-width: 850px) {
+    .bill-container {
+        grid-template-rows: auto auto auto auto ;
+        grid-template-columns:  auto; /*Make the grid smaller than the container*/
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 780px) {
+    .bill-application-font {
+        font-size: medium;
+    }
+
+    .bill-container {
+        grid-template-rows: auto auto auto auto;
+        grid-template-columns:  auto;
+        width: 160%;
+    }
+}

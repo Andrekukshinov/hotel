@@ -10,7 +10,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <body>
-
-    <c:redirect url="/controller?command=logout"/>
+<c:choose>
+    <c:when test="${sessionScope.login != null}">
+        <c:redirect url="/controller?command=home"/>
+    </c:when>
+    <c:otherwise>
+        <jsp:forward page="WEB-INF/view/login.jsp"/>
+    </c:otherwise>
+</c:choose>
 </body>
 </html>

@@ -31,6 +31,7 @@
                 <th><fmt:message key="admin.user.role"/></th>
                 <th><fmt:message key="admin.user.status.change"/></th>
             </tr>
+<%--            todo think of resizing table--%>
             <c:forEach var="user" items="${users}" varStatus="index">
                 <tr>
                     <td>${(10)*(page - 1) + index.count}</td>
@@ -48,7 +49,7 @@
                             <input type="hidden" value="${user.password}" name="pass">
                             <input type="hidden" value="${user.role}" name="role">
                             <input type="hidden" value="${user.isDisabled}" name="isDisabled">
-                            <button type="submit"><fmt:message key="admin.user.status.${user.isDisabled}"/></button>
+                            <button class="small-font" type="submit"><fmt:message key="admin.user.status.${user.isDisabled}"/></button>
                         </form>
                     </td>
                 </tr>

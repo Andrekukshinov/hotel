@@ -30,7 +30,7 @@ public class AllRoomsCommandTest {
      private static final String NEGATIVE = "-1";
      private static final String ALL_ROOMS = "WEB-INF/view/allRooms.jsp";
      private static final int number = 1;
-     private static final Room ROOM = new Room(1, number, ApartmentType.BUSINESS, (byte) 2, RoomStatus.AVAILABLE, new BigDecimal(122), "");
+     private static final Room ROOM = new Room(1L, number, ApartmentType.BUSINESS, (byte) 2, RoomStatus.AVAILABLE, new BigDecimal(122), "");
 
      @Test
      public void testExecuteShouldReturnForwardToAllRooms () throws ServiceException {

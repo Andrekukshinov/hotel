@@ -10,6 +10,7 @@ import by.kukshinov.hotel.model.enums.RoomStatus;
 import by.kukshinov.hotel.service.api.RoomService;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 public class UpdateRoomCommand implements Command {
     private static final String ALL_ROOMS = "/hotel/controller?command=admin_rooms";
@@ -18,36 +19,54 @@ public class UpdateRoomCommand implements Command {
     private static final String ROOM_STATUS = "roomStatus";
     private static final String PRICE = "price";
     private static final String ROOM_TYPE = "roomType";
-    private static final String ROOM_NUMBER = "roomNumber";
     private final RoomService roomService;
 
     public UpdateRoomCommand(RoomService roomService) {
         this.roomService = roomService;
     }
 
-    // TODO: 15.12.2020 change to get by id + update
+    // TODO: 15.12.2020 ask
+
     @Override
     public CommandResult execute(RequestContext context) throws ServiceException {
         String personAmount = context.getRequestParameter(PERSON_AMOUNT);
         String stringId = context.getRequestParameter(ID);
-        String stringRoomNumber = context.getRequestParameter(ROOM_NUMBER);
         String stringRoomStatus = context.getRequestParameter(ROOM_STATUS);
         String stringPrice = context.getRequestParameter(PRICE);
         String stringRoomType = context.getRequestParameter(ROOM_TYPE);
-        byte personAmountByte = Byte.parseByte(personAmount);
 
-
-        RoomStatus roomStatus = RoomStatus.valueOf(stringRoomStatus);
-        ApartmentType apartmentType = ApartmentType.valueOf(stringRoomType);
         long id = Long.parseLong(stringId);
-        int number = Integer.parseInt(stringRoomNumber);
-        BigDecimal price = new BigDecimal(stringPrice);
-
-        Room room = new Room(id, number, apartmentType, personAmountByte, roomStatus, price, null);
+        Optional<Room> roomOptional = roomService.findById(id);
+        Room room = getRoomToUpdate(stringRoomStatus, stringPrice, stringRoomType, personAmount,roomOptional);
 
         roomService.updateRoom(room);
 
         return CommandResult.redirect(ALL_ROOMS);
+    }
+
+    private Room getRoomToUpdate(String stringRoomStatus, String stringPrice, String stringRoomType, String personAmountString, Optional<Room> roomOptional) throws ServiceException {
+        if (!roomOptional.isPresent()) {
+            throw new ServiceException("No such room exists!");
+        }
+        Room room = roomOptional.get();
+        if (stringRoomType != null) {
+            ApartmentType apartmentType = ApartmentType.valueOf(stringRoomType);
+            room.setRoomType(apartmentType);
+        }
+        if (!stringPrice.isEmpty() && !stringPrice.startsWith("-")) {
+            BigDecimal price = new BigDecimal(stringPrice);
+            room.setPrice(price);
+        }
+        if (personAmountString != null) {
+            byte personAmountByte = Byte.parseByte(personAmountString);
+            room.setCapacity(personAmountByte);
+        }
+
+        if (stringRoomStatus != null) {
+            RoomStatus roomStatus = RoomStatus.valueOf(stringRoomStatus);
+            room.setRoomStatus(roomStatus);
+        }
+        return room;
     }
 
 }

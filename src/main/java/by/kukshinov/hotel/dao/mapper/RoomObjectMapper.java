@@ -26,10 +26,11 @@ public class RoomObjectMapper implements ObjectMapper<Room> {
         int number = resultSet.getInt(ROOM_NUMBER);
         ApartmentType apartmentType = ApartmentType.valueOf(apartmentString);
         RoomStatus roomStatus = RoomStatus.valueOf(roomStatusString);
-        int id = resultSet.getInt(ID);
+        Long id = resultSet.getLong(ID);
         byte capacity = resultSet.getByte(CAPACITY);
         BigDecimal price = resultSet.getBigDecimal(PRICE);
         String pictureUrl = resultSet.getString(PICTURE_URL);
+
         return new Room(id, number, apartmentType, capacity, roomStatus, price, pictureUrl);
     }
 }

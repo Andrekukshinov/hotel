@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ApplicationRoomService {
+    void createApplicationRoom(Long applicationId, Long roomId) throws ServiceException;
 
-    void saveApplicationRoom(ApplicationRoom applicationRoom) throws ServiceException;
+    Optional<ApplicationRoom> getApplicationRoomByAppId(long applicationId) throws ServiceException;
 
+    boolean removeApplicationRoomByApplicationId(long applicationId, long userId) throws ServiceException;
 }

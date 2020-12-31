@@ -17,9 +17,10 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao, RangeDao<
     private static final String GET_USER_BY_ID = "SELECT * FROM user WHERE id=? ";
     private static final String GET_USERS = "SELECT * FROM user";
     private static final String USER_TABLE = "user";
-    private static final String GET_USERS_FOR_TABLE = "SELECT * FROM user limit ?, ?";
-    private static final String UPDATE_USER = "UPDATE user SET login=?, is_disabled=?, role=? WHERE id=?";
+    private static final String GET_USERS_FOR_TABLE = "SELECT * FROM user LIMIT ?,?";
+    private static final String UPDATE_USER = "UPDATE user SET password=?, login=?, is_disabled=?, role=? WHERE id=?";
     private static final String SAVE_USER = "INSERT INTO user VALUES(password, login, is_disabled, role) VALUES(SHA1(?), ?, ?, ?)";
+    private static final String ID = "id";
 
     public UserDaoImpl(Connection connection) {
         super(USER_TABLE, connection, new UserObjectMapper(), new UserFieldExtractor());
@@ -60,5 +61,15 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao, RangeDao<
     @Override
     protected String getSaveQuery() {
         return SAVE_USER;
+    }
+
+    @Override
+    protected String getDeleteQuery() {
+        return null;
+    }
+
+    @Override
+    protected String getDeleteParam() {
+        return ID;
     }
 }

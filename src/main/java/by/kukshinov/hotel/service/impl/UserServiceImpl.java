@@ -56,6 +56,17 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     }
 
     @Override
+    public void changeUserStatus(User user, boolean isDisabled) throws ServiceException {
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()){
+            UserDao dao = daoHelper.createUserDao();
+            user.setIsDisabled(isDisabled);
+            dao.save(user);
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
     public List<User> getRangeEntities(int startFrom, int finishWith) throws ServiceException {
         return super.getRangeEntities(startFrom, finishWith);
     }

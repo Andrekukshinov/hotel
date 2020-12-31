@@ -73,31 +73,31 @@ public class User {
     }
 
     @Override
-    public boolean equals(Object thatUser) {
-        if (this == thatUser) {
+    public boolean equals(Object that) {
+        if (this == that) {
             return true;
         }
-        if (thatUser == null || getClass() != thatUser.getClass()) {
+        if (that == null || getClass() != that.getClass()) {
             return false;
         }
 
-        User user = (User) thatUser;
+        User thatUser = (User) that;
 
-        if (getUserId() != user.getUserId()) {
+        if (getUserId() != thatUser.getUserId()) {
             return false;
         }
-        if (isDisabled != user.isDisabled) {
+        if (isDisabled != thatUser.isDisabled) {
             return false;
         }
-        String thatUserLogin = user.getLogin();
+        String thatUserLogin = thatUser.getLogin();
         if (getLogin() != null ? !getLogin().equals(thatUserLogin) : thatUserLogin != null) {
             return false;
         }
-        String thatUserPassword = user.getPassword();
+        String thatUserPassword = thatUser.getPassword();
         if (getPassword() != null ? !getPassword().equals(thatUserPassword) : thatUserPassword != null) {
             return false;
         }
-        return getRole() == user.getRole();
+        return getRole() == thatUser.getRole();
     }
 
     @Override

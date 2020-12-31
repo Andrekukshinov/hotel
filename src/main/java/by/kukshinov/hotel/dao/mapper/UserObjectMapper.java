@@ -21,7 +21,9 @@ public class UserObjectMapper implements ObjectMapper<User> {
         String password = resultSet.getString(PASSWORD);
         boolean isDisabled = resultSet.getBoolean(IS_DISABLED);
         String roleString = resultSet.getString(ROLE);
+
         Role role = Role.valueOf(roleString);
+
         return new User(id, login, password, isDisabled, role);
     }
 }

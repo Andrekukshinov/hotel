@@ -15,5 +15,5 @@ public interface Dao<T> {
 
     void save(T item) throws DaoException;
 
-    void delete(T item);
+    void delete(T item) throws DaoException;
 }
