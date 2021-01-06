@@ -1,6 +1,7 @@
 package by.kukshinov.hotel.service.impl;
 
-import by.kukshinov.hotel.dao.*;
+import by.kukshinov.hotel.dao.DaoHelper;
+import by.kukshinov.hotel.dao.DaoHelperFactory;
 import by.kukshinov.hotel.dao.api.RangeDao;
 import by.kukshinov.hotel.dao.api.UserDao;
 import by.kukshinov.hotel.exceptions.DaoException;
@@ -27,7 +28,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 
     @Override
     public Optional<User> findByCredentials(String login, String pass) throws ServiceException {
-        try (DaoHelper daoHelper = helperFactory.createDaoHelper()){
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             UserDao userDao = daoHelper.createUserDao();
             return userDao.findByCredentials(login, pass);
         } catch (DaoException e) {
@@ -37,7 +38,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 
     @Override
     public Optional<User> findById(Long id) throws ServiceException {
-        try (DaoHelper daoHelper = helperFactory.createDaoHelper()){
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             UserDao userDao = daoHelper.createUserDao();
             return userDao.findById(id);
         } catch (DaoException e) {
@@ -47,7 +48,7 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 
     @Override
     public void updateUser(User user) throws ServiceException {
-        try (DaoHelper daoHelper = helperFactory.createDaoHelper()){
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             UserDao dao = daoHelper.createUserDao();
             dao.save(user);
         } catch (DaoException e) {
@@ -57,10 +58,20 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 
     @Override
     public void changeUserStatus(User user, boolean isDisabled) throws ServiceException {
-        try (DaoHelper daoHelper = helperFactory.createDaoHelper()){
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             UserDao dao = daoHelper.createUserDao();
             user.setIsDisabled(isDisabled);
             dao.save(user);
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public int getUsersAmount() throws ServiceException {
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
+            UserDao dao = daoHelper.createUserDao();
+            return dao.getAllUsersAmount();
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }

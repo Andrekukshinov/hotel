@@ -48,7 +48,7 @@ public class CommandFactory {
             case ALL_USERS:
                 return new AllUsersCommand(new UserServiceImpl(new DaoHelperFactory()), new PageValidatorImpl());
             case APPLICATIONS:
-                return new AllApplicationsCommand(new ApplicationServiceImpl(new DaoHelperFactory()), new PageValidatorImpl());
+                return new AllInOrderApplicationsCommand(new ApplicationServiceImpl(new DaoHelperFactory()), new PageValidatorImpl());
             case APPROVE_APPLICATION:
                 return new ApproveApplicationCommand(new ApplicationRoomServiceImpl(new DaoHelperFactory()));
             case BOOKING:

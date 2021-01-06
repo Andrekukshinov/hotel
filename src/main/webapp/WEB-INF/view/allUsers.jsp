@@ -34,7 +34,7 @@
 <%--            todo think of resizing table--%>
             <c:forEach var="user" items="${users}" varStatus="index">
                 <tr>
-                    <td>${(10)*(page - 1) + index.count}</td>
+                    <td>${(itemsPerPage)*(page - 1) + index.count}</td>
                     <td class="small-font">${user.login}</td>
                     <td class="small-font"><fmt:message key="admin.user.status.state.${user.isDisabled}"/></td>
                     <td class="small-font small-letters">
@@ -59,22 +59,42 @@
             <c:choose>
                 <c:when test="${(page - 1) == 0}">
                     <a href="" type="submit" class="pagination-children">❮</a>
+                    <a href="${pageContext.request.contextPath}/controller?command=admin_users&page=1"
+                       type="submit"
+                       class="pagination-children active">1</a>
                 </c:when>
                 <c:otherwise>
                     <a href="${pageContext.request.contextPath}/controller?command=admin_users&page=${page-1}"
                        type="submit"
                        name="+" class="pagination-children">❮</a>
+                    <a href="${pageContext.request.contextPath}/controller?command=admin_users&page=1"
+                       type="submit"
+                       class="pagination-children">1</a>
                 </c:otherwise>
             </c:choose>
-            <div class="pagination-children">${page}</div>
+            <c:if test="${((page - 1) != 0 ) && (page != lastPage)}">
+                <div class="pagination-children">...</div>
+                <div class="pagination-children active">${page}</div>
+            </c:if>
             <c:choose>
-                <c:when test="${users.size() != 10}">
+                <c:when test="${lastPage == 1 }">
+                    <a href="" type="submit" class="pagination-children">❯</a>
+                </c:when>
+                <c:when test="${page == lastPage}">
+                    <div class="pagination-children">...</div>
+                    <a href="${pageContext.request.contextPath}/controller?command=admin_users&page=${lastPage}"
+                       type="submit"
+                       class="pagination-children active">${lastPage}</a>
                     <a href="" type="submit" class="pagination-children">❯</a>
                 </c:when>
                 <c:otherwise>
+                    <div class="pagination-children">...</div>
+                    <a href="${pageContext.request.contextPath}/controller?command=admin_users&page=${lastPage}"
+                       type="submit"
+                       class="pagination-children ">${lastPage}</a>
                     <a href="${pageContext.request.contextPath}/controller?command=admin_users&page=${page+1}"
                        type="submit"
-                       name="+" class="pagination-children">❯</a>
+                       class="pagination-children">❯</a>
                 </c:otherwise>
             </c:choose>
         </div>

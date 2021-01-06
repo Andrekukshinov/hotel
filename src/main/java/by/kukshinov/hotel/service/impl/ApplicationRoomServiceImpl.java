@@ -17,11 +17,7 @@ import by.kukshinov.hotel.service.api.ApplicationRoomService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.Optional;
-import java.util.Scanner;
-
-import static com.oracle.jrockit.jfr.ContentType.Timestamp;
 
 public class ApplicationRoomServiceImpl implements ApplicationRoomService {
     private static final String NOT_APPROVED = "Such application is not approved!";
@@ -40,7 +36,7 @@ public class ApplicationRoomServiceImpl implements ApplicationRoomService {
             ApplicationRoomDao applicationRoomDao = daoHelper.createApplicationRoomDao();
             ApplicationDao applicationDao = daoHelper.createApplicationDao();
             Optional<Application> queuedById = applicationDao.findQueuedById(applicationId);
-            Optional<Room> availableById = roomDao.findByAvailableById(roomId);
+            Optional<Room> availableById = roomDao.findAvailableById(roomId);
 
             Application application = queuedById.orElseThrow(() -> new ServiceException(WRONG_APPLICATION));
             Room room = availableById.orElseThrow(() -> new ServiceException(WRONG_ROOM));
@@ -53,7 +49,7 @@ public class ApplicationRoomServiceImpl implements ApplicationRoomService {
             applicationDao.save(application);
             roomDao.save(room);
             applicationRoomDao.save(applicationRoom);
-            daoHelper.endTransaction();
+            daoHelper.commit();
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
@@ -87,16 +83,20 @@ public class ApplicationRoomServiceImpl implements ApplicationRoomService {
     }
 
     @Override
-    public boolean removeApplicationRoomByApplicationId(long applicationId, long userId) throws ServiceException {
-        try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
+    public boolean removeApplicationRoomByApplicationId(long applicationId, long roomId, long userId) throws ServiceException {
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()){
             ApplicationRoomDao applicationRoomDao = daoHelper.createApplicationRoomDao();
             ApplicationDao applicationDao = daoHelper.createApplicationDao();
+            RoomDao roomDao = daoHelper.createRoomDao();
 
             Optional<Application> approvedById = applicationDao.findApprovedById(applicationId);
-            Application application = approvedById.orElseThrow(() -> new ServiceException(WRONG_APPLICATION));
             Optional<ApplicationRoom> applicationRoomOptional = applicationRoomDao.findByApplicationId(applicationId);
+            Optional<Room> occupiedById = roomDao.findByOccupiedById(roomId);
+            Room room = occupiedById.orElseThrow(() -> new ServiceException(WRONG_APPLICATION));
+            Application application = approvedById.orElseThrow(() -> new ServiceException(WRONG_APPLICATION));
             ApplicationRoom applicationRoom = applicationRoomOptional.orElseThrow(() -> new ServiceException(WRONG_APPLICATION));
 
+            room.setRoomStatus(RoomStatus.AVAILABLE);
             application.setStatus(ApplicationStatus.DENIED);
             long applicationUserId = application.getUserId();
             LocalDate arrivalDate = application.getArrivalDate();
@@ -104,8 +104,9 @@ public class ApplicationRoomServiceImpl implements ApplicationRoomService {
             if (applicationUserId == userId && now.isBefore(arrivalDate)) {
                 daoHelper.startTransaction();
                 applicationDao.save(application);
+                roomDao.save(room);
                 applicationRoomDao.delete(applicationRoom);
-                daoHelper.endTransaction();
+                daoHelper.commit();
                 return true;
             }
         } catch (DaoException e) {

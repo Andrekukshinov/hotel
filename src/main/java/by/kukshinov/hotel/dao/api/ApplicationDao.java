@@ -14,5 +14,9 @@ public interface ApplicationDao extends Dao<Application> {
 
     List<Application> findAllOrderedApplications(int startFrom, int finishWith) throws DaoException;
 
-    List<Application> findUserOrderedApplications(long userId, int startFrom, int finishWith) throws DaoException;
+    int getInOrderApplicationsAmount() throws DaoException;
+
+    List<Application> findUserApplications(long userId, int startFrom, int finishWith) throws DaoException;
+
+    int getUserApplicationsAmount(long userId) throws DaoException;
 }

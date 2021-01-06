@@ -16,6 +16,7 @@ public class AllRoomsCommand implements Command {
     private static final int ITEMS_PER_PAGE = 4;
     private static final String ROOMS = "rooms";
     private static final String ALL_ROOMS = "WEB-INF/view/allRooms.jsp";
+    private static final String LAST_PAGE = "lastPage";
     private final RoomService service;
     private final PageValidator validator;
 
@@ -27,9 +28,12 @@ public class AllRoomsCommand implements Command {
     // TODO: 11.12.2020 add validation for the page
     @Override
     public CommandResult execute(RequestContext context) throws ServiceException {
+        int roomAmount = service.getRoomAmount();
         String currentPage = context.getRequestParameter(PAGE);
-        int pageInt = validator.gatValidPage(currentPage);
+        int pageInt = validator.gatValidPage(currentPage, roomAmount, ITEMS_PER_PAGE);
         List<Room> rooms = service.getRangeEntities((pageInt - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
+        int lastPage = validator.getLastPage(roomAmount, ITEMS_PER_PAGE);
+        context.setRequestAttribute(LAST_PAGE, lastPage);
         context.setRequestAttribute(ROOMS, rooms);
         context.setRequestAttribute(PAGE, pageInt);
         return CommandResult.forward(ALL_ROOMS);

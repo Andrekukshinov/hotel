@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CurrencyTag extends TagSupport implements Tag{
+public class CurrencyTag extends TagSupport implements Tag {
     private static final String PATTERN = ".{3}|(.{1,2}$)";
     private static final String SPACE = " ";
     private static final String DOLLAR = "$";

@@ -17,7 +17,8 @@ public class UserRejectCommand implements Command {
     private static final String APPLICATION_ID = "applicationId";
     private static final String PROFILE_HISTORY = "controller?command=profileHistory";
     private static final String TOO_LATE = "tooLate";
-    private static final String MESSAGE = "too late to reject";
+    private static final String MESSAGE = "late";
+    private static final String ROOM_ID = "roomId";
     private final ApplicationRoomService service;
 
     public UserRejectCommand(ApplicationRoomService service) {
@@ -28,8 +29,10 @@ public class UserRejectCommand implements Command {
     public CommandResult execute(RequestContext context) throws ServiceException {
         Long userId = (Long) context.getSessionAttribute(USER_ID);
         String applicationIdString = context.getRequestParameter(APPLICATION_ID);
+        String roomIdString = context.getRequestParameter(ROOM_ID);
         long applicationId = Long.parseLong(applicationIdString);
-        boolean isRemoved = service.removeApplicationRoomByApplicationId(applicationId, userId);
+        long roomId = Long.parseLong(roomIdString);
+        boolean isRemoved = service.removeApplicationRoomByApplicationId(applicationId, roomId, userId);
         if (isRemoved) {
             return CommandResult.redirect(PROFILE_HISTORY);
         } else {

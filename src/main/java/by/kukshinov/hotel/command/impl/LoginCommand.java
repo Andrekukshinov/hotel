@@ -17,9 +17,10 @@ public class LoginCommand implements Command {
     private static final String PASSWORD_PARAM = "password";
     private static final String LOGIN_PARAM = "login";
     private static final String ERROR_MASSAGE_ATTRIBUTE = "errorMassage";
-    private static final String ERROR_MASSAGE_VALUE = "User not found";
+    private static final String ERROR_MASSAGE_VALUE = "not.found";
     private static final String ROLE = "role";
     private static final String USER_ID = "user_id";
+    private static final String DISABLED_PAGE = "WEB-INF/errors/disabled.jsp";
     private final UserService userService;
 
     public LoginCommand(UserService loginService) {
@@ -33,8 +34,13 @@ public class LoginCommand implements Command {
         Optional<User> userOptional = userService.findByCredentials(login, password);
         if (userOptional.isPresent()) {
             // TODO: 04.12.2020 check user activity
-            setAuthorizationData(context, login, userOptional.get());
-            return CommandResult.redirect(HOME_PAGE);
+            User user = userOptional.get();
+            if(!user.getIsDisabled()) {
+                setAuthorizationData(context, login, user);
+                return CommandResult.redirect(HOME_PAGE);
+            } else {
+                return CommandResult.forward(DISABLED_PAGE);
+            }
         } else {
             context.setRequestAttribute(ERROR_MASSAGE_ATTRIBUTE, ERROR_MASSAGE_VALUE);
             return CommandResult.forward(LOGIN_PAGE);

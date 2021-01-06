@@ -21,7 +21,7 @@ public class HotelController extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger(HotelController.class);
     private static final String COMMAND = "command";
     private static final int ERROR = 500;
-    private static final int NOT_FOUND= 404;
+    private static final int NOT_FOUND = 404;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

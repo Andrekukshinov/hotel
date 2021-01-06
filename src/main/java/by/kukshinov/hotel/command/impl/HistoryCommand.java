@@ -17,6 +17,7 @@ public class HistoryCommand implements Command {
     private static final String PAGE = "page";
     private static final int ITEMS_PER_PAGE = 5;
     private static final String PER_PAGE = "itemsPerPage";
+    private static final String LAST_PAGE = "lastPage";
 
     private final ApplicationService applicationService;
     private final PageValidator validator;
@@ -29,9 +30,12 @@ public class HistoryCommand implements Command {
     @Override
     public CommandResult execute(RequestContext context) throws ServiceException {
         Long userId = (Long) context.getSessionAttribute(USER_ID);
-        String pageString = context.getRequestParameter(PAGE);
-        int page = validator.gatValidPage(pageString);
-        List<Application> allUserApplications = applicationService.getRangeInOrderApplications(userId, (page - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
+        int userApplicationsAmount = applicationService.getUserApplicationsAmount(userId);
+        String currentPage = context.getRequestParameter(PAGE);
+        int page = validator.gatValidPage(currentPage, userApplicationsAmount, ITEMS_PER_PAGE);
+        List<Application> allUserApplications = applicationService.getRangeUserApplications(userId, (page - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
+        int lastPage = validator.getLastPage(userApplicationsAmount, ITEMS_PER_PAGE);
+        context.setRequestAttribute(LAST_PAGE, lastPage);
         context.setRequestAttribute(APPLICATIONS, allUserApplications);
         context.setRequestAttribute(PAGE, page);
         context.setRequestAttribute(PER_PAGE, ITEMS_PER_PAGE);

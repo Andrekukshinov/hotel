@@ -50,9 +50,12 @@
                 <form class="admin-users-form  margin-bill-form" method="post"
                       action="${pageContext.request.contextPath}/controller?command=user_reject_application">
                     <input type="hidden" value="${applicationRoom.application.id}" name="applicationId">
+                    <input type="hidden" value="${applicationRoom.room.id}" name="roomId">
                     <button type="submit" class="history-button two-options"><fmt:message key="bill.deny"/></button>
                 </form>
-                <p class="error">${tooLate}</p>
+                <c:if test="${tooLate != null}">
+                    <p class="error"><fmt:message key="error.reject.date.${tooLate}"/></p>
+                </c:if>
             </div>
             <div class="item">
                 <a class="verdict-app-button user-approve-link"

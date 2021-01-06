@@ -17,13 +17,19 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao, RangeDao<
     private static final String GET_USER_BY_ID = "SELECT * FROM user WHERE id=? ";
     private static final String GET_USERS = "SELECT * FROM user";
     private static final String USER_TABLE = "user";
-    private static final String GET_USERS_FOR_TABLE = "SELECT * FROM user LIMIT ?,?";
+    private static final String GET_USERS_FOR_TABLE = "SELECT * FROM user ORDER BY role DESC LIMIT ?,?";
     private static final String UPDATE_USER = "UPDATE user SET password=?, login=?, is_disabled=?, role=? WHERE id=?";
     private static final String SAVE_USER = "INSERT INTO user VALUES(password, login, is_disabled, role) VALUES(SHA1(?), ?, ?, ?)";
     private static final String ID = "id";
+    private static final String NO_CONDITION = "";
 
     public UserDaoImpl(Connection connection) {
         super(USER_TABLE, connection, new UserObjectMapper(), new UserFieldExtractor());
+    }
+
+    @Override
+    public int getAllUsersAmount() throws DaoException {
+        return getAmountEntities(NO_CONDITION);
     }
 
     @Override

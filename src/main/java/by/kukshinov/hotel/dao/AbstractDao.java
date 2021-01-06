@@ -21,6 +21,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
     private static final String GET_USERS = "SELECT * FROM ";
     private static final String ID = "id";
     private final String tableName;
+    private final String entitiesCount = "SELECT COUNT(*) FROM ";
 
     private Connection connection;
     private ObjectMapper<T> objectMapper;
@@ -37,6 +38,16 @@ public abstract class AbstractDao<T> implements Dao<T> {
     protected void executeForSave(String query, Object... params) throws DaoException {
         try (PreparedStatement preparedStatement = prepareStatement(query, params)) {
             preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException(e.getMessage(), e);
+        }
+    }
+
+    protected int executeQueryForSum(String query, Object... params) throws DaoException {
+        try (PreparedStatement preparedStatement = prepareStatement(query, params)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getInt(1);
         } catch (SQLException e) {
             throw new DaoException(e.getMessage(), e);
         }
@@ -60,6 +71,11 @@ public abstract class AbstractDao<T> implements Dao<T> {
             executeForSave(getUpdateQuery(), values);
         }
     }
+
+    protected int getAmountEntities(String condition, Object... params) throws DaoException {
+        return executeQueryForSum(entitiesCount + tableName + condition, params);
+    }
+
 
     @Override
     public void delete(T item) throws DaoException {

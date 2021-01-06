@@ -39,7 +39,7 @@ public class AllUsersCommandTest {
         UserService service = Mockito.mock(UserServiceImpl.class);
         when(service.getRangeEntities(anyInt(), anyInt())).thenThrow(ServiceException.class);
         PageValidatorImpl pageValidator = Mockito.mock(PageValidatorImpl.class);
-        when(pageValidator.gatValidPage(anyString())).thenReturn(FIRST_PAGE);
+        when(pageValidator.gatValidPage(anyString(), anyInt(), anyInt())).thenReturn(FIRST_PAGE);
         Command command = new AllUsersCommand(service, pageValidator);
 
         command.execute(context);
@@ -53,7 +53,7 @@ public class AllUsersCommandTest {
         UserService service = Mockito.mock(UserServiceImpl.class);
         when(service.getRangeEntities(anyInt(), anyInt())).thenReturn(new ArrayList<>());
         PageValidatorImpl pageValidator = Mockito.mock(PageValidatorImpl.class);
-        when(pageValidator.gatValidPage(anyString())).thenReturn(FIRST_PAGE);
+        when(pageValidator.gatValidPage(anyString(), anyInt(), anyInt())).thenReturn(FIRST_PAGE);
         Command command = new AllUsersCommand(service, pageValidator);
         CommandResult expected = CommandResult.forward(ALL_USERS);
 
@@ -72,7 +72,7 @@ public class AllUsersCommandTest {
         List<User> expected = Collections.singletonList(USER);
         when(service.getRangeEntities(anyInt(), anyInt())).thenReturn(expected);
         PageValidatorImpl pageValidator = Mockito.mock(PageValidatorImpl.class);
-        when(pageValidator.gatValidPage(anyString())).thenReturn(FIRST_PAGE);
+        when(pageValidator.gatValidPage(anyString(), anyInt(), anyInt())).thenReturn(FIRST_PAGE);
         Command command = new AllUsersCommand(service, pageValidator);
 
         command.execute(context);

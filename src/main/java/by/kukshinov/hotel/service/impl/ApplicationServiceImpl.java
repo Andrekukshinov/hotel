@@ -31,18 +31,39 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public List<Application> getRangeEntities(int startFrom, int finishWith) throws ServiceException {
-        try (DaoHelper daoHelper = helperFactory.createDaoHelper()){
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             ApplicationDao dao = daoHelper.createApplicationDao();
             return dao.findAllOrderedApplications(startFrom, finishWith);
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
     }
+
     @Override
-    public List<Application> getRangeInOrderApplications(long userId, int startFrom, int finishWith) throws ServiceException {
-        try (DaoHelper daoHelper = helperFactory.createDaoHelper()){
+    public List<Application> getRangeUserApplications(long userId, int startFrom, int finishWith) throws ServiceException {
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             ApplicationDao dao = daoHelper.createApplicationDao();
-            return dao.findUserOrderedApplications(userId, startFrom, finishWith);
+            return dao.findUserApplications(userId, startFrom, finishWith);
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public int getInOrderApplicationsAmount() throws ServiceException {
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
+            ApplicationDao dao = daoHelper.createApplicationDao();
+            return dao.getInOrderApplicationsAmount();
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public int getUserApplicationsAmount(long userId) throws ServiceException {
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
+            ApplicationDao dao = daoHelper.createApplicationDao();
+            return dao.getUserApplicationsAmount(userId);
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }

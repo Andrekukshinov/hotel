@@ -25,19 +25,23 @@ public class DaoHelper implements AutoCloseable {
         try {
             connection.setAutoCommit(false);
         } catch (SQLException e) {
-            throw new DaoException(e.getMessage(), e);
+            throw new DaoException(e);
         }
     }
 
-    public void endTransaction() throws DaoException {
+    private void rollback() throws DaoException {
+        try {
+            connection.rollback();
+        } catch (SQLException e) {
+            throw new DaoException(e);
+        }
+    }
+
+    public void commit() throws DaoException {
         try {
             connection.commit();
         } catch (SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException exc) {
-                throw new DaoException(exc);
-            }
+            rollback();
         } finally {
             try {
                 connection.setAutoCommit(true);
@@ -46,6 +50,7 @@ public class DaoHelper implements AutoCloseable {
             }
         }
     }
+
 
 
 

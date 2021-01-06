@@ -6,6 +6,15 @@
     text-align: center;
 }
 
+.error-message {
+    width: 100%;
+    font-family: "Times New Roman", serif;
+    color: red;
+    font-size: large;
+    text-align: center;
+    display: none;
+}
+
 .error-page-img-div {
     margin: 2% 15% 10% 22%;
 }
@@ -91,10 +100,15 @@ body.standard-color {
     margin-left: 41%;
 }
 
+.active{
+    background-color: rgba(151, 197, 248, 0.3);
+}
+
 .pagination-children {
     width: 20px;
     color: black;
     float: left;
+    margin: 0;
     padding: 8px 16px;
     text-decoration: none;
     transition: background-color .3s;
@@ -249,7 +263,7 @@ body.no-margin {
 
 .pages {
     margin-top: 3%;
-    margin-left: 44%;
+    margin-left: 14%;
 }
 
 @media screen and (max-width: 780px) {
@@ -320,6 +334,11 @@ body.no-margin {
     }
 
     .pages {
-        margin-left: 30%;
+        margin-left: 2%;
+    }
+
+    .pagination-children {
+        width: 8px;
+        padding: 4px 8px;
     }
 }

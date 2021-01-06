@@ -88,22 +88,42 @@
             <c:choose>
                 <c:when test="${(page - 1) == 0}">
                     <a href="" type="submit" class="pagination-children">❮</a>
+                    <a href="${pageContext.request.contextPath}/controller?command=admin_suggest_room&applicationId=${application.id}&page=1"
+                       type="submit"
+                       class="pagination-children active">1</a>
                 </c:when>
                 <c:otherwise>
                     <a href="${pageContext.request.contextPath}/controller?command=admin_suggest_room&applicationId=${application.id}&page=${page-1}"
                        type="submit"
                        name="+" class="pagination-children">❮</a>
+                    <a href="${pageContext.request.contextPath}/controller?command=admin_suggest_room&applicationId=${application.id}&page=1"
+                       type="submit"
+                       class="pagination-children">1</a>
                 </c:otherwise>
             </c:choose>
-            <div class="pagination-children">${page}</div>
+            <c:if test="${((page - 1) != 0 ) && (page != lastPage)}">
+                <div class="pagination-children">...</div>
+                <div class="pagination-children active">${page}</div>
+            </c:if>
             <c:choose>
-                <c:when test="${rooms.size() != 4}">
+                <c:when test="${lastPage == 1 }">
+                    <a href="" type="submit" class="pagination-children">❯</a>
+                </c:when>
+                <c:when test="${page == lastPage}">
+                    <div class="pagination-children">...</div>
+                    <a href="${pageContext.request.contextPath}/controller?command=admin_suggest_room&applicationId=${application.id}&page=${lastPage}"
+                       type="submit"
+                       class="pagination-children active">${lastPage}</a>
                     <a href="" type="submit" class="pagination-children">❯</a>
                 </c:when>
                 <c:otherwise>
+                    <div class="pagination-children">...</div>
+                    <a href="${pageContext.request.contextPath}/controller?command=admin_suggest_room&applicationId=${application.id}&page=${lastPage}"
+                       type="submit"
+                       class="pagination-children ">${lastPage}</a>
                     <a href="${pageContext.request.contextPath}/controller?command=admin_suggest_room&applicationId=${application.id}&page=${page+1}"
                        type="submit"
-                       name="+" class="pagination-children">❯</a>
+                       class="pagination-children">❯</a>
                 </c:otherwise>
             </c:choose>
         </div>

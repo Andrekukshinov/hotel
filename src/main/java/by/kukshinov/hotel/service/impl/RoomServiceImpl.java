@@ -63,6 +63,27 @@ public class RoomServiceImpl extends AbstractService<Room> implements RoomServic
     }
 
     @Override
+    public int getRoomAmount() throws ServiceException {
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
+            RoomDao roomDao = daoHelper.createRoomDao();
+            return roomDao.getAllRoomAmount();
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+  @Override
+    public int getAvailableRoomAmount() throws ServiceException {
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
+            RoomDao roomDao = daoHelper.createRoomDao();
+            return roomDao.getAllAvailableRoomAmount();
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+
+    @Override
     public List<Room> getRangeAvailableRooms(int startFrom, int finishWith) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             RoomDao roomDao = daoHelper.createRoomDao();
@@ -76,7 +97,7 @@ public class RoomServiceImpl extends AbstractService<Room> implements RoomServic
     public Optional<Room> findAvailableById(Long id) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             RoomDao roomDao = daoHelper.createRoomDao();
-            return roomDao.findByAvailableById(id);
+            return roomDao.findByOccupiedById(id);
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }

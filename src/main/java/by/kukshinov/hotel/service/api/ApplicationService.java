@@ -17,5 +17,10 @@ public interface ApplicationService {
 
     Optional<Application> findInOrderApplicationById(long id) throws ServiceException;
 
-    List<Application> getRangeInOrderApplications(long userId, int startFrom, int finishWith) throws ServiceException;
+    List<Application> getRangeUserApplications(long userId, int startFrom, int finishWith) throws ServiceException;
+
+    int getInOrderApplicationsAmount() throws ServiceException;
+
+    int getUserApplicationsAmount(long id) throws ServiceException;
+
 }

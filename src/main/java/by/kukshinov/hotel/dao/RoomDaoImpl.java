@@ -17,12 +17,24 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao, RangeDao<
     private static final String GET_ROOMS_PAGINATION = "SELECT * FROM room LIMIT ?,?";
     private static final String GET_AVAILABLE_ROOMS_PAGINATION = "SELECT * FROM room WHERE status='AVAILABLE' LIMIT ?,?";
     private static final String UPDATE_ROOM = "UPDATE Room SET apartment_type=?, status=?, price=?, room_number=?,capacity=? WHERE id=?";
+    private static final String GET_OCCUPIED_ROOM_BY_ID = "SELECT * FROM Room WHERE id=? AND status = 'OCCUPIED'  ";
     private static final String GET_AVAILABLE_ROOM_BY_ID = "SELECT * FROM Room WHERE id=? AND status = 'AVAILABLE'  ";
     private static final String GET_BY_ID = "SELECT * FROM Room WHERE id=?";
     private static final String ID = "id";
+    private static final String NO_CONDITION = "";
+    private static final String STATUS_AVAILABLE = " WHERE status='AVAILABLE'";
 
     protected RoomDaoImpl( Connection connection) {
         super(TABLE_NAME, connection, new RoomObjectMapper(), new RoomFieldsExtractor());
+    }
+
+    @Override
+    public int getAllRoomAmount() throws DaoException {
+        return getAmountEntities(NO_CONDITION);
+    }
+    @Override
+    public int getAllAvailableRoomAmount() throws DaoException {
+        return getAmountEntities(STATUS_AVAILABLE);
     }
 
     @Override
@@ -54,7 +66,12 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao, RangeDao<
     public void delete(Room item) {}
 
     @Override
-    public Optional<Room> findByAvailableById(Long id) throws DaoException {
+    public Optional<Room> findByOccupiedById(Long id) throws DaoException {
+        return executeForSingleItem(GET_OCCUPIED_ROOM_BY_ID, id);
+    }
+
+ @Override
+    public Optional<Room> findAvailableById(Long id) throws DaoException {
         return executeForSingleItem(GET_AVAILABLE_ROOM_BY_ID, id);
     }
 

@@ -1,18 +1,35 @@
 package by.kukshinov.hotel.validators;
 
-public class PageValidatorImpl implements PageValidator{
+public class PageValidatorImpl implements PageValidator {
     private static final int FIRST_PAGE = 1;
 
-
-    public int gatValidPage(String page) {
+    @Override
+    public int gatValidPage(String page, int allItems, int itemsPerPage) {
         int pageInt;
-        if (page == null ) {
-            pageInt = FIRST_PAGE;
+        int maxFullPages = allItems / itemsPerPage;
+        int lastPageItems = allItems % itemsPerPage;
+        if (page == null) {
+            return FIRST_PAGE;
         } else {
-            long longPage = Long.parseLong(page);
-            int currentPage = longPage > Integer.MAX_VALUE? 1: (int) longPage;
-            pageInt = Math.max(currentPage, 1);
+            int longPage = Integer.parseInt(page);
+            pageInt = Math.max(longPage, 1);
+            if ((pageInt - 1 == maxFullPages || pageInt - 1 > maxFullPages) && lastPageItems == 0) {
+                pageInt = maxFullPages;
+            } else if (pageInt - 1 > maxFullPages) {
+                pageInt = maxFullPages + 1;
+            }
         }
         return pageInt;
+    }
+
+    @Override
+    public int getLastPage(int allItems, int itemsPerPage) {
+        int lastPageItems = allItems % itemsPerPage;
+        int fullPagesAmount = allItems / itemsPerPage;
+        if (lastPageItems == 0) {
+            return fullPagesAmount;
+        } else {
+            return fullPagesAmount + 1;
+        }
     }
 }

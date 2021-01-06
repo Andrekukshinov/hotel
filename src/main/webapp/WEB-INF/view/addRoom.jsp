@@ -17,31 +17,31 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/styles/bookingStyles.css">
     <script src="${pageContext.request.contextPath}/static/js/main.js"></script>
 </head>
-<body class="booking">
+<body onload="validateNewRoom()" class="booking">
 <jsp:include page="templates/header.jsp"/>
 <div id="to-be-found">
     <jsp:include page="templates/leftMenu.jsp"/>
-        <form method="post" class="booking-div" action="${pageContext.request.contextPath}/controller?command=admin_add_room">
+        <form method="post" id="room-form" class="booking-div" action="${pageContext.request.contextPath}/controller?command=admin_add_room">
             <h2 class="align-center"><fmt:message key="admin.room.create"/></h2>
             <p class="align-center"><fmt:message key="booking.book.select.people"/></p>
             <label class="floating-radio first-label">
-                <input name=capacity type="radio" value="1">
+                <input required name=capacity type="radio" value="1">
                 1
             </label>
             <label class="floating-radio">
-                <input name=capacity type="radio" value="2">
+                <input required name=capacity type="radio" value="2">
                 2
             </label>
             <label class="floating-radio" >
-                <input name=capacity type="radio" value="3">
+                <input required name=capacity type="radio" value="3">
                 3
             </label >
             <label class="floating-radio" >
-                <input name=capacity type="radio" value="4">
+                <input required name=capacity type="radio" value="4">
                 4
             </label>
             <label class="floating-radio last-label">
-                <input name=capacity type="radio" value="5">
+                <input required name=capacity type="radio" value="5">
                 5
             </label>
             <div>
@@ -49,7 +49,7 @@
                 <br>
             </div>
             <label class="input-booking" for="apartment-type"><fmt:message key="booking.book.room.type"/>
-                <select class="apartment-type" id="apartment-type" name="apartment-type">
+                <select required class="apartment-type" id="apartment-type" name="apartment-type">
                     <option value="STANDARD"><fmt:message key="booking.book.room.type.op1"/></option>
                     <option value="BUSINESS"><fmt:message key="booking.book.room.type.op2"/></option>
                     <option value="SKY_WALKER"><fmt:message key="booking.book.room.type.op3"/></option>
@@ -61,15 +61,17 @@
                 <br>
             </div>
             <label class="input-booking" for="number"><fmt:message key="admin.room.create.room"/>
-                <input class="room-number" type="number" id="number" name="number">
+                <input required class="room-number room" type="number" id="number" name="number">
             </label>
+            <p class="error-message space"><fmt:message key="error.number"/></p>
             <div>
                 <br>
                 <br>
             </div>
             <label class="input-booking" for="price"><fmt:message key="admin.room.price"/>
-                <input class="room-price" type="number" id="price" name="price">
+                <input required class="room-price room" type="number" id="price" name="price">
             </label>
+            <p class="error-message space"><fmt:message key="error.price"/></p>
             <div>
                 <br>
                 <br>
@@ -79,6 +81,6 @@
     </div>
 
 <jsp:include page="templates/footer.jsp"/>
-
+<script src="${pageContext.request.contextPath}/static/js/main.js"></script>
 </body>
 </html>
