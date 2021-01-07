@@ -36,18 +36,8 @@ public class ApplicationRoomDaoImpl extends AbstractDao<ApplicationRoom> impleme
     }
 
     @Override
-    protected String getUpdateQuery() {
-        return null;
-    }
-
-    @Override
     protected String getSaveQuery() {
         return SAVE_APPLICATION;
-    }
-
-    @Override
-    public Optional<ApplicationRoom> findById(Long id) throws DaoException {
-        return Optional.empty();
     }
 
     @Override
@@ -58,5 +48,10 @@ public class ApplicationRoomDaoImpl extends AbstractDao<ApplicationRoom> impleme
     @Override
     protected String getDeleteParam() {
         return APPLICATION_ID;
+    }
+
+    @Override
+    protected String getUpdateQuery() {
+        return null;
     }
 }

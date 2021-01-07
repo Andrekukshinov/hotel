@@ -2,7 +2,7 @@ package by.kukshinov.hotel.service.impl;
 
 import by.kukshinov.hotel.dao.DaoHelper;
 import by.kukshinov.hotel.dao.DaoHelperFactory;
-import by.kukshinov.hotel.dao.api.RangeDao;
+import by.kukshinov.hotel.dao.api.Dao;
 import by.kukshinov.hotel.dao.api.RoomDao;
 import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.exceptions.ServiceException;
@@ -13,17 +13,11 @@ import by.kukshinov.hotel.service.api.RoomService;
 import java.util.List;
 import java.util.Optional;
 
-public class RoomServiceImpl extends AbstractService<Room> implements RoomService {
+public class RoomServiceImpl implements RoomService {
     private final DaoHelperFactory helperFactory;
 
     public RoomServiceImpl(DaoHelperFactory helperFactory) {
-        super(helperFactory);
         this.helperFactory = helperFactory;
-    }
-
-    @Override
-    protected RangeDao<Room> getDao(DaoHelper daoHelper) {
-        return (RangeDao<Room>) daoHelper.createRoomDao();
     }
 
     @Override
@@ -59,7 +53,12 @@ public class RoomServiceImpl extends AbstractService<Room> implements RoomServic
 
     @Override
     public List<Room> getRangeEntities(int startFrom, int finishWith) throws ServiceException {
-        return super.getRangeEntities(startFrom, finishWith);
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()){
+            RoomDao dao = daoHelper.createRoomDao();
+            return dao.findRangeRooms(startFrom, finishWith);
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
     }
 
     @Override

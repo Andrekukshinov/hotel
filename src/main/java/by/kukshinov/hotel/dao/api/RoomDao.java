@@ -10,6 +10,8 @@ import java.util.Optional;
 public interface RoomDao extends Dao<Room> {
     List<Room> findAvailableRooms(int startFrom, int finishWith) throws DaoException;
 
+    List<Room> findRangeRooms(int startFrom, int finishWith) throws DaoException;
+
     Optional<Room> findByOccupiedById(Long id)  throws DaoException;
 
     Optional<Room> findAvailableById(Long id)  throws DaoException;

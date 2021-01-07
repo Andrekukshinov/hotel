@@ -3,6 +3,7 @@ package by.kukshinov.hotel.command.impl;
 import by.kukshinov.hotel.command.Command;
 import by.kukshinov.hotel.context.RequestContext;
 import by.kukshinov.hotel.exceptions.ServiceException;
+import by.kukshinov.hotel.model.Application;
 import by.kukshinov.hotel.model.ApplicationRoom;
 import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.service.api.ApplicationRoomService;
@@ -33,7 +34,8 @@ public class UserBillCommand implements Command {
         ApplicationRoom applicationRoom = optionalApplicationRoom.orElseThrow(() -> new ServiceException(NOT_APPROVED));
 
         Long userAuthId = (Long) context.getSessionAttribute(USER_ID);
-        long userId = applicationRoom.getApplication().getUserId();
+        Application application = applicationRoom.getApplication();
+        long userId = application.getUserId();
         if(userAuthId.equals(userId)) {
             context.setRequestAttribute(APPLICATION_ROOM, applicationRoom);
             return CommandResult.forward(BILL);

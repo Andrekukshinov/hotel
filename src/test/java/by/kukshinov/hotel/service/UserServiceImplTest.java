@@ -4,7 +4,7 @@ package by.kukshinov.hotel.service;
 import by.kukshinov.hotel.dao.DaoHelper;
 import by.kukshinov.hotel.dao.DaoHelperFactory;
 import by.kukshinov.hotel.dao.UserDaoImpl;
-import by.kukshinov.hotel.dao.api.RangeDao;
+import by.kukshinov.hotel.dao.api.Dao;
 import by.kukshinov.hotel.dao.api.UserDao;
 import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.exceptions.ServiceException;
@@ -43,13 +43,13 @@ public class UserServiceImplTest {
     public void testGetRangeUsersShouldReturnListOfUsers() throws DaoException, ServiceException {
         DaoHelperFactory helperFactory = mock(DaoHelperFactory.class);
         DaoHelper helper = mock(DaoHelper.class);
-        RangeDao<User> dao = Mockito.mock(UserDaoImpl.class);
+        Dao<User> dao = Mockito.mock(UserDaoImpl.class);
         UserService userService = new UserServiceImpl(helperFactory);
         when(helperFactory.createDaoHelper()).thenReturn(helper);
         when(helper.createUserDao()).thenReturn((UserDao) dao);
-        when(dao.findRange(anyInt(), anyInt())).thenReturn(USERS);
+        when(((UserDao) dao).findRangeUsers(anyInt(), anyInt())).thenReturn(USERS);
 
-        List<User> actual = userService.getRangeEntities(START_FROM, FINISH_WITH);
+        List<User> actual = userService.getRangeUsers(START_FROM, FINISH_WITH);
 
         Assert.assertEquals(actual, USERS);
     }
@@ -58,25 +58,25 @@ public class UserServiceImplTest {
     public void testGetRangeUsersShouldThrowServiceException() throws ServiceException, DaoException {
         DaoHelperFactory helperFactory = mock(DaoHelperFactory.class);
         DaoHelper helper = mock(DaoHelper.class);
-        RangeDao<User> dao = Mockito.mock(UserDaoImpl.class);
+        Dao<User> dao = Mockito.mock(UserDaoImpl.class);
         UserService userService = new UserServiceImpl(helperFactory);
         when(helperFactory.createDaoHelper()).thenReturn(helper);
         when(helper.createUserDao()).thenReturn((UserDao) dao);
-        when(dao.findRange(anyInt(), anyInt())).thenThrow(DaoException.class);
+        when(((UserDao) dao).findRangeUsers(anyInt(), anyInt())).thenThrow(DaoException.class);
 
-        userService.getRangeEntities(START_FROM, FINISH_WITH);
+        userService.getRangeUsers(START_FROM, FINISH_WITH);
     }
 
     @Test
     public void testGetRangeUsersShouldReturnEmptyList() throws ServiceException {
         DaoHelperFactory helperFactory = mock(DaoHelperFactory.class);
         DaoHelper helper = mock(DaoHelper.class);
-        RangeDao<User> dao = Mockito.mock(UserDaoImpl.class);
+        Dao<User> dao = Mockito.mock(UserDaoImpl.class);
         UserService userService = new UserServiceImpl(helperFactory);
         when(helperFactory.createDaoHelper()).thenReturn(helper);
         when(helper.createUserDao()).thenReturn((UserDao) dao);
 
-        List<User> actual = userService.getRangeEntities(START_FROM, FINISH_WITH);
+        List<User> actual = userService.getRangeUsers(START_FROM, FINISH_WITH);
 
         Assert.assertEquals(actual, Collections.emptyList());
     }

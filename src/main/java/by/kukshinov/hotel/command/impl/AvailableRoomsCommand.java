@@ -32,8 +32,6 @@ public class AvailableRoomsCommand implements Command {
         this.validator = validator;
     }
 
-    //todo ask
-    // TODO: 15.12.2020 rework 4 mistake
     @Override
     public CommandResult execute(RequestContext context) throws ServiceException {
         int availableRooms = roomService.getAvailableRoomAmount();

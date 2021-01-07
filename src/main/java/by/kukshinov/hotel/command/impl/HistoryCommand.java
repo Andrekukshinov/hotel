@@ -30,6 +30,7 @@ public class HistoryCommand implements Command {
     @Override
     public CommandResult execute(RequestContext context) throws ServiceException {
         Long userId = (Long) context.getSessionAttribute(USER_ID);
+
         int userApplicationsAmount = applicationService.getUserApplicationsAmount(userId);
         String currentPage = context.getRequestParameter(PAGE);
         int page = validator.gatValidPage(currentPage, userApplicationsAmount, ITEMS_PER_PAGE);

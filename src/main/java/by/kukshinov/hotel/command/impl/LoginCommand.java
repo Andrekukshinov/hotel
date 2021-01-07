@@ -33,7 +33,6 @@ public class LoginCommand implements Command {
         String password = context.getRequestParameter(PASSWORD_PARAM);
         Optional<User> userOptional = userService.findByCredentials(login, password);
         if (userOptional.isPresent()) {
-            // TODO: 04.12.2020 check user activity
             User user = userOptional.get();
             if(!user.getIsDisabled()) {
                 setAuthorizationData(context, login, user);

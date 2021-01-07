@@ -46,13 +46,10 @@ public class DaoHelper implements AutoCloseable {
             try {
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
-                throw new DaoException(e);
+                LOGGER.error(e.getMessage(), e);
             }
         }
     }
-
-
-
 
     public UserDao createUserDao() {
         return new UserDaoImpl(connection);

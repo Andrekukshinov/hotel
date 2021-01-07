@@ -2,10 +2,8 @@ package by.kukshinov.hotel.dao;
 
 import by.kukshinov.hotel.dao.api.Dao;
 import by.kukshinov.hotel.dao.extractor.FieldsExtractor;
-import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.dao.mapper.ObjectMapper;
-import by.kukshinov.hotel.model.Application;
-import by.kukshinov.hotel.model.ApplicationRoom;
+import by.kukshinov.hotel.exceptions.DaoException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,9 +16,11 @@ import java.util.Optional;
 
 public abstract class AbstractDao<T> implements Dao<T> {
 
-    private static final String GET_USERS = "SELECT * FROM ";
+    private static final String GET_ENTITIES = "SELECT * FROM ";
     private static final String ID = "id";
+    private static final String ID_CONDITION = " WHERE id=? ";
     private final String tableName;
+    private final String getById;
     private final String entitiesCount = "SELECT COUNT(*) FROM ";
 
     private Connection connection;
@@ -33,6 +33,7 @@ public abstract class AbstractDao<T> implements Dao<T> {
         this.connection = connection;
         this.objectMapper = objectMapper;
         this.fieldsExtractor = fieldsExtractor;
+        getById = GET_ENTITIES + tableName + ID_CONDITION;
     }
 
     protected void executeForSave(String query, Object... params) throws DaoException {
@@ -55,25 +56,26 @@ public abstract class AbstractDao<T> implements Dao<T> {
 
     @Override
     public List<T> findAll() throws DaoException {
-        return executeQuery(GET_USERS + tableName);
+        return executeQuery(GET_ENTITIES + tableName);
     }
 
     @Override
     public void save(T item) throws DaoException {
         Map<String, Object> extracted = fieldsExtractor.extract(item);
         Object id = extracted.get(ID);
-        List<Object> fields  = new ArrayList<>(extracted.values());
+        List<Object> fields = new ArrayList<>(extracted.values());
         Object[] values = fields.toArray();
-        if(id == null) {
-            // TODO: 26.12.2020 ask about this
+        if (id == null) {
+            // TODO: 26.12.2020 ask about this dynamic query building with keys and values from map
             executeForSave(getSaveQuery(), values);
         } else {
             executeForSave(getUpdateQuery(), values);
         }
     }
 
-    protected int getAmountEntities(String condition, Object... params) throws DaoException {
-        return executeQueryForSum(entitiesCount + tableName + condition, params);
+    @Override
+    public Optional<T> findById(Long id) throws DaoException {
+        return executeForSingleItem(getById, id);
     }
 
 
@@ -83,6 +85,11 @@ public abstract class AbstractDao<T> implements Dao<T> {
         Object deleteParam = extracted.get(getDeleteParam());
         executeForSave(getDeleteQuery(), deleteParam);
     }
+
+    protected int getAmountEntities(String condition, Object... params) throws DaoException {
+        return executeQueryForSum(entitiesCount + tableName + condition, params);
+    }
+
 
     protected List<T> executeQuery(String query, Object... params) throws DaoException {
         List<T> result = new ArrayList<>();

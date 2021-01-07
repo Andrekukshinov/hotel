@@ -31,7 +31,7 @@ public class AllUsersCommand implements Command {
         int usersAmount = userService.getUsersAmount();
         String currentPage = context.getRequestParameter(PAGE);
         int pageInt = validator.gatValidPage(currentPage, usersAmount, ITEMS_PER_PAGE);
-        List<User> users = userService.getRangeEntities((pageInt - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
+        List<User> users = userService.getRangeUsers((pageInt - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
         int lastPage = validator.getLastPage(usersAmount, ITEMS_PER_PAGE);
         context.setRequestAttribute(LAST_PAGE, lastPage);
         context.setRequestAttribute(USERS, users);

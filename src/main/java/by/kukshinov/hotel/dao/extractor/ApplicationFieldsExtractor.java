@@ -26,7 +26,6 @@ public class ApplicationFieldsExtractor implements FieldsExtractor<Application> 
         LocalDate leavingDate = application.getLeavingDate();
         long userId = application.getUserId();
         ApplicationStatus status = application.getStatus();
-        long id = application.getId();
 
         Map<String, Object> result = new LinkedHashMap<>();
 
@@ -36,10 +35,8 @@ public class ApplicationFieldsExtractor implements FieldsExtractor<Application> 
         result.put(LEAVING_DATE, leavingDate);
         result.put(APPLICATION_STATE, status.toString());
         result.put(USER_ID, userId);
+        // TODO: 06.01.2021 rework with T extends entity
 
-        if (id > 0) {
-            result.put(ID, id);
-        }
         return result;
     }
 }

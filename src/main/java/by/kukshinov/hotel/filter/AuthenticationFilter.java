@@ -10,7 +10,6 @@ public class AuthenticationFilter implements Filter {
 
     private static final String LOGIN_COMMAND = "login";
     private static final String LOGOUT_COMMAND = "logout";
-    private static final String DISABLED_COMMAND = "disabled";
     private static final String COMMAND = "command";
     private static final String DOMAIN = "http://localhost:8081/hotel/";
     private static final int UNAUTHORIZED = 401;
@@ -36,8 +35,7 @@ public class AuthenticationFilter implements Filter {
 
         boolean isLogin = LOGIN_COMMAND.equals(command);
         boolean isLogout = LOGOUT_COMMAND.equals(command);
-        boolean isDisabled = DISABLED_COMMAND.equals(command);
-        if (login != null || isLogin || isLogout || isResourcesAccess(command, requestURL) || isDomainReq || isDisabled) {
+        if (login != null || isLogin || isLogout || isResourcesAccess(command, requestURL) || isDomainReq) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
             resp.sendError(UNAUTHORIZED);
