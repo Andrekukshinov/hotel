@@ -30,8 +30,16 @@ public class UserRejectCommand implements Command {
         Long userId = (Long) context.getSessionAttribute(USER_ID);
         String applicationIdString = context.getRequestParameter(APPLICATION_ID);
         String roomIdString = context.getRequestParameter(ROOM_ID);
-        long applicationId = Long.parseLong(applicationIdString);
-        long roomId = Long.parseLong(roomIdString);
+        if (roomIdString != null) {
+            context.setSessionAttribute(APPLICATION_ID, applicationIdString);
+            context.setSessionAttribute(ROOM_ID, roomIdString);
+        } else {
+            roomIdString = (String) context.getSessionAttribute(ROOM_ID);
+            applicationIdString = (String) context.getSessionAttribute(APPLICATION_ID);
+        }
+
+        Long applicationId = Long.parseLong(applicationIdString);
+        Long roomId = Long.parseLong(roomIdString);
         boolean isRemoved = service.removeApplicationRoomByApplicationId(applicationId, roomId, userId);
         if (isRemoved) {
             return CommandResult.redirect(PROFILE_HISTORY);

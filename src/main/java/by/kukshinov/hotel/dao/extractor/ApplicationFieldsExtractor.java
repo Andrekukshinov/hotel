@@ -20,6 +20,7 @@ public class ApplicationFieldsExtractor implements FieldsExtractor<Application> 
 
     @Override
     public Map<String, Object> extract(Application application) {
+        long id = application.getId();
         byte personAmount = application.getPersonAmount();
         ApartmentType type = application.getType();
         LocalDate arrivalDate = application.getArrivalDate();
@@ -35,8 +36,12 @@ public class ApplicationFieldsExtractor implements FieldsExtractor<Application> 
         result.put(LEAVING_DATE, leavingDate);
         result.put(APPLICATION_STATE, status.toString());
         result.put(USER_ID, userId);
+        if (id != 0 )
         // TODO: 06.01.2021 rework with T extends entity
+            result.put("id", id);
 
-        return result;
+        {
+            return result;
+        }
     }
 }

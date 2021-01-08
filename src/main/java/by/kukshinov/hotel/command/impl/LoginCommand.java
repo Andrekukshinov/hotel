@@ -11,7 +11,7 @@ import by.kukshinov.hotel.service.api.UserService;
 import java.util.Optional;
 
 public class LoginCommand implements Command {
-
+    private static final String INVALIDATE_SESSION = "invalidateSession";
     private static final String HOME_PAGE = "/hotel/controller?command=home";
     private static final String LOGIN_PAGE = "WEB-INF/view/login.jsp";
     private static final String PASSWORD_PARAM = "password";
@@ -42,6 +42,8 @@ public class LoginCommand implements Command {
             }
         } else {
             context.setRequestAttribute(ERROR_MASSAGE_ATTRIBUTE, ERROR_MASSAGE_VALUE);
+            context.setSessionAttribute(INVALIDATE_SESSION, true);
+
             return CommandResult.forward(LOGIN_PAGE);
         }
     }
