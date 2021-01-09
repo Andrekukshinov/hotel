@@ -66,10 +66,6 @@
                     <div><fmt:message key="admin.room.Number"/> ${room.number}</div>
                     <div><fmt:message key="admin.room.type"/> <fmt:message
                             key="admin.room.type.${room.roomType}"/></div>
-                    <div>
-                        <img src="${pageContext.request.contextPath}/static/imgs/download.jpg" height="200"
-                             width="220"/>
-                    </div>
                     <form method="POST"
                           class="margin-top"
                           action="${pageContext.request.contextPath}/controller?command=admin_approve_application">

@@ -11,9 +11,9 @@ public class AuthenticationFilter implements Filter {
     private static final String LOGIN_COMMAND = "login";
     private static final String LOGOUT_COMMAND = "logout";
     private static final String COMMAND = "command";
-    private static final String DOMAIN = "http://localhost:8081/hotel/";
     private static final int UNAUTHORIZED = 401;
     private static final String RESOURCES = "/static/";
+    private static final String COMMAND_LOGOUT = "/hotel/controller?command=logout";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -30,21 +30,24 @@ public class AuthenticationFilter implements Filter {
         Object login = session.getAttribute(LOGIN_COMMAND);
         String command = req.getParameter(COMMAND);
         String requestURL = req.getRequestURL().toString();
+        String domain = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + req.getContextPath() + "/";
 
-        boolean isDomainReq = DOMAIN.equals(requestURL);
+        boolean isDomainReq = domain.equals(requestURL);
 
         boolean isLogin = LOGIN_COMMAND.equals(command);
         boolean isLogout = LOGOUT_COMMAND.equals(command);
-        if (login != null || isLogin || isLogout || isResourcesAccess(command, requestURL) || isDomainReq) {
+        if (isLogin && login != null){
+            resp.sendRedirect(COMMAND_LOGOUT);
+        } else if (login != null || isLogin || isLogout || isResourcesAccess(command, requestURL) || isDomainReq) {
             filterChain.doFilter(servletRequest, servletResponse);
-        } else {
+        }
+        else {
             resp.sendError(UNAUTHORIZED);
         }
     }
 
     private boolean isResourcesAccess(String command, String requestURL) {
-        boolean b = (requestURL.contains(RESOURCES)) && command == null;
-        return b;
+        return (requestURL.contains(RESOURCES)) && command == null;
     }
 
     @Override

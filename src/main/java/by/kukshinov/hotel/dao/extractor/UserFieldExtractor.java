@@ -25,15 +25,13 @@ public class UserFieldExtractor implements FieldsExtractor<User> {
 
         Map<String, Object> result = new LinkedHashMap<>();
 
-        if(password != null) {
+//        if(password != null) {
             result.put(PASSWORD, password);
-        }
+//        }
         result.put(LOGIN, login);
         result.put(IS_DISABLED, falseInt);
         result.put(ROLE, role.toString());
-        if(userId > 0) {
-            result.put(ID, userId);
-        }
+        result.put(ID, userId);
 
         return result;
     }

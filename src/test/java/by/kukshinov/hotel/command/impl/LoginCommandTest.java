@@ -32,7 +32,7 @@ public class LoginCommandTest {
     private static final String LOGIN_PAGE = "WEB-INF/view/login.jsp";
     private static final String EMPTY = "";
     private static final String ERROR_MASSAGE_ATTRIBUTE = "errorMassage";
-    private static final String ERROR_MASSAGE_VALUE = "User not found";
+    private static final String ERROR_MASSAGE_VALUE = "not.found";
 
 
     @Test

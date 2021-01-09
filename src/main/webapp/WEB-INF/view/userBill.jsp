@@ -29,28 +29,28 @@
         <div class="bill-container">
             <div class="item">
                 <h3><fmt:message key="bill.user.room.description"/></h3>
-                <div><fmt:message key="admin.room.capacity"/> ${applicationRoom.room.capacity}</div>
-                <div><fmt:message key="admin.room.Number"/> ${applicationRoom.room.number}</div>
+                <div><fmt:message key="admin.room.capacity"/> ${application.room.capacity}</div>
+                <div><fmt:message key="admin.room.Number"/> ${application.room.number}</div>
                 <div><fmt:message key="admin.room.type"/> <fmt:message
-                        key="admin.room.type.${applicationRoom.room.roomType}"/></div>
+                        key="admin.room.type.${application.room.roomType}"/></div>
             </div>
             <div class="item bill-application-font">
                 <h3><fmt:message key="bill.user.application.description"/></h3>
                 <ul class=" no-style-ul">
-                    <li><fmt:message key="admin.room.capacity"/> ${applicationRoom.application.personAmount}</li>
+                    <li><fmt:message key="admin.room.capacity"/> ${application.application.personAmount}</li>
                     <li><fmt:message key="admin.room.type"/> <fmt:message
-                            key="admin.room.type.${applicationRoom.application.type}"/></li>
-                    <li><fmt:message key="booking.book.date.arrival"/> ${applicationRoom.application.arrivalDate}</li>
-                    <li><fmt:message key="booking.book.date.leave"/> ${applicationRoom.application.leavingDate}</li>
+                            key="admin.room.type.${application.application.type}"/></li>
+                    <li><fmt:message key="booking.book.date.arrival"/> ${application.application.arrivalDate}</li>
+                    <li><fmt:message key="booking.book.date.leave"/> ${application.application.leavingDate}</li>
 
                 </ul>
-                <fmt:message key="bill.total.price"/><ex:money-format money="${applicationRoom.totalCost}"/>
+                <fmt:message key="bill.total.price"/><ex:money-format money="${application.application.totalPrice}"/>
             </div>
             <div class="item bill-application-font">
                 <form class="admin-users-form  margin-bill-form" method="post"
                       action="${pageContext.request.contextPath}/controller?command=user_reject_application">
-                    <input type="hidden" value="${applicationRoom.application.id}" name="applicationId">
-                    <input type="hidden" value="${applicationRoom.room.id}" name="roomId">
+                    <input type="hidden" value="${application.application.id}" name="applicationId">
+                    <input type="hidden" value="${application.room.id}" name="roomId">
                     <button type="submit" class="history-button two-options"><fmt:message key="bill.deny"/></button>
                 </form>
                 <c:if test="${tooLate != null}">

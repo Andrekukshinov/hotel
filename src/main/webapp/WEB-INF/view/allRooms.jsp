@@ -34,20 +34,12 @@
                     <div><fmt:message key="admin.room.Number"/> ${room.number}</div>
                     <div><fmt:message key="admin.room.type"/> <fmt:message
                             key="admin.room.type.${room.roomType}"/></div>
-                    <div>
-                        <img src="${pageContext.request.contextPath}/static/imgs/download.jpg" height="200"
-                             width="220"/>
-                    </div>
                     <button type="button" class="edit-description users-submit"><fmt:message
                             key="admin.room.button.edit"/></button>
                     <form method="post" action="${pageContext.request.contextPath}/controller?command=admin_update_room"
                           id="description${index.count}" class="modal">
                         <div class="inner-modal">
                             <button type="button" class="modal-close">X</button>
-                            <div>
-                                <img src="${pageContext.request.contextPath}/static/imgs/download.jpg" height="10%"
-                                     width="15%"/>
-                            </div>
                             <div><fmt:message key="admin.room.capacity"/>
                                 <label class="floating-radio first-label">
                                     <input name=personAmount type="radio" value="1">

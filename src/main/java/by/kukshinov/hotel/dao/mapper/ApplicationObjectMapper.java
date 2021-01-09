@@ -1,14 +1,14 @@
 package by.kukshinov.hotel.dao.mapper;
 
-import by.kukshinov.hotel.model.enums.ApartmentType;
 import by.kukshinov.hotel.model.Application;
+import by.kukshinov.hotel.model.Room;
+import by.kukshinov.hotel.model.enums.ApartmentType;
 import by.kukshinov.hotel.model.enums.ApplicationStatus;
 
-import java.sql.Date;
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class ApplicationObjectMapper implements ObjectMapper<Application> {
 
@@ -18,6 +18,9 @@ public class ApplicationObjectMapper implements ObjectMapper<Application> {
     private static final String APARTMENT_TYPE = "apartment_type";
     private static final String APPLICATION_STATE = "application_state";
     private static final String USER_ID = "user_id";
+    private static final String PERSON_AMOUNT = "person_amount";
+    private static final String ROOM_ID = "room_id";
+    private static final String TOTAL_PRICE = "total_price";
 
     @Override
     public Application map(ResultSet resultSet) throws SQLException {
@@ -26,12 +29,14 @@ public class ApplicationObjectMapper implements ObjectMapper<Application> {
         ApplicationStatus applicationState = ApplicationStatus.valueOf(applicationStateString);
         long id = resultSet.getLong(ID);
         long userId = resultSet.getLong(USER_ID);
-        byte person_amount = resultSet.getByte("person_amount");
+        byte person_amount = resultSet.getByte(PERSON_AMOUNT);
         LocalDate arrival_date = resultSet.getObject(ARRIVAL_DATE, LocalDate.class);
         LocalDate leaving_date = resultSet.getObject(LEAVING_DATE, LocalDate.class);
-
+        Long roomId = resultSet.getLong(ROOM_ID);
+        BigDecimal totalPrice = resultSet.getBigDecimal(TOTAL_PRICE);
         ApartmentType apartmentType = ApartmentType.valueOf(apartment);
 
-        return new Application(id, person_amount, apartmentType, arrival_date, leaving_date, applicationState, userId);
+
+        return new Application(id, person_amount, apartmentType, arrival_date, leaving_date, applicationState, totalPrice, roomId, userId);
     }
 }

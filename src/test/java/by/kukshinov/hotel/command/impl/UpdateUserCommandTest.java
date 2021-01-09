@@ -5,8 +5,8 @@ import by.kukshinov.hotel.command.Command;
 import by.kukshinov.hotel.context.RequestContext;
 import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.CommandResult;
-import by.kukshinov.hotel.model.Room;
 import by.kukshinov.hotel.model.User;
+import by.kukshinov.hotel.model.enums.Role;
 import by.kukshinov.hotel.service.api.UserService;
 import by.kukshinov.hotel.service.impl.UserServiceImpl;
 import org.mockito.Mockito;
@@ -31,20 +31,24 @@ public class UpdateUserCommandTest {
     private static final String ID_VALUE = "1";
     private static final String IS_DISABLED_VALUE = "false";
     private static final String ROLE_VALUE = "USER";
+    private static final String SESSION_USER_ID = "user_id";
 
-     @Test
+    @Test
      public void testExecuteShouldReturnRedirectToHomePage () throws ServiceException {
          Map<String, String> parameters = new HashMap<>();
          parameters.put(ID, ID_VALUE);
          parameters.put(LOGIN, LOGIN_VALUE);
          parameters.put(IS_DISABLED, IS_DISABLED_VALUE);
          parameters.put(ROLE, ROLE_VALUE);
-         RequestContext context = new RequestContext(parameters, null, null);
+         Map<String, Object> sessionAttributes = new HashMap<>();
+         sessionAttributes.put(SESSION_USER_ID, 2L);
+         RequestContext context = new RequestContext(parameters, null, sessionAttributes);
          UserService service = Mockito.mock(UserServiceImpl.class);
-         doNothing().when(service).updateUser(any());
+         doNothing().when(service).changeUserStatus(any(), anyBoolean());
          Command command = new UpdateUserCommand(service);
          CommandResult expected = CommandResult.redirect(ALL_USERS);
-         when(service.findById(anyLong())).thenReturn(Optional.of(new User()));
+        User value = new User(21l, "l", "appa", false, Role.ADMIN );
+        when(service.findById(anyLong())).thenReturn(Optional.of(value));
 
 
          CommandResult actual = command.execute(context);
@@ -59,7 +63,9 @@ public class UpdateUserCommandTest {
          parameters.put(LOGIN, LOGIN_VALUE);
          parameters.put(IS_DISABLED, IS_DISABLED_VALUE);
          parameters.put(ROLE, ROLE_VALUE);
-         RequestContext context = new RequestContext(parameters, null, null);
+         Map<String, Object> sessionAttributes = new HashMap<>();
+         sessionAttributes.put(ID, 1L);
+         RequestContext context = new RequestContext(parameters, null, sessionAttributes);
          UserService service = Mockito.mock(UserServiceImpl.class);
          doThrow(ServiceException.class).when(service).updateUser(any());
          Command command = new UpdateUserCommand(service);
