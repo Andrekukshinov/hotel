@@ -20,7 +20,7 @@ public class ApplicationCreatorImpl implements ApplicationCreator {
         byte capacity = Byte.parseByte(personAmount);
         ApartmentType apartmentType = ApartmentType.valueOf(apartment.toUpperCase());
 
-        long id = Long.parseLong(stringId);
-        return new Application(id, capacity, apartmentType, dateArrival, dateLeaving, status, userId);
+
+        return new Application(null, capacity, apartmentType, dateArrival, dateLeaving, status, null, null, userId);
     }
 }

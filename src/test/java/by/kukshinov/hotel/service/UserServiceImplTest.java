@@ -27,13 +27,13 @@ public class UserServiceImplTest {
     private static final String PASS = "password";
     private static final String LOGIN = "login";
 
-    private static final User FIRST = new User(1, LOGIN, PASS, false, Role.USER);
-    private static final User SECOND = new User(2, LOGIN, PASS, false, Role.USER);
-    private static final User THIRD = new User(3, LOGIN, PASS, false, Role.USER);
-    private static final User FOURTH = new User(4, LOGIN, PASS, false, Role.USER);
-    private static final User FIFTH = new User(5, LOGIN, PASS, false, Role.USER);
-    private static final User SIXTH = new User(6, LOGIN, PASS, false, Role.USER);
-    private static final User SEVENTH = new User(7, LOGIN, PASS, false, Role.USER);
+    private static final User FIRST = new User(1l, LOGIN, PASS, false, Role.USER);
+    private static final User SECOND = new User(2l, LOGIN, PASS, false, Role.USER);
+    private static final User THIRD = new User(3l, LOGIN, PASS, false, Role.USER);
+    private static final User FOURTH = new User(4l, LOGIN, PASS, false, Role.USER);
+    private static final User FIFTH = new User(5l, LOGIN, PASS, false, Role.USER);
+    private static final User SIXTH = new User(6l, LOGIN, PASS, false, Role.USER);
+    private static final User SEVENTH = new User(7l, LOGIN, PASS, false, Role.USER);
     private static final List<User> USERS = Arrays.asList(FIRST, SECOND, THIRD, FOURTH, FIFTH, SIXTH, SEVENTH);
     private static final int START_FROM = 1;
     private static final int FINISH_WITH = 7;

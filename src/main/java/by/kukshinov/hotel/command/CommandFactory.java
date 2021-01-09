@@ -4,7 +4,6 @@ import by.kukshinov.hotel.command.impl.*;
 import by.kukshinov.hotel.dao.DaoHelperFactory;
 import by.kukshinov.hotel.exceptions.NoSuchCommandException;
 import by.kukshinov.hotel.model.creators.ApplicationCreatorImpl;
-import by.kukshinov.hotel.service.impl.ApplicationRoomServiceImpl;
 import by.kukshinov.hotel.service.impl.ApplicationServiceImpl;
 import by.kukshinov.hotel.service.impl.RoomServiceImpl;
 import by.kukshinov.hotel.service.impl.UserServiceImpl;
@@ -50,7 +49,7 @@ public class CommandFactory {
             case APPLICATIONS:
                 return new AllInOrderApplicationsCommand(new ApplicationServiceImpl(new DaoHelperFactory()), new PageValidatorImpl());
             case APPROVE_APPLICATION:
-                return new ApproveApplicationCommand(new ApplicationRoomServiceImpl(new DaoHelperFactory()));
+                return new ApproveApplicationCommand(new ApplicationServiceImpl(new DaoHelperFactory()));
             case BOOKING:
                 return new ForwardCommand(BOOKING_PAGE);
             case BOOK_ROOM:
@@ -74,9 +73,9 @@ public class CommandFactory {
             case UPDATE_USER:
                 return new UpdateUserCommand(new UserServiceImpl(new DaoHelperFactory()));
             case USER_BILL:
-                return new UserBillCommand(new ApplicationRoomServiceImpl(new DaoHelperFactory()));
+                return new UserBillCommand(new ApplicationServiceImpl(new DaoHelperFactory()));
             case USER_REJECT:
-                return new UserRejectCommand(new ApplicationRoomServiceImpl(new DaoHelperFactory()));
+                return new UserRejectCommand(new ApplicationServiceImpl(new DaoHelperFactory()));
             default:
                 throw new NoSuchCommandException(MESSAGE);
         }

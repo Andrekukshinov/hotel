@@ -1,9 +1,11 @@
 package by.kukshinov.hotel.dao;
 
+import by.kukshinov.hotel.builder.RequestBuilder;
 import by.kukshinov.hotel.dao.api.Dao;
 import by.kukshinov.hotel.dao.extractor.FieldsExtractor;
 import by.kukshinov.hotel.dao.mapper.ObjectMapper;
 import by.kukshinov.hotel.exceptions.DaoException;
+import by.kukshinov.hotel.model.Entity;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,25 +16,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public abstract class AbstractDao<T> implements Dao<T> {
+public abstract class AbstractDao<T extends Entity> implements Dao<T> {
 
     private static final String GET_ENTITIES = "SELECT * FROM ";
-    private static final String ID = "id";
     private static final String ID_CONDITION = " WHERE id=? ";
     private final String tableName;
     private final String getById;
     private final String entitiesCount = "SELECT COUNT(*) FROM ";
 
     private Connection connection;
+    private final RequestBuilder<T> requestBuilder;
     private ObjectMapper<T> objectMapper;
     private FieldsExtractor<T> fieldsExtractor;
 
 
-    protected AbstractDao(String tableName, Connection connection, ObjectMapper<T> objectMapper, FieldsExtractor<T> fieldsExtractor) {
+    protected AbstractDao(RequestBuilder<T> requestBuilder, String tableName, Connection connection, ObjectMapper<T> objectMapper, FieldsExtractor<T> fieldsExtractor) {
         this.tableName = tableName;
         this.connection = connection;
         this.objectMapper = objectMapper;
         this.fieldsExtractor = fieldsExtractor;
+        this.requestBuilder = requestBuilder;
         getById = GET_ENTITIES + tableName + ID_CONDITION;
     }
 
@@ -62,15 +65,10 @@ public abstract class AbstractDao<T> implements Dao<T> {
     @Override
     public void save(T item) throws DaoException {
         Map<String, Object> extracted = fieldsExtractor.extract(item);
-        Object id = extracted.get(ID);
         List<Object> fields = new ArrayList<>(extracted.values());
         Object[] values = fields.toArray();
-        if (id == null) {
-            // TODO: 26.12.2020 ask about this dynamic query building with keys and values from map
-            executeForSave(getSaveQuery(), values);
-        } else {
-            executeForSave(getUpdateQuery(), values);
-        }
+        String query = requestBuilder.buildQuery(item, tableName, extracted);
+        executeForSave(query, values);
     }
 
     @Override
@@ -121,10 +119,6 @@ public abstract class AbstractDao<T> implements Dao<T> {
             return Optional.empty();
         }
     }
-
-    protected abstract String getUpdateQuery();
-
-    protected abstract String getSaveQuery();
 
     protected abstract String getDeleteQuery();
 

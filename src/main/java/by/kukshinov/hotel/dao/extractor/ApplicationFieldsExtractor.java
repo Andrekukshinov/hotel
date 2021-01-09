@@ -4,6 +4,7 @@ import by.kukshinov.hotel.model.enums.ApartmentType;
 import by.kukshinov.hotel.model.Application;
 import by.kukshinov.hotel.model.enums.ApplicationStatus;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.*;
@@ -12,21 +13,24 @@ public class ApplicationFieldsExtractor implements FieldsExtractor<Application> 
 
     private static final String ID = "id";
     private static final String USER_ID = "user_id";
-    private static final String LEAVING_DATE = "leavingDate";
-    private static final String ARRIVAL_DATE = "arrivalDate";
-    private static final String TYPE = "type";
-    private static final String PERSON_AMOUNT = "personAmount";
-    private static final String APPLICATION_STATE = "applicationState";
+    private static final String LEAVING_DATE = "leaving_date";
+    private static final String ARRIVAL_DATE = "arrival_date";
+    private static final String TYPE = "apartment_type";
+    private static final String PERSON_AMOUNT = "person_amount";
+    private static final String APPLICATION_STATE = "application_state";
+    private static final String ROOM_ID = "room_id";
 
     @Override
     public Map<String, Object> extract(Application application) {
-        long id = application.getId();
+        Long id = application.getId();
         byte personAmount = application.getPersonAmount();
         ApartmentType type = application.getType();
         LocalDate arrivalDate = application.getArrivalDate();
         LocalDate leavingDate = application.getLeavingDate();
-        long userId = application.getUserId();
+        Long userId = application.getUserId();
         ApplicationStatus status = application.getStatus();
+        Long roomId = application.getRoomId();
+        BigDecimal totalPrice = application.getTotalPrice();
 
         Map<String, Object> result = new LinkedHashMap<>();
 
@@ -36,12 +40,11 @@ public class ApplicationFieldsExtractor implements FieldsExtractor<Application> 
         result.put(LEAVING_DATE, leavingDate);
         result.put(APPLICATION_STATE, status.toString());
         result.put(USER_ID, userId);
-        if (id != 0 )
+        result.put(ROOM_ID, roomId);
+        result.put("total_price", totalPrice);
+        result.put(ID, id);
         // TODO: 06.01.2021 rework with T extends entity
-            result.put("id", id);
 
-        {
-            return result;
-        }
+        return result;
     }
 }

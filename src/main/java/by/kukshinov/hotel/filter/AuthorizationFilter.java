@@ -24,7 +24,7 @@ public class AuthorizationFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
         String command = req.getParameter(COMMAND);
-        if (command !=null && command.contains(ADMIN)){
+        if (command != null && command.contains(ADMIN)){
             HttpSession session = req.getSession();
             Object role = session.getAttribute(ROLE);
             if(!ROLE_ADMIN.equalsIgnoreCase((String) role)){

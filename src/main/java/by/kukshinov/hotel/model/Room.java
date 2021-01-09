@@ -5,8 +5,8 @@ import by.kukshinov.hotel.model.enums.RoomStatus;
 
 import java.math.BigDecimal;
 
-public class Room {
-    private long id;
+public class Room implements Entity {
+    private Long id;
     private int number;
     private ApartmentType roomType;
     private byte capacity;
@@ -14,7 +14,7 @@ public class Room {
     private BigDecimal price;
     private String pictureUrl;
 
-    public Room(long id, int number, ApartmentType roomType, byte capacity,
+    public Room(Long id, int number, ApartmentType roomType, byte capacity,
                 RoomStatus roomStatus, BigDecimal price, String pictureUrl) {
         this.id = id;
         this.number = number;
@@ -28,7 +28,7 @@ public class Room {
     public Room() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

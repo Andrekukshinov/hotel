@@ -16,7 +16,7 @@
                 </li>
             </c:when>
             <c:otherwise>
-                <li class="right "><a href="${pageContext.request.contextPath}"><fmt:message
+                <li class="right "><a href="${pageContext.request.contextPath}/controller?command=logout"><fmt:message
                         key="header.unauthorized.login"/></a>
                 </li>
             </c:otherwise>

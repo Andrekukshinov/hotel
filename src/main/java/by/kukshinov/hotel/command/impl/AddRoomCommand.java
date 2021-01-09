@@ -35,7 +35,7 @@ public class AddRoomCommand implements Command {
         BigDecimal price = new BigDecimal(priceString);
         int number = Integer.parseInt(numberString);
         byte capacity = Byte.parseByte(capacityString);
-        Room room = new Room(-1, number, apartmentType, capacity, roomStatus, price, null);
+        Room room = new Room(null, number, apartmentType, capacity, roomStatus, price, null);
 
         roomService.saveRoom(room);
         return CommandResult.redirect(ALL_ROOMS_PAGE);

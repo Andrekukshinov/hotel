@@ -27,7 +27,7 @@ public class AllUsersCommandTest {
     private static final String ZERO = "0";
     private static final Integer FIRST_PAGE = 1;
     private static final String NEGATIVE = "-1";
-    private static final User USER = new User(1, "admin", "pass", false, Role.USER);
+    private static final User USER = new User(1l, "admin", "pass", false, Role.USER);
     private static final String USERS = "users";
 
 

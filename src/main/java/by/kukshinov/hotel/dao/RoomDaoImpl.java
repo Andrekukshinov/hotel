@@ -1,5 +1,6 @@
 package by.kukshinov.hotel.dao;
 
+import by.kukshinov.hotel.builder.RequestBuilder;
 import by.kukshinov.hotel.dao.api.RoomDao;
 import by.kukshinov.hotel.dao.extractor.RoomFieldsExtractor;
 import by.kukshinov.hotel.dao.mapper.RoomObjectMapper;
@@ -23,7 +24,7 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
     private static final String ROOM_LIMIT = "SELECT * FROM room LIMIT ?,?";
 
     protected RoomDaoImpl( Connection connection) {
-        super(TABLE_NAME, connection, new RoomObjectMapper(), new RoomFieldsExtractor());
+        super(new<Room> RequestBuilder<Room>(), TABLE_NAME, connection, new RoomObjectMapper(), new RoomFieldsExtractor());
     }
 
     @Override
@@ -39,16 +40,6 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
     @Override
     public List<Room> findAvailableRooms(int startFrom, int finishWith) throws DaoException {
         return executeQuery(GET_AVAILABLE_ROOMS_PAGINATION, startFrom, finishWith);
-    }
-
-    @Override
-    protected String getUpdateQuery() {
-        return UPDATE_ROOM;
-    }
-
-    @Override
-    protected String getSaveQuery() {
-        return SAVE_APPLICATION;
     }
 
     @Override

@@ -3,22 +3,25 @@ package by.kukshinov.hotel.model;
 import by.kukshinov.hotel.model.enums.ApartmentType;
 import by.kukshinov.hotel.model.enums.ApplicationStatus;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
 
-public class Application {
-    private long id;
+public class Application implements Entity{
+    private Long id;
     private byte personAmount;
     private ApartmentType type;
     private LocalDate arrivalDate;
     private LocalDate leavingDate;
     private ApplicationStatus status;
-    private long userId;
+    private Long userId;
+    private BigDecimal totalPrice;
+    private Long roomId;
 
     public Application() {
     }
 
-    public Application(byte personAmount, ApartmentType type, LocalDate arrivalDate, LocalDate leavingDate, ApplicationStatus status, long userId) {
+    public Application(byte personAmount, ApartmentType type, LocalDate arrivalDate, LocalDate leavingDate, ApplicationStatus status, Long userId) {
         this.personAmount = personAmount;
         this.type = type;
         this.arrivalDate = arrivalDate;
@@ -27,7 +30,7 @@ public class Application {
         this.userId = userId;
     }
 
-    public Application(long id, byte personAmount, ApartmentType type, LocalDate arrivalDate, LocalDate leavingDate, ApplicationStatus status, long userId) {
+    public Application(Long id, byte personAmount, ApartmentType type, LocalDate arrivalDate, LocalDate leavingDate, ApplicationStatus status, BigDecimal totalPrice, Long roomId, Long userId) {
         this.id = id;
         this.personAmount = personAmount;
         this.type = type;
@@ -35,14 +38,16 @@ public class Application {
         this.leavingDate = leavingDate;
         this.status = status;
         this.userId = userId;
+        this.totalPrice = totalPrice;
+        this.roomId = roomId;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public Long getUserId() {
+        return userId;
     }
 
     public byte getPersonAmount() {
@@ -85,71 +90,28 @@ public class Application {
         this.status = status;
     }
 
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    @Override
-    public String toString() {
-        return "Application{" +
-                "id=" + id +
-                ", personAmount=" + personAmount +
-                ", type=" + type +
-                ", arrivalDate=" + arrivalDate +
-                ", leavingDate=" + leavingDate +
-                ", status=" + status +
-                ", userId=" + userId +
-                '}';
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
     }
 
-    @Override
-    public boolean equals(Object that) {
-        if (this == that) {
-            return true;
-        }
-        if (that == null || getClass() != that.getClass()) {
-            return false;
-        }
-
-        Application thatApplication = (Application) that;
-
-        if (getId() != thatApplication.getId()) {
-            return false;
-        }
-        if (getPersonAmount() != thatApplication.getPersonAmount()) {
-            return false;
-        }
-        if (getUserId() != thatApplication.getUserId()) {
-            return false;
-        }
-        if (getType() != thatApplication.getType()) {
-            return false;
-        }
-        LocalDate thatApplicationArrivalDate = thatApplication.getArrivalDate();
-        if (getArrivalDate() != null ? !getArrivalDate().equals(thatApplicationArrivalDate) : thatApplicationArrivalDate != null) {
-            return false;
-        }
-        LocalDate thatApplicationLeavingDate = thatApplication.getLeavingDate();
-        if (getLeavingDate() != null ? !getLeavingDate().equals(thatApplicationLeavingDate) : thatApplicationLeavingDate != null) {
-            return false;
-        }
-        return getStatus() == thatApplication.getStatus();
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
-    @Override
-    public int hashCode() {
-        int result = (int) (getId() ^ (getId() >>> 32));
-        result = 31 * result + (int) getPersonAmount();
-        result = 31 * result + (getType() != null ? getType().hashCode() : 0);
-        result = 31 * result + (getArrivalDate() != null ? getArrivalDate().hashCode() : 0);
-        result = 31 * result + (getLeavingDate() != null ? getLeavingDate().hashCode() : 0);
-        result = 31 * result + (getStatus() != null ? getStatus().hashCode() : 0);
-        result = 31 * result + (int) (getUserId() ^ (getUserId() >>> 32));
-        return result;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(Long roomId) {
+        this.roomId = roomId;
     }
 }
 // TODO: 14.12.2020 ask about if it's fine for update method 2 update only 1 field if if others cannot be updated acc 2 task
