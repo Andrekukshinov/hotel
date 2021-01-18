@@ -46,7 +46,7 @@
                               action="${pageContext.request.contextPath}/controller?command=admin_update_user"
                               class="admin-users-form">
                             <input type="hidden" value="${user.login}" name="login">
-                            <input type="hidden" value="${user.userId}" name="userId">
+                            <input type="hidden" value="${user.id}" name="userId">
                             <input type="hidden" value="${user.password}" name="pass">
                             <input type="hidden" value="${user.role}" name="role">
                             <input type="hidden" value="${user.isDisabled}" name="isDisabled">

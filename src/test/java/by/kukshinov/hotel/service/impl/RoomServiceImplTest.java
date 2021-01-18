@@ -80,6 +80,7 @@ public class RoomServiceImplTest {
         Assert.assertEquals(actual, ROOMS);
     }
 
+
     @Test
     public void testFindRangeAvailableRoomsShouldReturnListOfRooms() throws DaoException, ServiceException {
         RoomService service = new RoomServiceImpl(helperFactory);
@@ -89,6 +90,7 @@ public class RoomServiceImplTest {
 
         Assert.assertEquals(actual, ROOMS);
     }
+
 
     @Test
     public void testFindByIdShouldReturnRoom() throws DaoException, ServiceException {

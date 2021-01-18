@@ -42,8 +42,6 @@ public class LoginCommand implements Command {
             }
         } else {
             context.setRequestAttribute(ERROR_MASSAGE_ATTRIBUTE, ERROR_MASSAGE_VALUE);
-            context.setSessionAttribute(INVALIDATE_SESSION, true);
-
             return CommandResult.forward(LOGIN_PAGE);
         }
     }
