@@ -4,22 +4,16 @@ public class PageValidatorImpl implements PageValidator {
     private static final int FIRST_PAGE = 1;
 
     @Override
-    public int gatValidPage(String page, int allItems, int itemsPerPage) {
-        int pageInt;
-        int maxFullPages = allItems / itemsPerPage;
-        int lastPageItems = allItems % itemsPerPage;
-        if (page == null) {
+    public int getValidPage(String stringPage, int allItems, int itemsPerPage) {
+        int currentPage;
+        if (stringPage == null) {
             return FIRST_PAGE;
         } else {
-            int longPage = Integer.parseInt(page);
-            pageInt = Math.max(longPage, 1);
-            if ((pageInt - 1 == maxFullPages || pageInt - 1 > maxFullPages) && lastPageItems == 0) {
-                pageInt = maxFullPages;
-            } else if (pageInt - 1 > maxFullPages) {
-                pageInt = maxFullPages + 1;
-            }
+            int parsedPage = Integer.parseInt(stringPage);
+            currentPage = Math.max(parsedPage, 1);
+            int lastPage = getLastPage(allItems, itemsPerPage);
+            return Math.min(currentPage, lastPage);
         }
-        return pageInt;
     }
 
     @Override

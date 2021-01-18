@@ -30,8 +30,8 @@ public class AllRoomsCommand implements Command {
     public CommandResult execute(RequestContext context) throws ServiceException {
         int roomAmount = service.getRoomAmount();
         String currentPage = context.getRequestParameter(PAGE);
-        int pageInt = validator.gatValidPage(currentPage, roomAmount, ITEMS_PER_PAGE);
-        List<Room> rooms = service.getRangeEntities((pageInt - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
+        int pageInt = validator.getValidPage(currentPage, roomAmount, ITEMS_PER_PAGE);
+        List<Room> rooms = service.findRangeEntities((pageInt - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
         int lastPage = validator.getLastPage(roomAmount, ITEMS_PER_PAGE);
         context.setRequestAttribute(LAST_PAGE, lastPage);
         context.setRequestAttribute(ROOMS, rooms);

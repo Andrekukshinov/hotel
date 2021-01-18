@@ -1,7 +1,5 @@
 package by.kukshinov.hotel.model;
 
-import java.math.BigDecimal;
-
 public class ApplicationRoom {
     private final Application application;
     private final Room room;

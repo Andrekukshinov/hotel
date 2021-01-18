@@ -2,9 +2,10 @@ package by.kukshinov.hotel.dao;
 
 import by.kukshinov.hotel.connection.ConnectionPool;
 import by.kukshinov.hotel.connection.ProxyConnection;
-import by.kukshinov.hotel.dao.api.*;
+import by.kukshinov.hotel.dao.api.ApplicationDao;
+import by.kukshinov.hotel.dao.api.RoomDao;
+import by.kukshinov.hotel.dao.api.UserDao;
 import by.kukshinov.hotel.exceptions.DaoException;
-import by.kukshinov.hotel.model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -42,12 +43,15 @@ public class DaoHelper implements AutoCloseable {
             connection.commit();
         } catch (SQLException e) {
             rollback();
-        } finally {
-            try {
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                LOGGER.error(e.getMessage(), e);
-            }
+        }
+    }
+
+    public void endTransaction() throws DaoException {
+        try {
+            connection.setAutoCommit(true);
+        } catch (SQLException e) {
+            // TODO: 16.01.2021 ask about except type
+            throw new DaoException(e.getMessage(), e);
         }
     }
 

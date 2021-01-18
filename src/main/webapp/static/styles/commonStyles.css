@@ -6,6 +6,10 @@
     text-align: center;
 }
 
+.current-page{
+    background-color: rgba(151, 197, 248, 0.3);
+}
+
 .home-welcome{
     margin-left: 44%;
 }
@@ -78,7 +82,19 @@ button.login-submit {
     cursor: pointer;
 }
 
-button.login-submit:hover {
+.go-back-margin{
+    box-shadow: 0 0 10px #111111;
+    width: 25%;
+    background-color: #255a94;
+    color: white;
+    padding: 14px 14px;
+    margin: 1% 0 1% 40%;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button.login-submit:hover, button.go-back-margin:hover {
     background-color: #1b4979;
 }
 
@@ -93,9 +109,29 @@ div.login-form {
     min-height: 60%;
 }
 
+#thinner{
+    margin-left: 25%;
+    width: 40%;
+}
+
+.shorter{
+    margin-bottom: 2%;
+    height: 40%;
+}
+
 #to-be-found {
     min-height: 90%;
     display: flex;
+}
+
+.room-update-form{
+    min-height: 70%;
+}
+
+body.booking {
+    margin: 0;
+    padding: 0;
+    background-color: #A7AFEF;
 }
 
 body.standard-color {
@@ -156,6 +192,40 @@ ul.topnav li a {
     padding: 15px 16px 9px 16px;
     text-decoration: none;
     height: 35px;
+}
+
+button.auth {
+    margin: 0;
+    border: none;
+    border-right: black solid 1px;
+    display: block;
+    cursor: pointer;
+    color: white;
+    font-size: large;
+    font-family: "Times New Roman", serif;
+    text-align: center;
+    padding: 4px 16px 9px 16px;
+    text-decoration: none;
+    height: 100%;
+    background-color: #2D2F59;
+}
+
+button.auth:hover {
+    background-color: #111;
+}
+
+button.auth:active {
+    background-color: #111;
+    border-style: none;
+    outline: none;
+    box-shadow: none;
+}
+
+button.auth:focus{
+    background-color: #111;
+    border-style: none;
+    outline: none;
+    box-shadow: none;
 }
 
 .logo {
@@ -259,6 +329,22 @@ body.no-margin {
     margin: 0;
 }
 
+.reject-reason{
+    margin: 10% 4%;
+    text-align: justify;
+}
+
+.too-late{
+    margin: 10% 4%;
+    font-size: larger;
+    padding: 2%;
+    text-align: justify;
+}
+
+.too-late ul.no-style-ul li {
+    margin-top: 2%;
+}
+
 
 .admin-users-form {
     margin: 0;
@@ -275,6 +361,10 @@ body.no-margin {
 }
 
 @media screen and (max-width: 780px) {
+
+    button.auth {
+        width: 100%;
+    }
 
     .logo {
         border-right: none;
@@ -318,6 +408,11 @@ body.no-margin {
         padding-left: 44%;
     }
 
+
+    .room-update-form{
+        min-height: 90%;
+    }
+
     .left-menu-ui {
         text-align: center;
         flex-basis: 100%;
@@ -348,5 +443,16 @@ body.no-margin {
     .pagination-children {
         width: 8px;
         padding: 4px 8px;
+    }
+
+
+    .go-back-margin{
+        margin: 1% 0 1% 38%;
+    }
+
+    #thinner{
+        margin-left: 15%;
+        width: 70%;
+        background-color: #f2f2f2;
     }
 }

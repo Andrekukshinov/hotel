@@ -42,7 +42,7 @@ public class ConnectionPool {
             try {
                 SINGLETON_LOCKER.lock();
                 ConnectionPool localInstance;
-                if (isNullInstance.get()) {
+                if (isNullInstance.getAndSet(false)) {
                     localInstance = new ConnectionPool();
                     pool = localInstance;
                 }
@@ -88,13 +88,13 @@ public class ConnectionPool {
     }
 
     private void closeQueueConnections(Queue<ProxyConnection> availableConnections) {
-        availableConnections.forEach(connection -> {
+        for (ProxyConnection connection: availableConnections) {
             try {
                 connection.killConnection();
             } catch (SQLException e) {
-                LOGGER.error(e.getMessage(), e);
+                throw new ConnectionPoolException(e.getMessage(), e);
             }
-        });
+        }
     }
 
 }

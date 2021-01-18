@@ -11,7 +11,6 @@ import by.kukshinov.hotel.service.api.UserService;
 import java.util.Optional;
 
 public class LoginCommand implements Command {
-    private static final String INVALIDATE_SESSION = "invalidateSession";
     private static final String HOME_PAGE = "/hotel/controller?command=home";
     private static final String LOGIN_PAGE = "WEB-INF/view/login.jsp";
     private static final String PASSWORD_PARAM = "password";
@@ -31,17 +30,17 @@ public class LoginCommand implements Command {
     public CommandResult execute(RequestContext context) throws ServiceException {
         String login = context.getRequestParameter(LOGIN_PARAM);
         String password = context.getRequestParameter(PASSWORD_PARAM);
+
         Optional<User> userOptional = userService.findByCredentials(login, password);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             if(!user.getIsDisabled()) {
-                setAuthorizationData(context, login, user);
+                setAuthorizationData(context, user);
                 return CommandResult.redirect(HOME_PAGE);
             } else {
                 return CommandResult.forward(DISABLED_PAGE);
             }
         } else {
-//            context.setSessionAttribute(INVALIDATE_SESSION, true);
             context.setRequestAttribute(ERROR_MASSAGE_ATTRIBUTE, ERROR_MASSAGE_VALUE);
             context.setSessionAttribute(INVALIDATE_SESSION, true);
 
@@ -49,9 +48,10 @@ public class LoginCommand implements Command {
         }
     }
 
-    private void setAuthorizationData(RequestContext context, String login, User user) {
+    private void setAuthorizationData(RequestContext context, User user) {
         Role role = user.getRole();
-        long userId = user.getUserId();
+        String login = user.getLogin();
+        long userId = user.getId();
         context.setSessionAttribute(LOGIN_PARAM, login);
         context.setSessionAttribute(USER_ID, userId);
         context.setSessionAttribute(ROLE, role.toString());

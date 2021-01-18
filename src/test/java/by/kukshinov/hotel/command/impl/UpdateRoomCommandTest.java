@@ -5,14 +5,14 @@ import by.kukshinov.hotel.context.RequestContext;
 import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.model.Room;
+import by.kukshinov.hotel.service.api.ApplicationService;
 import by.kukshinov.hotel.service.api.RoomService;
 import org.mockito.Mockito;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import javax.servlet.ServletException;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -31,40 +31,42 @@ public class UpdateRoomCommandTest {
      private static final String ROOM_TYPE = "roomType";
      private static final String SKY_WALKER = "SKY_WALKER";
 
+     private RoomService service;
+     private RequestContext context;
+
+     @BeforeMethod
+     public void mockServicesAndRequestContext() {
+          service = mock(RoomService.class);
+
+          Map<String, String> param = new HashMap<>();
+          param.put(PERSON_AMOUNT, ONE);
+          param.put(ID, ONE);
+          param.put(ROOM_STATUS, OCCUPIED);
+          param.put(PRICE, PRICE_VALUE);
+          param.put(ROOM_TYPE, SKY_WALKER);
+          context = new RequestContext(param, new HashMap<>(), null);
+     }
+
 
      @Test
      public void testExecuteShouldReturnRedirectToAllRooms () throws ServiceException {
-          RoomService service = Mockito.mock(RoomService.class);
-          doNothing().when(service).updateRoom(any());
-          Map<String, String> params = new HashMap<>();
-          params.put(PERSON_AMOUNT, ONE);
-          params.put(ID, ONE);
-          params.put(ROOM_STATUS, OCCUPIED);
-          params.put(PRICE, PRICE_VALUE);
-          params.put(ROOM_TYPE, SKY_WALKER);
-          RequestContext context = new RequestContext(params, null, null);
-          UpdateRoomCommand command = new UpdateRoomCommand(service);
+          //given
+          SaveUpdatedRoomCommand command = new SaveUpdatedRoomCommand(service);
           CommandResult expected = CommandResult.redirect(ALL_ROOMS);
           when(service.findById(anyLong())).thenReturn(Optional.of(new Room()));
-
+          doNothing().when(service).updateRoom(any());
+          //when
           CommandResult actual = command.execute(context);
-
+          //then
           Assert.assertEquals(actual, expected);
      }
 
-     @Test(expectedExceptions = ServiceException.class)
+     @Test(expectedExceptions = ServiceException.class)//then
      public void testExecuteShouldThrowServiceException () throws ServiceException {
-          RoomService service = Mockito.mock(RoomService.class);
+          //given
+          SaveUpdatedRoomCommand command = new SaveUpdatedRoomCommand(service);
           doThrow(ServiceException.class).when(service).updateRoom(any());
-          Map<String, String> params = new HashMap<>();
-          params.put(PERSON_AMOUNT, ONE);
-          params.put(ID, ONE);
-          params.put(ROOM_STATUS, OCCUPIED);
-          params.put(PRICE, PRICE_VALUE);
-          params.put(ROOM_TYPE, SKY_WALKER);
-          RequestContext context = new RequestContext(params, null, null);
-          UpdateRoomCommand command = new UpdateRoomCommand(service);
-
+          //when
           command.execute(context);
      }
 }

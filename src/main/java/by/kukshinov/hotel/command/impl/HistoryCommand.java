@@ -30,11 +30,11 @@ public class HistoryCommand implements Command {
     @Override
     public CommandResult execute(RequestContext context) throws ServiceException {
         Long userId = (Long) context.getSessionAttribute(USER_ID);
-
-        int userApplicationsAmount = applicationService.getUserApplicationsAmount(userId);
         String currentPage = context.getRequestParameter(PAGE);
-        int page = validator.gatValidPage(currentPage, userApplicationsAmount, ITEMS_PER_PAGE);
-        List<Application> allUserApplications = applicationService.getRangeUserApplications(userId, (page - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
+
+        int userApplicationsAmount = applicationService.findUserApplicationsAmount(userId);
+        int page = validator.getValidPage(currentPage, userApplicationsAmount, ITEMS_PER_PAGE);
+        List<Application> allUserApplications = applicationService.findRangeUserApplications(userId, (page - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
         int lastPage = validator.getLastPage(userApplicationsAmount, ITEMS_PER_PAGE);
         context.setRequestAttribute(LAST_PAGE, lastPage);
         context.setRequestAttribute(APPLICATIONS, allUserApplications);

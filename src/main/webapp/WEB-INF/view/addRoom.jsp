@@ -61,7 +61,7 @@
                 <br>
             </div>
             <label class="input-booking" for="number"><fmt:message key="admin.room.create.room"/>
-                <input required class="room-number room" type="number" id="number" name="number">
+                <input maxlength="7" required class="room-number room" type="number" id="number" name="number">
             </label>
             <p class="error-message space"><fmt:message key="error.number"/></p>
             <div>

@@ -13,10 +13,13 @@ public class AuthorizationFilter implements Filter {
     private static final String ROLE = "role";
     private static final int FORBIDDEN = 403;
     private static final String ROLE_ADMIN = "ADMIN";
+    private static final String USER = "USER";
+    private static final String HOME = "home";
+    private static final String LOGOUT = "logout";
+    private static final String LOGIN = "login";
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
     }
 
     @Override
@@ -24,13 +27,19 @@ public class AuthorizationFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
         String command = req.getParameter(COMMAND);
-        if (command != null && command.contains(ADMIN)){
-            HttpSession session = req.getSession();
-            Object role = session.getAttribute(ROLE);
-            if(!ROLE_ADMIN.equalsIgnoreCase((String) role)){
+        HttpSession session = req.getSession();
+        String role = (String) session.getAttribute(ROLE);
+        if (command != null && command.contains(ADMIN)) {
+            if (!ROLE_ADMIN.equalsIgnoreCase(role)) {
                 resp.sendError(FORBIDDEN);
             } else {
                 filterChain.doFilter(servletRequest, servletResponse);
+            }
+        } else if (command != null) {
+            if(USER.equals(role) || (command.equals(HOME) || command.equals(LOGOUT) || command.equals(LOGIN))) {
+                filterChain.doFilter(servletRequest, servletResponse);
+            } else {
+                resp.sendError(FORBIDDEN);
             }
         } else {
             filterChain.doFilter(servletRequest, servletResponse);

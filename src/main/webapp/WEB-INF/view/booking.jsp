@@ -71,7 +71,7 @@
             <br>
         </div>
         <label class="input-booking" for="leavingDate"><fmt:message key="booking.book.date.leave"/>
-            <input required class="date-input-leave date" type="date" id="leavingDate" name="leavingDate">
+            <input max="12" required class="date-input-leave date" type="date" id="leavingDate" name="leavingDate">
         </label>
         <p id="invalidDate" class="error-message space"><fmt:message key="error.early.leaving.date"/></p>
         <div>

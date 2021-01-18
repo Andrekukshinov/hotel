@@ -2,7 +2,6 @@ package by.kukshinov.hotel.dao.extractor;
 
 import by.kukshinov.hotel.model.Room;
 import by.kukshinov.hotel.model.enums.ApartmentType;
-import by.kukshinov.hotel.model.enums.RoomStatus;
 
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
@@ -11,7 +10,7 @@ import java.util.Map;
 public class RoomFieldsExtractor implements FieldsExtractor<Room> {
 
     private static final String ROOM_TYPE = "apartment_type";
-    private static final String ROOM_STATUS = "status";
+    private static final String IS_AVAILABLE = "is_available";
     private static final String PRICE = "price";
     private static final String CAPACITY = "capacity";
     private static final String URL = "picture_url";
@@ -22,7 +21,7 @@ public class RoomFieldsExtractor implements FieldsExtractor<Room> {
     public Map<String, Object> extract(Room room) {
         Long id = room.getId();
         ApartmentType roomType = room.getRoomType();
-        RoomStatus roomStatus = room.getRoomStatus();
+        Boolean isAvailable = room.getIsAvailable();
         BigDecimal price = room.getPrice();
         int number = room.getNumber();
         byte capacity = room.getCapacity();
@@ -32,7 +31,7 @@ public class RoomFieldsExtractor implements FieldsExtractor<Room> {
 
         result.put(CAPACITY, capacity);
         result.put(ROOM_TYPE, roomType.toString());
-        result.put(ROOM_STATUS, roomStatus.toString());
+        result.put(IS_AVAILABLE, isAvailable);
         result.put(PRICE, price);
         result.put(ROOM_NUMBER, number);
         result.put(ID, id);

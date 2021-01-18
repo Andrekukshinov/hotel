@@ -7,6 +7,7 @@
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="ex" uri="custom-tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="locale"/>
@@ -20,7 +21,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/styles/bookingStyles.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/styles/rooms.css">
 </head>
-<body class="body">
+<body class="booking">
 <jsp:include page="templates/header.jsp"/>
 <div id="to-be-found">
     <jsp:include page="templates/leftMenu.jsp"/>
@@ -33,25 +34,21 @@
                     <li><fmt:message key="admin.room.capacity"/> ${application.personAmount}</li>
                     <li><fmt:message key="admin.room.type"/> <fmt:message
                             key="admin.room.type.${application.type}"/></li>
-                    <li><fmt:message key="booking.book.date.arrival"/> ${application.arrivalDate}</li>
-                    <li><fmt:message key="booking.book.date.leave"/> ${application.leavingDate}</li>
+                    <li><fmt:message key="booking.book.date.arrival"/>
+                        <ex:date-format date="${application.arrivalDate}" locale="${sessionScope.lang}"/>
+                    </li>
+                    <li><fmt:message key="booking.book.date.leave"/>
+                        <ex:date-format date="${application.leavingDate}" locale="${sessionScope.lang}"/>
+                    </li>
                     <li><fmt:message key="admin.user.application.status"/><fmt:message
                             key="admin.user.application.status.${application.status}"/></li>
                     <li>
-                        <ul class="no-style-ul">
-                            <li>
-                                <form class="admin-users-form" method="get" action="${pageContext.request.contextPath}/controller?command=admin_applications">
-                                    <input type="hidden" name="command" value="admin_applications">
-                                    <button type="submit" class="verdict-app-button two-options"><fmt:message key="admin.user.application.go.back"/></button>
-                                </form>
-                            </li>
-                            <li>
-                                <form class="admin-users-form" method="post" action="${pageContext.request.contextPath}/controller?command=admin_reject_application">
-                                    <input type="hidden" name="id" value="${application.id}">
-                                    <button type="submit" class="verdict-app-button no-style-ul"><fmt:message key="admin.user.application.reject"/></button>
-                                </form>
-                            </li>
-                        </ul>
+                        <form class="admin-users-form" method="post"
+                              action="${pageContext.request.contextPath}/controller?command=admin_reject_application">
+                            <input type="hidden" name="id" value="${application.id}">
+                            <button type="submit" class="verdict-app-button no-style-ul"><fmt:message
+                                    key="admin.user.application.reject"/></button>
+                        </form>
                     </li>
 
                 </ul>
@@ -61,7 +58,7 @@
                 <div class="item">
                     <div><fmt:message key="admin.room.capacity"/> ${room.capacity}</div>
                     <div><fmt:message key="admin.room.status"/> <fmt:message
-                            key="admin.room.status.${room.roomStatus}"/></div>
+                            key="admin.room.status.${room.isAvailable}"/></div>
                     <div><fmt:message key="admin.room.price"/> ${room.price}</div>
                     <div><fmt:message key="admin.room.Number"/> ${room.number}</div>
                     <div><fmt:message key="admin.room.type"/> <fmt:message
@@ -70,7 +67,6 @@
                           class="margin-top"
                           action="${pageContext.request.contextPath}/controller?command=admin_approve_application">
                         <input type="hidden" value="${application.id}" name="applicationId">
-                        <input type="hidden" value="OCCUPIED" name="roomStatus">
                         <input type="hidden" value="APPROVED" name="applicationStatus">
                         <input type="hidden" value="${room.id}" name="roomId">
                         <button type="submit" class="edit-description users-submit">
@@ -80,49 +76,10 @@
                 </div>
             </c:forEach>
         </div>
-        <div class="pages">
-            <c:choose>
-                <c:when test="${(page - 1) == 0}">
-                    <a href="" type="submit" class="pagination-children">❮</a>
-                    <a href="${pageContext.request.contextPath}/controller?command=admin_suggest_room&applicationId=${application.id}&page=1"
-                       type="submit"
-                       class="pagination-children active">1</a>
-                </c:when>
-                <c:otherwise>
-                    <a href="${pageContext.request.contextPath}/controller?command=admin_suggest_room&applicationId=${application.id}&page=${page-1}"
-                       type="submit"
-                       name="+" class="pagination-children">❮</a>
-                    <a href="${pageContext.request.contextPath}/controller?command=admin_suggest_room&applicationId=${application.id}&page=1"
-                       type="submit"
-                       class="pagination-children">1</a>
-                </c:otherwise>
-            </c:choose>
-            <c:if test="${((page - 1) != 0 ) && (page != lastPage)}">
-                <div class="pagination-children">...</div>
-                <div class="pagination-children active">${page}</div>
-            </c:if>
-            <c:choose>
-                <c:when test="${lastPage == 1 }">
-                    <a href="" type="submit" class="pagination-children">❯</a>
-                </c:when>
-                <c:when test="${page == lastPage}">
-                    <div class="pagination-children">...</div>
-                    <a href="${pageContext.request.contextPath}/controller?command=admin_suggest_room&applicationId=${application.id}&page=${lastPage}"
-                       type="submit"
-                       class="pagination-children active">${lastPage}</a>
-                    <a href="" type="submit" class="pagination-children">❯</a>
-                </c:when>
-                <c:otherwise>
-                    <div class="pagination-children">...</div>
-                    <a href="${pageContext.request.contextPath}/controller?command=admin_suggest_room&applicationId=${application.id}&page=${lastPage}"
-                       type="submit"
-                       class="pagination-children ">${lastPage}</a>
-                    <a href="${pageContext.request.contextPath}/controller?command=admin_suggest_room&applicationId=${application.id}&page=${page+1}"
-                       type="submit"
-                       class="pagination-children">❯</a>
-                </c:otherwise>
-            </c:choose>
-        </div>
+        <ex:pagination
+                href="${pageContext.request.contextPath}/controller?command=admin_suggest_room&applicationId=${application.id}&page="
+                currentPage="${page}" lastPage="${lastPage}"/>
+
     </div>
 </div>
 <jsp:include page="templates/footer.jsp"/>

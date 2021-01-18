@@ -7,11 +7,14 @@ import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.model.Room;
 import by.kukshinov.hotel.model.User;
 import by.kukshinov.hotel.model.enums.Role;
+import by.kukshinov.hotel.service.api.RoomService;
 import by.kukshinov.hotel.service.api.UserService;
+import by.kukshinov.hotel.service.impl.RoomServiceImpl;
 import by.kukshinov.hotel.service.impl.UserServiceImpl;
 import by.kukshinov.hotel.validators.PageValidatorImpl;
 import org.mockito.Mockito;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.*;
@@ -31,53 +34,47 @@ public class AllUsersCommandTest {
     private static final String USERS = "users";
 
 
-    @Test(expectedExceptions = {ServiceException.class})
-    public void testExecuteShouldThrowServiceException () throws ServiceException {
+    private UserService service;
+    private RequestContext context;
+    private PageValidatorImpl pageValidator;
+
+
+    @BeforeMethod
+    public void mockServicesAndRequestContext() {
+        service = Mockito.mock(UserServiceImpl.class);
+        pageValidator = Mockito.mock(PageValidatorImpl.class);
+
         Map<String, String> param = new HashMap<>();
         param.put(PAGE, FIRST);
-        RequestContext context = new RequestContext(param, new HashMap<>(), null);
-        UserService service = Mockito.mock(UserServiceImpl.class);
+        context = new RequestContext(param, new HashMap<>(), null);
+
+        when(pageValidator.getValidPage(anyString(), anyInt(), anyInt())).thenReturn(FIRST_PAGE);
+    }
+
+    @Test(expectedExceptions = {ServiceException.class})//then
+    public void testExecuteShouldThrowServiceException () throws ServiceException {
+        //given
         when(service.getRangeUsers(anyInt(), anyInt())).thenThrow(ServiceException.class);
         PageValidatorImpl pageValidator = Mockito.mock(PageValidatorImpl.class);
-        when(pageValidator.gatValidPage(anyString(), anyInt(), anyInt())).thenReturn(FIRST_PAGE);
         Command command = new AllUsersCommand(service, pageValidator);
-
+        //when
         command.execute(context);
     }
 
     @Test
-     public void testExecuteShouldReturnForwardToAllUsers () throws ServiceException {
-        Map<String, String> param = new HashMap<>();
-        param.put(PAGE, FIRST);
-        RequestContext context = new RequestContext(param, new HashMap<>(), null);
-        UserService service = Mockito.mock(UserServiceImpl.class);
-        when(service.getRangeUsers(anyInt(), anyInt())).thenReturn(new ArrayList<>());
-        PageValidatorImpl pageValidator = Mockito.mock(PageValidatorImpl.class);
-        when(pageValidator.gatValidPage(anyString(), anyInt(), anyInt())).thenReturn(FIRST_PAGE);
+     public void testExecuteShouldReturnForwardToAllUsersAndSetUsersToContext() throws ServiceException {
+        //given
+        List<User> expectedUsers = Collections.singletonList(USER);
+        when(service.getRangeUsers(anyInt(), anyInt())).thenReturn(expectedUsers);
         Command command = new AllUsersCommand(service, pageValidator);
         CommandResult expected = CommandResult.forward(ALL_USERS);
-
+        //when
         CommandResult actual = command.execute(context);
 
+        //then
+        List<Room> actualRooms = (List<Room>) context.getRequestAttribute(USERS);
+        Assert.assertEquals(actualRooms, expectedUsers);
         Assert.assertEquals(actual, expected);
      }
 
-
-    @Test
-    public void testExecuteShouldReturnPutToContextRooms () throws ServiceException {
-        Map<String, String> param = new HashMap<>();
-        param.put(PAGE, FIRST);
-        RequestContext context = new RequestContext(param, new HashMap<>(), null);
-        UserService service = Mockito.mock(UserServiceImpl.class);
-        List<User> expected = Collections.singletonList(USER);
-        when(service.getRangeUsers(anyInt(), anyInt())).thenReturn(expected);
-        PageValidatorImpl pageValidator = Mockito.mock(PageValidatorImpl.class);
-        when(pageValidator.gatValidPage(anyString(), anyInt(), anyInt())).thenReturn(FIRST_PAGE);
-        Command command = new AllUsersCommand(service, pageValidator);
-
-        command.execute(context);
-
-        List<Room> actualRooms = (List<Room>) context.getRequestAttribute(USERS);
-        Assert.assertEquals(actualRooms, expected);
-    }
 }

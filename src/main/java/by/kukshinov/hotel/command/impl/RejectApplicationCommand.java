@@ -10,7 +10,7 @@ import by.kukshinov.hotel.service.api.ApplicationService;
 import java.util.Optional;
 
 public class RejectApplicationCommand implements Command {
-    private static final String APPLICATIONS = "/hotel/controller?command=admin_applications";
+    private static final String APPLICATIONS = "/hotel/controller?command=admin_active_applications";
     private static final String ID = "id";
     private static final String ERROR_MESSAGE = "such application doesn't exist";
     private final ApplicationService service;

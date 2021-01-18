@@ -64,8 +64,12 @@ public class HotelController extends HttpServlet {
 
     @Override
     public void destroy() {
-        ConnectionPool instance = ConnectionPool.getInstance();
-        instance.killConnections();
+        try {
+            ConnectionPool instance = ConnectionPool.getInstance();
+            instance.killConnections();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        }
         super.destroy();
     }
 }

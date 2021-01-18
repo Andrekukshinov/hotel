@@ -36,8 +36,8 @@ public class ApplicationFieldsExtractor implements FieldsExtractor<Application> 
 
         result.put(PERSON_AMOUNT, personAmount);
         result.put(TYPE, type.toString());
-        result.put(ARRIVAL_DATE, arrivalDate);
-        result.put(LEAVING_DATE, leavingDate);
+        result.put(ARRIVAL_DATE, arrivalDate.toString());
+        result.put(LEAVING_DATE, leavingDate.toString());
         result.put(APPLICATION_STATE, status.toString());
         result.put(USER_ID, userId);
         result.put(ROOM_ID, roomId);

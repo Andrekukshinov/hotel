@@ -33,15 +33,11 @@ public class UpdateUserCommand implements Command {
 
         Optional<User> optionalUser = userService.findById(id);
 
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            Role userRole = user.getRole();
-            if (user.getUserId() != sessionUserId && !Role.ADMIN.equals(userRole)) {
-                userService.changeUserStatus(user, isDisabled);
-            }
-            return CommandResult.redirect(ALL_USERS);
-        } else {
-            throw new ServiceException(WRONG_USER);
+        User user = optionalUser.orElseThrow(() -> new ServiceException(WRONG_USER));
+        Role userRole = user.getRole();
+        if (user.getId() != sessionUserId && !Role.ADMIN.equals(userRole)) {
+            userService.changeUserStatus(user, isDisabled);
         }
+        return CommandResult.redirect(ALL_USERS);
     }
 }

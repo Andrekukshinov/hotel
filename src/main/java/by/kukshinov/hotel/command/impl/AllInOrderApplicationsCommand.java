@@ -30,11 +30,12 @@ public class AllInOrderApplicationsCommand implements Command {
 
     @Override
     public CommandResult execute(RequestContext context) throws ServiceException {
-        int orderedApplicationsAmount = applicationService.getInOrderApplicationsAmount();
+        int orderedApplicationsAmount = applicationService.findInOrderApplicationsAmount();
         String currentPage = context.getRequestParameter(PAGE);
-        int pageInt = validator.gatValidPage(currentPage, orderedApplicationsAmount, ITEMS_PER_PAGE);
-        List<Application> applications = applicationService.getRangeEntities((pageInt - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
+        int pageInt = validator.getValidPage(currentPage, orderedApplicationsAmount, ITEMS_PER_PAGE);
+        List<Application> applications = applicationService.findRangeOrderedEntities((pageInt - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
         int lastPage = validator.getLastPage(orderedApplicationsAmount, ITEMS_PER_PAGE);
+
         context.setRequestAttribute(LAST_PAGE, lastPage);
         context.setRequestAttribute(APPLICATIONS, applications);
         context.setRequestAttribute(PAGE, pageInt);

@@ -7,6 +7,7 @@
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="ex" uri="custom-tags" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="locale"/>
@@ -18,7 +19,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/styles/bookingStyles.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/styles/profileStyles.css">
 </head>
-<body class="body">
+<body class="booking">
 <jsp:include page="templates/header.jsp"/>
 <div id="to-be-found">
     <jsp:include page="templates/leftMenu.jsp"/>
@@ -55,49 +56,8 @@
                 </tr>
             </c:forEach>
         </table>
-        <div class="pages">
-            <c:choose>
-                <c:when test="${(page - 1) == 0}">
-                    <a href="" type="submit" class="pagination-children">❮</a>
-                    <a href="${pageContext.request.contextPath}/controller?command=admin_users&page=1"
-                       type="submit"
-                       class="pagination-children active">1</a>
-                </c:when>
-                <c:otherwise>
-                    <a href="${pageContext.request.contextPath}/controller?command=admin_users&page=${page-1}"
-                       type="submit"
-                       name="+" class="pagination-children">❮</a>
-                    <a href="${pageContext.request.contextPath}/controller?command=admin_users&page=1"
-                       type="submit"
-                       class="pagination-children">1</a>
-                </c:otherwise>
-            </c:choose>
-            <c:if test="${((page - 1) != 0 ) && (page != lastPage)}">
-                <div class="pagination-children">...</div>
-                <div class="pagination-children active">${page}</div>
-            </c:if>
-            <c:choose>
-                <c:when test="${lastPage == 1 }">
-                    <a href="" type="submit" class="pagination-children">❯</a>
-                </c:when>
-                <c:when test="${page == lastPage}">
-                    <div class="pagination-children">...</div>
-                    <a href="${pageContext.request.contextPath}/controller?command=admin_users&page=${lastPage}"
-                       type="submit"
-                       class="pagination-children active">${lastPage}</a>
-                    <a href="" type="submit" class="pagination-children">❯</a>
-                </c:when>
-                <c:otherwise>
-                    <div class="pagination-children">...</div>
-                    <a href="${pageContext.request.contextPath}/controller?command=admin_users&page=${lastPage}"
-                       type="submit"
-                       class="pagination-children ">${lastPage}</a>
-                    <a href="${pageContext.request.contextPath}/controller?command=admin_users&page=${page+1}"
-                       type="submit"
-                       class="pagination-children">❯</a>
-                </c:otherwise>
-            </c:choose>
-        </div>
+        <ex:pagination href="${pageContext.request.contextPath}/controller?command=admin_users&page=" currentPage="${page}" lastPage="${lastPage}"/>
+
     </div>
 </div>
 

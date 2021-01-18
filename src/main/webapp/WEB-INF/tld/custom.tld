@@ -15,6 +15,24 @@
     </tag>
 
     <tag>
+        <name>date-format</name>
+        <tag-class>by.kukshinov.hotel.tag.DateFormatTag</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>date</name>
+            <type>java.time.LocalDate</type>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>locale</name>
+            <type>java.lang.String</type>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
         <name>pagination</name>
         <tag-class>by.kukshinov.hotel.tag.PaginationTag</tag-class>
         <body-content>scriptless</body-content>

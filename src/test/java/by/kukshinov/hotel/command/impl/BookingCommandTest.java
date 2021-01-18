@@ -8,12 +8,17 @@ import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.model.creators.ApplicationCreator;
 import by.kukshinov.hotel.model.creators.ApplicationCreatorImpl;
 import by.kukshinov.hotel.service.api.ApplicationService;
+import by.kukshinov.hotel.service.api.UserService;
 import by.kukshinov.hotel.service.impl.ApplicationServiceImpl;
+import by.kukshinov.hotel.service.impl.UserServiceImpl;
+import by.kukshinov.hotel.validators.PageValidatorImpl;
 import org.mockito.Mockito;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,49 +32,57 @@ public class BookingCommandTest {
     private static final String APARTMENT = "apartment";
     private static final String ARRIVAL_DATE = "arrivalDate";
     private static final String LEAVING_DATE = "leavingDate";
-    private static final String USER_ID = "userId";
+    private static final String USER_ID = "user_id";
     private static final String CAPACITY_VALUE = "2";
     private static final String STANDARD = "standard";
-    private static final String ARRIVAL_DATE_VALUE = "2020-12-12T20:23";
-    private static final String LEAVING_DATE_VALUE = "2020-12-15T20:23";
-    private static final String USER_ID_VALUE = "2";
+    private static final Long USER_ID_VALUE = 2L;
+
+    private ApplicationService service;
+    private RequestContext context;
+
+    @BeforeMethod
+    public void mockServicesAndRequestContext() {
+        service = mock(ApplicationService.class);
+
+        Map<String, String> param = new HashMap<>();
+        Map<String, Object> sessionAttributes = new HashMap<>();
+
+        LocalDate arrivalDate = LocalDate.now().plusDays(1);
+        LocalDate leavingDate = LocalDate.now().plusDays(2);
+
+        String stringArrival = arrivalDate.toString();
+        String stringLeaving = leavingDate.toString();
+
+        param.put(PERSON_AMOUNT, CAPACITY_VALUE);
+        param.put(APARTMENT, STANDARD);
+        param.put(ARRIVAL_DATE, stringArrival);
+        param.put(LEAVING_DATE, stringLeaving);
+
+        sessionAttributes.put(USER_ID, USER_ID_VALUE);
+        context = new RequestContext(param, new HashMap<>(), sessionAttributes);
+
+
+    }
 
     @Test
     public void testExecuteShouldReturnRedirect() throws ServiceException, ParseException {
-        ApplicationService service = Mockito.mock(ApplicationServiceImpl.class);
-        ApplicationCreator creator = Mockito.mock(ApplicationCreatorImpl.class);
-        Map<String, String> requestParameters = new HashMap<>();
-        requestParameters.put(PERSON_AMOUNT, CAPACITY_VALUE);
-        requestParameters.put(APARTMENT, STANDARD);
-        requestParameters.put(ARRIVAL_DATE, ARRIVAL_DATE_VALUE);
-        requestParameters.put(LEAVING_DATE, LEAVING_DATE_VALUE);
-        requestParameters.put(USER_ID, USER_ID_VALUE);
-        RequestContext context = new RequestContext(requestParameters, new HashMap<>(), new HashMap<>());
-        when(creator.getApplication(any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyString())).thenReturn(new Application());
+        //given
         doNothing().when(service).save(any());
-        Command command = new BookingCommand(service, creator);
+        Command command = new BookingCommand(service);
         CommandResult expected = CommandResult.redirect(USER_HISTORY);
-
+        //when
         CommandResult actual = command.execute(context);
-
+        //then
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(expectedExceptions = ServiceException.class)
-    public void testExecuteShouldThrowServiceException() throws ServiceException, ParseException {
+    @Test(expectedExceptions = ServiceException.class)//then
+    public void testExecuteShouldThrowServiceException() throws ServiceException {
+        //given
         ApplicationService service = Mockito.mock(ApplicationServiceImpl.class);
-        ApplicationCreator creator = Mockito.mock(ApplicationCreatorImpl.class);
-        Map<String, String> requestParameters = new HashMap<>();
-        requestParameters.put(PERSON_AMOUNT, CAPACITY_VALUE);
-        requestParameters.put(APARTMENT, STANDARD);
-        requestParameters.put(ARRIVAL_DATE, ARRIVAL_DATE_VALUE);
-        requestParameters.put(LEAVING_DATE, LEAVING_DATE_VALUE);
-        requestParameters.put(USER_ID, USER_ID_VALUE);
-        RequestContext context = new RequestContext(requestParameters, new HashMap<>(), new HashMap<>());
-        when(creator.getApplication(any(), anyString(), anyString(), anyString(), anyString(), anyLong(), anyString(), anyString())).thenReturn(new Application());
         doThrow(ServiceException.class).when(service).save(any());
-        Command command = new BookingCommand(service, creator);
-
+        Command command = new BookingCommand(service);
+        //when
         command.execute(context);
     }
 }

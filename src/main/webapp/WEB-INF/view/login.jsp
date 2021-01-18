@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/styles/commonStyles.css">
     <title>Login</title>
 </head>
-<body onload="validateLogin()" class="standard-color">
+<body onload="validateLogin()" class="booking">
 <jsp:include page="templates/header.jsp"/>
 <div class="login-form">
     <h3 class="align-center"><fmt:message key="login.writing"/></h3>

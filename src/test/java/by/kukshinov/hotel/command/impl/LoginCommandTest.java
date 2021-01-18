@@ -6,9 +6,11 @@ import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.model.User;
 import by.kukshinov.hotel.model.enums.Role;
+import by.kukshinov.hotel.service.api.ApplicationService;
 import by.kukshinov.hotel.service.api.UserService;
 import org.mockito.Mockito;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
@@ -16,8 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class LoginCommandTest {
     private static final String PASS = "password";
@@ -34,10 +35,17 @@ public class LoginCommandTest {
     private static final String ERROR_MASSAGE_ATTRIBUTE = "errorMassage";
     private static final String ERROR_MASSAGE_VALUE = "not.found";
 
+    private UserService service;
+
+    @BeforeMethod
+    public void mockServicesAndRequestContext() {
+        service = mock(UserService.class);
+    }
+
 
     @Test
-    public void testExecuteShouldReturnRedirectToHomePage() throws ServiceException {
-        UserService service = Mockito.mock(UserService.class);
+    public void testExecuteShouldReturnRedirectToHomePageAndPutUserDataToContext() throws ServiceException {
+        //given
         Map<String, String> requestParameters = new HashMap<>();
         requestParameters.put(LOGIN, EMPTY);
         requestParameters.put(PASS, EMPTY);
@@ -45,71 +53,45 @@ public class LoginCommandTest {
         LoginCommand loginCommand = new LoginCommand(service);
         Optional<User> userOptional = Optional.of(USER);
         when(service.findByCredentials(anyString(), anyString())).thenReturn(userOptional);
-
+        //when
         CommandResult actual = loginCommand.execute(context);
-
+        //then
         CommandResult expected = CommandResult.redirect(HOME_PAGE);
-        Assert.assertEquals(actual, expected);
-    }
-
-    @Test
-    public void testExecuteShouldReturnForwardToLoginPage() throws ServiceException {
-        UserService service = Mockito.mock(UserService.class);
-        RequestContext context = new RequestContext(new HashMap<>(), new HashMap<>(), new HashMap<>());
-        LoginCommand loginCommand = new LoginCommand(service);
-        CommandResult expected = CommandResult.forward(LOGIN_PAGE);
-
-        CommandResult actual = loginCommand.execute(context);
-
-        Assert.assertEquals(actual, expected);
-    }
-
-    @Test
-    public void testExecuteShouldPutUserDetailsToRequestContext() throws ServiceException {
-        UserService service = Mockito.mock(UserService.class);
-        Map<String, String> requestParameters = new HashMap<>();
-        requestParameters.put(LOGIN_PARAM, LOGIN);
-        requestParameters.put(PASS, EMPTY);
-        RequestContext context = new RequestContext(requestParameters, new HashMap<>(), new HashMap<>());
-        LoginCommand loginCommand = new LoginCommand(service);
-        Optional<User> userOptional = Optional.of(USER);
-        when(service.findByCredentials(anyString(), anyString())).thenReturn(userOptional);
-
-        loginCommand.execute(context);
-
         String login = (String) context.getSessionAttribute(LOGIN_PARAM);
         Long id = (Long) context.getSessionAttribute(USER_ID_PARAM);
         String stringRole = (String) context.getSessionAttribute(ROLE);
         Role role = Role.valueOf(stringRole);
 
-        // TODO: 11.12.2020 ask
         Assert.assertEquals(id, USER_ID);
         Assert.assertEquals(login, LOGIN);
         Assert.assertEquals(role, USER_ROLE);
-
+        Assert.assertEquals(actual, expected);
     }
 
-    @Test(expectedExceptions = {ServiceException.class})
+
+    @Test(expectedExceptions = {ServiceException.class})//then
     public void testExecuteShouldThrowServiceException() throws ServiceException {
-        UserService service = Mockito.mock(UserService.class);
+        //given
         RequestContext context = new RequestContext(new HashMap<>(), new HashMap<>(), new HashMap<>());
         LoginCommand loginCommand = new LoginCommand(service);
         when(service.findByCredentials(any(), any())).thenThrow(ServiceException.class);
 
+        //when
         loginCommand.execute(context);
     }
 
     @Test
     public void testExecuteShouldPutToContextErrorMessage() throws ServiceException {
-        UserService service = Mockito.mock(UserService.class);
+        //given
         RequestContext context = new RequestContext(new HashMap<>(), new HashMap<>(), new HashMap<>());
         LoginCommand loginCommand = new LoginCommand(service);
 
+        //when
         loginCommand.execute(context);
 
+        //then
         String actualError = (String) context.getRequestAttribute(ERROR_MASSAGE_ATTRIBUTE);
         Assert.assertEquals(actualError, ERROR_MASSAGE_VALUE);
     }
-
 
 }

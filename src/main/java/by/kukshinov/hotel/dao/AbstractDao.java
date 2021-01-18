@@ -21,7 +21,6 @@ public abstract class AbstractDao<T extends Entity> implements Dao<T> {
     private static final String GET_ENTITIES = "SELECT * FROM ";
     private static final String ID_CONDITION = " WHERE id=? ";
     private final String tableName;
-    private final String getById;
     private final String entitiesCount = "SELECT COUNT(*) FROM ";
 
     private Connection connection;
@@ -36,7 +35,6 @@ public abstract class AbstractDao<T extends Entity> implements Dao<T> {
         this.objectMapper = objectMapper;
         this.fieldsExtractor = fieldsExtractor;
         this.requestBuilder = requestBuilder;
-        getById = GET_ENTITIES + tableName + ID_CONDITION;
     }
 
     protected void executeForSave(String query, Object... params) throws DaoException {
@@ -58,11 +56,6 @@ public abstract class AbstractDao<T extends Entity> implements Dao<T> {
     }
 
     @Override
-    public List<T> findAll() throws DaoException {
-        return executeQuery(GET_ENTITIES + tableName);
-    }
-
-    @Override
     public void save(T item) throws DaoException {
         Map<String, Object> extracted = fieldsExtractor.extract(item);
         List<Object> fields = new ArrayList<>(extracted.values());
@@ -73,15 +66,8 @@ public abstract class AbstractDao<T extends Entity> implements Dao<T> {
 
     @Override
     public Optional<T> findById(Long id) throws DaoException {
+        String getById = GET_ENTITIES + tableName + ID_CONDITION;
         return executeForSingleItem(getById, id);
-    }
-
-
-    @Override
-    public void delete(T item) throws DaoException {
-        Map<String, Object> extracted = fieldsExtractor.extract(item);
-        Object deleteParam = extracted.get(getDeleteParam());
-        executeForSave(getDeleteQuery(), deleteParam);
     }
 
     protected int getAmountEntities(String condition, Object... params) throws DaoException {

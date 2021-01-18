@@ -99,6 +99,10 @@ ul.no-style-ul {
     overflow: hidden;
 }
 
+.first-option{
+    margin-left: 20%;
+}
+
 .two-options {
     margin-left: 30%;
     float: left;
@@ -127,8 +131,8 @@ li.no-style-ul {
 
     .history-item-button {
         grid-column: 1;
-        grid-row: 1;
-        padding: 2% 0 3% 0;
+        grid-row: 3;
+        padding:3% 0;
     }
 
     .modal {
