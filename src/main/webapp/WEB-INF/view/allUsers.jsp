@@ -24,38 +24,41 @@
 <div id="to-be-found">
     <jsp:include page="templates/leftMenu.jsp"/>
     <div class="table-wrapper">
-        <table id="customers">
-            <tr>
-                <th>#</th>
-                <th class="small-font"><fmt:message key="admin.user.login"/></th>
-                <th><fmt:message key="admin.user.status"/></th>
-                <th><fmt:message key="admin.user.role"/></th>
-                <th><fmt:message key="admin.user.status.change"/></th>
-            </tr>
-<%--            todo think of resizing table--%>
-            <c:forEach var="user" items="${users}" varStatus="index">
+        <div class="scroll">
+            <table id="customers">
                 <tr>
-                    <td>${(itemsPerPage)*(page - 1) + index.count}</td>
-                    <td class="small-font">${user.login}</td>
-                    <td class="small-font"><fmt:message key="admin.user.status.state.${user.isDisabled}"/></td>
-                    <td class="small-font small-letters">
-                        <fmt:message key="admin.user.role.${user.role}"/>
-                    </td>
-                    <td>
-                        <form method="post"
-                              action="${pageContext.request.contextPath}/controller?command=admin_update_user"
-                              class="admin-users-form">
-                            <input type="hidden" value="${user.login}" name="login">
-                            <input type="hidden" value="${user.id}" name="userId">
-                            <input type="hidden" value="${user.password}" name="pass">
-                            <input type="hidden" value="${user.role}" name="role">
-                            <input type="hidden" value="${user.isDisabled}" name="isDisabled">
-                            <button class="small-font" type="submit"><fmt:message key="admin.user.status.${user.isDisabled}"/></button>
-                        </form>
-                    </td>
+                    <th>#</th>
+                    <th class="small-font"><fmt:message key="admin.user.login"/></th>
+                    <th><fmt:message key="admin.user.status"/></th>
+                    <th><fmt:message key="admin.user.role"/></th>
+                    <th><fmt:message key="admin.user.status.change"/></th>
                 </tr>
-            </c:forEach>
-        </table>
+                <%--            todo think of resizing table--%>
+                <c:forEach var="user" items="${users}" varStatus="index">
+                    <tr>
+                        <td>${(itemsPerPage)*(page - 1) + index.count}</td>
+                        <td class="small-font">${user.login}</td>
+                        <td class="small-font"><fmt:message key="admin.user.status.state.${user.isDisabled}"/></td>
+                        <td class="small-font small-letters">
+                            <fmt:message key="admin.user.role.${user.role}"/>
+                        </td>
+                        <td>
+                            <form method="post"
+                                  action="${pageContext.request.contextPath}/controller?command=admin_update_user"
+                                  class="admin-users-form">
+                                <input type="hidden" value="${user.login}" name="login">
+                                <input type="hidden" value="${user.id}" name="userId">
+                                <input type="hidden" value="${user.password}" name="pass">
+                                <input type="hidden" value="${user.role}" name="role">
+                                <input type="hidden" value="${user.isDisabled}" name="isDisabled">
+                                <button class="small-font" type="submit"><fmt:message
+                                        key="admin.user.status.${user.isDisabled}"/></button>
+                            </form>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </div>
         <ex:pagination href="${pageContext.request.contextPath}/controller?command=admin_users&page=" currentPage="${page}" lastPage="${lastPage}"/>
 
     </div>

@@ -6,7 +6,7 @@ import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.Application;
 import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.service.api.ApplicationService;
-import by.kukshinov.hotel.validators.PageValidator;
+import by.kukshinov.hotel.util.PageHelper;
 
 import java.util.List;
 
@@ -20,9 +20,9 @@ public class HistoryCommand implements Command {
     private static final String LAST_PAGE = "lastPage";
 
     private final ApplicationService applicationService;
-    private final PageValidator validator;
+    private final PageHelper validator;
 
-    public HistoryCommand(ApplicationService applicationService, PageValidator validator) {
+    public HistoryCommand(ApplicationService applicationService, PageHelper validator) {
         this.applicationService = applicationService;
         this.validator = validator;
     }

@@ -35,7 +35,7 @@ public class ApplicationUsernameServiceImpl implements ApplicationUsernameServic
             for (Application application: applications) {
                 Long userId = application.getUserId();
                 Optional<User> userOptional = userDao.findById(userId);
-                User user = userOptional.orElseThrow(() -> new ServiceException(WRONG_APPLIATION));
+                User user = userOptional.orElseThrow(() -> new DaoException(WRONG_APPLIATION));
                 String login = user.getLogin();
                 result.add(new ApplicationUsernameDto(application, login));
             }

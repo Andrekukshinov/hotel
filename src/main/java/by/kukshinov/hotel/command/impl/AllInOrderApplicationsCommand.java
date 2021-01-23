@@ -6,9 +6,9 @@ import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.Application;
 import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.service.api.ApplicationService;
-import by.kukshinov.hotel.validators.PageValidator;
-import by.kukshinov.hotel.validators.PageValidatorImpl;
+import by.kukshinov.hotel.util.PageHelper;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class AllInOrderApplicationsCommand implements Command {
@@ -18,12 +18,13 @@ public class AllInOrderApplicationsCommand implements Command {
     private static final String PER_PAGE = "itemsPerPage";
     private static final String APPLICATIONS = "applications";
     private static final String LAST_PAGE = "lastPage";
+    private static final String NOW = "now";
 
     private final ApplicationService applicationService;
-    private final PageValidator validator;
+    private final PageHelper validator;
 
 
-    public AllInOrderApplicationsCommand(ApplicationService applicationService, PageValidatorImpl validator) {
+    public AllInOrderApplicationsCommand(ApplicationService applicationService, PageHelper validator) {
         this.applicationService = applicationService;
         this.validator = validator;
     }
@@ -35,12 +36,14 @@ public class AllInOrderApplicationsCommand implements Command {
         int pageInt = validator.getValidPage(currentPage, orderedApplicationsAmount, ITEMS_PER_PAGE);
         List<Application> applications = applicationService.findRangeOrderedEntities((pageInt - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
         int lastPage = validator.getLastPage(orderedApplicationsAmount, ITEMS_PER_PAGE);
+        LocalDate now = LocalDate.now();
 
         context.setRequestAttribute(LAST_PAGE, lastPage);
+        context.setRequestAttribute(NOW, now);
         context.setRequestAttribute(APPLICATIONS, applications);
         context.setRequestAttribute(PAGE, pageInt);
         context.setRequestAttribute(PER_PAGE, ITEMS_PER_PAGE);
         return CommandResult.forward(ALL_APPLICATIONS);
-
     }
+
 }

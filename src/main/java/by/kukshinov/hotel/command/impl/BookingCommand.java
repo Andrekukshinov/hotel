@@ -3,15 +3,12 @@ package by.kukshinov.hotel.command.impl;
 import by.kukshinov.hotel.command.Command;
 import by.kukshinov.hotel.context.RequestContext;
 import by.kukshinov.hotel.exceptions.ServiceException;
-import by.kukshinov.hotel.model.creators.ApplicationCreator;
-import by.kukshinov.hotel.model.creators.ApplicationCreatorImpl;
 import by.kukshinov.hotel.model.Application;
 import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.model.enums.ApartmentType;
 import by.kukshinov.hotel.model.enums.ApplicationStatus;
 import by.kukshinov.hotel.service.api.ApplicationService;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -52,7 +49,7 @@ public class BookingCommand implements Command {
         DateTimeFormatter pattern = DateTimeFormatter.ofPattern(FORMAT_PATTERN);
         LocalDate dateArrival = LocalDate .parse(arrivalDate, pattern);
         LocalDate dateLeaving = LocalDate .parse(leavingDate, pattern);
-        validateBookingDate(capacity, dateArrival, dateLeaving);
+        validateBookingData(capacity, dateArrival, dateLeaving);
         ApartmentType apartmentType = ApartmentType.valueOf(apartment.toUpperCase());
 
         Application userApplication = new Application(null, capacity, apartmentType, dateArrival, dateLeaving, ApplicationStatus.IN_ORDER, null, null, userId);
@@ -61,7 +58,7 @@ public class BookingCommand implements Command {
         return CommandResult.redirect(USER_HISTORY);
     }
 
-    private void validateBookingDate(byte capacity, LocalDate dateArrival, LocalDate dateLeaving) throws ServiceException {
+    private void validateBookingData(byte capacity, LocalDate dateArrival, LocalDate dateLeaving) throws ServiceException {
         if (dateArrival.isBefore(LocalDate.now())) {
             throw new ServiceException(WRONG_ARRIVAL_DATE);
         }

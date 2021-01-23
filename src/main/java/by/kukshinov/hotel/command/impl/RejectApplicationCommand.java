@@ -27,7 +27,7 @@ public class RejectApplicationCommand implements Command {
         long id = Long.parseLong(stringId);
         Optional<Application> optionalApplication = service.findInOrderApplicationById(id);
         Application userApplication = optionalApplication.orElseThrow(() -> new ServiceException(ERROR_MESSAGE));
-        service.rejectApplication(userApplication);
+        service.adminDenyOrderedApplication(userApplication);
         return CommandResult.redirect(APPLICATIONS);
     }
 }

@@ -51,7 +51,7 @@ public class UserRejectCommand implements Command {
         LocalDate now = LocalDate.now();
 
         if (now.isBefore(arrivalDate) && !role.equalsIgnoreCase(ADMIN)) {
-            service.userRejectApplication(application);
+            service.userRejectApprovedApplication(application);
             return CommandResult.redirect(PROFILE_HISTORY);
         } else {
             ApplicationRoom applicationRoom = applicationRoomService.findApplicationRoom(applicationId);

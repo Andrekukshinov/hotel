@@ -25,7 +25,7 @@
                 </li>
             </c:when>
             <c:otherwise>
-                <li class="right ">
+                <li class="right left-border ">
                     <form action="${pageContext.request.contextPath}/controller">
                         <input type="hidden" name="command" value="logout">
                         <button class="auth">
@@ -35,17 +35,6 @@
                 </li>
             </c:otherwise>
         </c:choose>
-
-        <c:if test="${sessionScope.login == null}">
-            <li class="right left-border">
-                <form action="${pageContext.request.contextPath}/controller">
-                    <input type="hidden" name="command" value="logout">
-                    <button class="auth">
-                        <fmt:message key="header.unauthorized.signup"/>
-                    </button>
-                </form>
-            </li>
-        </c:if>
 
         <li class="right select-container">
             <ul>

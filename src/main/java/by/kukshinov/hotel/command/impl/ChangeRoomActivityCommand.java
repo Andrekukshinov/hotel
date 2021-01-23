@@ -25,13 +25,12 @@ public class ChangeRoomActivityCommand implements Command {
     @Override
     public CommandResult execute(RequestContext context) throws ServiceException {
         String stringId = context.getRequestParameter(ID);
-        String stringIsAvailable = context.getRequestParameter(IS_AVAILABLE);
 
         long id = Long.parseLong(stringId);
         Optional<Room> roomOptional = roomService.findById(id);
         Room room = roomOptional.orElseThrow(() -> new ServiceException(WRONG_ROOM));
 
-        Boolean isAvailable = Boolean.valueOf(stringIsAvailable);
+        Boolean isAvailable = room.getIsAvailable();
         room.setIsAvailable(isAvailable);
 
         roomService.updateRoom(room);

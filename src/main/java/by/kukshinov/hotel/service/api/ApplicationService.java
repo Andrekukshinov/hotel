@@ -11,7 +11,9 @@ import java.util.Optional;
 
 public interface ApplicationService {
 
-    void approveApplication(Application application, Long roomId) throws ServiceException;
+    void adminDenyOrderedApplication(Application application) throws ServiceException;
+
+    void approveApplication(Application application, Room room) throws ServiceException;
 
     Optional<Application> findApprovedUserApplicationById(Long id, Long useId) throws ServiceException;
 
@@ -33,12 +35,10 @@ public interface ApplicationService {
 
     List<Application> findRangeOrderedEntities(int startFrom, int finishWith) throws ServiceException;
 
-    void rejectApplication(Application application) throws ServiceException;
-
     void save(Application application) throws ServiceException;
 
-    void userRejectApplication(Application application) throws ServiceException;
+    void userRejectApprovedApplication(Application application) throws ServiceException;
 
-    void userCancelApplication(Application application) throws ServiceException;
+    void userCancelOrderedApplication(Application application) throws ServiceException;
 
 }

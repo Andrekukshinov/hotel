@@ -43,7 +43,8 @@
                                     <li><fmt:message key="admin.room.type"/>
                                         <fmt:message key="admin.room.type.${applicationDto.type}"/>
                                     </li>
-                                    <li><fmt:message key="booking.book.date.arrival"/>
+                                    <li>
+                                        <fmt:message key="booking.book.date.arrival"/>
                                         <ex:date-format date="${applicationDto.arrivalDate}"
                                                         locale="${sessionScope.lang}"/>
                                     </li>
@@ -58,11 +59,11 @@
                             </td>
                             <td>
                                 <form method="get"
-                                      action="${pageContext.request.contextPath}/controller?command=admin_suggest_room&applicationId=${applicationDto.id}"
+                                      action="${pageContext.request.contextPath}/controller"
                                       class="admin-users-form">
                                     <input type="hidden" value="admin_suggest_room" name="command">
                                     <input type="hidden" value="${applicationDto.id}" name="applicationId">
-                                    <button class="verdict-app-button small-font" type="submit">
+                                    <button ${(now < applicationDto.arrivalDate)? "":"disabled"} class="verdict-app-button small-font" type="submit">
                                         <fmt:message key="admin.user.application.suggest"/>
                                     </button>
                                 </form>

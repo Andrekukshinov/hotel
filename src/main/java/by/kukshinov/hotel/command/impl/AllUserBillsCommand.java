@@ -6,7 +6,7 @@ import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.Application;
 import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.service.api.ApplicationService;
-import by.kukshinov.hotel.validators.PageValidator;
+import by.kukshinov.hotel.util.PageHelper;
 
 import java.util.List;
 
@@ -19,10 +19,10 @@ public class AllUserBillsCommand implements Command {
     private static final String PER_PAGE = "itemsPerPage";
     private static final String LAST_PAGE = "lastPage";
 
-    private final PageValidator validator;
+    private final PageHelper validator;
     private final ApplicationService applicationService;
 
-    public AllUserBillsCommand(ApplicationService applicationService, PageValidator validator) {
+    public AllUserBillsCommand(ApplicationService applicationService, PageHelper validator) {
         this.applicationService = applicationService;
         this.validator = validator;
     }

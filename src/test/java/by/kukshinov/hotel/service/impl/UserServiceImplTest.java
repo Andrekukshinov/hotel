@@ -96,7 +96,6 @@ public class UserServiceImplTest {
         //when
         userService.changeUserStatus(actual, !actual.getIsDisabled());
         //then
-
         Assert.assertEquals(actual, expected);
     }
 

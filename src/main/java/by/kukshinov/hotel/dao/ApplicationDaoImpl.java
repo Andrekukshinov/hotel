@@ -25,7 +25,7 @@ public class ApplicationDaoImpl extends AbstractDao<Application> implements Appl
 
     private static final String GET_QUEUED_APPLICATIONS_FOR_TABLE = "SELECT * FROM Application WHERE application_state = 'IN_ORDER' ORDER BY arrival_date DESC LIMIT ?, ?";
     private static final String GET_APPLICATIONS_RANGE = "SELECT * FROM Application WHERE application_state != 'CANCELLED' ORDER BY arrival_date DESC LIMIT ?, ?";
-    private static final String GET_QUEUED_APPLICATION_BY_ID = "SELECT * FROM Application WHERE id=? AND application_state = 'IN_ORDER'  ";
+    private static final String GET_QUEUED_APPLICATION_BY_ID = "SELECT * FROM Application WHERE id=? AND application_state = 'IN_ORDER'";
 
     private static final String GET_USER_QUEUED_APPLICATION_BY_ID = "SELECT * FROM Application WHERE id=? AND application_state = 'IN_ORDER' AND user_id=? ";
     private static final String ID = "id";
@@ -105,8 +105,3 @@ public class ApplicationDaoImpl extends AbstractDao<Application> implements Appl
     }
 
 }
-//
-
-
-
-//

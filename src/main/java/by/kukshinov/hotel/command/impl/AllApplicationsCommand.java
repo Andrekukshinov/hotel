@@ -7,7 +7,7 @@ import by.kukshinov.hotel.model.ApplicationUsernameDto;
 import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.service.api.ApplicationService;
 import by.kukshinov.hotel.service.api.ApplicationUsernameService;
-import by.kukshinov.hotel.validators.PageValidator;
+import by.kukshinov.hotel.util.PageHelper;
 
 import java.util.List;
 
@@ -22,9 +22,9 @@ public class AllApplicationsCommand implements Command {
 
     private final ApplicationService applicationService;
     private final ApplicationUsernameService applicationUsernameService;
-    private final PageValidator validator;
+    private final PageHelper validator;
 
-    public AllApplicationsCommand(ApplicationService applicationService, ApplicationUsernameService applicationUsernameService, PageValidator validator) {
+    public AllApplicationsCommand(ApplicationService applicationService, ApplicationUsernameService applicationUsernameService, PageHelper validator) {
         this.applicationService = applicationService;
         this.applicationUsernameService = applicationUsernameService;
         this.validator = validator;

@@ -23,8 +23,12 @@ public class AddRoomCommandTest {
     private static final String ROOM_NUMBER = "number";
     private static final String PRICE = "price";
     private static final String NUMBER_VALUE = "1";
+    private static final String NEGATIVE_VALUE = "-1";
     private static final String LUX = "LUX";
+    private static final String UNKNOWN = "no";
     private static final String PRICE_VALUE = "255";
+    private static final String WRONG_PRICE = "Wrong price!";
+    private static final String WRONG_CAPACITY = "Wrong capacity!";
 
 
     private RoomService service;
@@ -33,19 +37,18 @@ public class AddRoomCommandTest {
     @BeforeMethod
     public void mockServicesAndRequestContext() {
         service = Mockito.mock(RoomServiceImpl.class);
-
-        Map<String, String> param = new HashMap<>();
-        param.put(ROOM_NUMBER, NUMBER_VALUE);
-        param.put(ROOM_CAPACITY, NUMBER_VALUE);
-        param.put(APARTMENT_TYPE, LUX);
-        param.put(PRICE, PRICE_VALUE);
-        context = new RequestContext(param, new HashMap<>(), null);
     }
 
 
     @Test
     public void testExecuteReturnRedirectToAllRooms() throws ServiceException {
         //given
+        Map<String, String> param = new HashMap<>();
+        param.put(ROOM_NUMBER, NUMBER_VALUE);
+        param.put(ROOM_CAPACITY, NUMBER_VALUE);
+        param.put(APARTMENT_TYPE, LUX);
+        param.put(PRICE, PRICE_VALUE);
+        context = new RequestContext(param, new HashMap<>(), null);
         CommandResult expected = CommandResult.redirect(URL);
         doNothing().when(service).saveRoom(any());
         AddRoomCommand command = new AddRoomCommand(service);
@@ -56,10 +59,60 @@ public class AddRoomCommandTest {
         verify(service, times(1)).saveRoom(any());
     }
 
-    @Test(expectedExceptions = ServiceException.class)
-    public void testExecuteThrowException() throws ServiceException {
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testExecuteShouldThrowIllegalArgumentExceptionWhenGetsWrongApartmentType() throws ServiceException {
         //given
-        doThrow(ServiceException.class).when(service).saveRoom(any());
+        Map<String, String> param = new HashMap<>();
+        param.put(ROOM_NUMBER, NEGATIVE_VALUE);
+        param.put(ROOM_CAPACITY, NEGATIVE_VALUE);
+        param.put(APARTMENT_TYPE, UNKNOWN);
+        param.put(PRICE, NEGATIVE_VALUE);
+        context = new RequestContext(param, new HashMap<>(), null);
+        //when
+        AddRoomCommand command = new AddRoomCommand(service);
+        //then
+        command.execute(context);
+    }
+
+    @Test( expectedExceptions = ServiceException.class, expectedExceptionsMessageRegExp = WRONG_PRICE)
+    public void testExecuteShouldThrowServiceExceptionWhenPriceIsNegative() throws ServiceException {
+        //given
+        Map<String, String> param = new HashMap<>();
+        param.put(ROOM_NUMBER, NUMBER_VALUE);
+        param.put(ROOM_CAPACITY, NUMBER_VALUE);
+        param.put(APARTMENT_TYPE, LUX);
+        param.put(PRICE, NEGATIVE_VALUE);
+        context = new RequestContext(param, new HashMap<>(), null);
+        //when
+        AddRoomCommand command = new AddRoomCommand(service);
+        //then
+        command.execute(context);
+    }
+
+    @Test( expectedExceptions = ServiceException.class, expectedExceptionsMessageRegExp = WRONG_CAPACITY)
+    public void testExecuteShouldThrowServiceExceptionWhenCapacityIsNegative() throws ServiceException {
+        //given
+        Map<String, String> param = new HashMap<>();
+        param.put(ROOM_NUMBER, NUMBER_VALUE);
+        param.put(ROOM_CAPACITY, NEGATIVE_VALUE);
+        param.put(APARTMENT_TYPE, LUX);
+        param.put(PRICE, NUMBER_VALUE);
+        context = new RequestContext(param, new HashMap<>(), null);
+        //when
+        AddRoomCommand command = new AddRoomCommand(service);
+        //then
+        command.execute(context);
+    }
+
+    @Test( expectedExceptions = ServiceException.class, expectedExceptionsMessageRegExp = "Wrong number!")
+    public void testExecuteShouldThrowServiceExceptionWhenRoomNumberIsNegative() throws ServiceException {
+        //given
+        Map<String, String> param = new HashMap<>();
+        param.put(ROOM_NUMBER, NEGATIVE_VALUE);
+        param.put(ROOM_CAPACITY, NUMBER_VALUE);
+        param.put(APARTMENT_TYPE, LUX);
+        param.put(PRICE, NUMBER_VALUE);
+        context = new RequestContext(param, new HashMap<>(), null);
         //when
         AddRoomCommand command = new AddRoomCommand(service);
         //then

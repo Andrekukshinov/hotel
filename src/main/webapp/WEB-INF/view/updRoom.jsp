@@ -51,7 +51,7 @@
             <br>
         </div>
         <label class="input-booking" for="apartment-type"><fmt:message key="booking.book.room.type"/>
-            <select required class="apartment-type" id="apartment-type" name="apartment-type">
+            <select required class="apartment-type" id="apartment-type" name="roomType">
                 <option ${room.roomType == 'STANDARD' ? 'selected' :''} value="STANDARD">
                     <fmt:message key="booking.book.room.type.op1"/>
                 </option>

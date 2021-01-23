@@ -1,10 +1,10 @@
-package by.kukshinov.hotel.validators;
+package by.kukshinov.hotel.util;
 
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class PageValidatorImplTest {
+public class PageHelperImplTest {
 
     private static final int ITEMS_PER_PAGE = 7;
     private static final int CEIL_TOTAL_ITEMS_AMOUNT = 70;
@@ -53,7 +53,7 @@ public class PageValidatorImplTest {
 
     @Test(dataProvider = "currentPageDataProvider")
     public void tesGetValidPageShouldReturnFirstPage(String pageString, int itemsPerPage, int totalItemsAmount, int expected) {
-        PageValidator pageValidator = new PageValidatorImpl();
+        PageHelper pageValidator = new PageHelperImpl();
 
         int page = pageValidator.getValidPage(pageString, totalItemsAmount, itemsPerPage);
 
@@ -62,7 +62,7 @@ public class PageValidatorImplTest {
 
     @Test(dataProvider = "lastPageDataProvider")
     public void testGetLastPageShouldReturnLastPage(int totalItemsAmount, int itemsPerPage, int expected) {
-        PageValidator pageValidator = new PageValidatorImpl();
+        PageHelper pageValidator = new PageHelperImpl();
 
         int page = pageValidator.getLastPage(totalItemsAmount, itemsPerPage);
 

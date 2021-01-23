@@ -3,18 +3,14 @@ package by.kukshinov.hotel.command.impl;
 import by.kukshinov.hotel.command.Command;
 import by.kukshinov.hotel.context.RequestContext;
 import by.kukshinov.hotel.exceptions.ServiceException;
-import by.kukshinov.hotel.model.Application;
 import by.kukshinov.hotel.model.CommandResult;
-import by.kukshinov.hotel.model.creators.ApplicationCreator;
-import by.kukshinov.hotel.model.creators.ApplicationCreatorImpl;
+import by.kukshinov.hotel.model.enums.ApartmentType;
 import by.kukshinov.hotel.service.api.ApplicationService;
-import by.kukshinov.hotel.service.api.UserService;
 import by.kukshinov.hotel.service.impl.ApplicationServiceImpl;
-import by.kukshinov.hotel.service.impl.UserServiceImpl;
-import by.kukshinov.hotel.validators.PageValidatorImpl;
 import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.text.ParseException;
@@ -26,8 +22,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class BookingCommandTest {
+    private static final String PATTERN = "(wrong arrival date!)|(Wrong leaving date!)|(Wrong capacity!)";
     private static final String USER_HISTORY = "/hotel/controller?command=profileHistory";
-
     private static final String PERSON_AMOUNT = "personAmount";
     private static final String APARTMENT = "apartment";
     private static final String ARRIVAL_DATE = "arrivalDate";
@@ -36,9 +32,31 @@ public class BookingCommandTest {
     private static final String CAPACITY_VALUE = "2";
     private static final String STANDARD = "standard";
     private static final Long USER_ID_VALUE = 2L;
+    private static final String MINUS_ONE = "-1";
 
     private ApplicationService service;
     private RequestContext context;
+
+    @DataProvider
+    public Object[][] validationDataProvider() {
+        return new Object[][]{
+                {
+                        CAPACITY_VALUE,
+                        LocalDate.now().minusDays(1).toString(),
+                        LocalDate.now().plusDays(1).toString()
+                },
+                {
+                        CAPACITY_VALUE,
+                        LocalDate.now().plusDays(1).toString(),
+                        LocalDate.now().minusDays(1).toString()
+                },
+                {
+                        MINUS_ONE,
+                        LocalDate.now().plusDays(1).toString(),
+                        LocalDate.now().plusDays(1).toString()
+                }
+        };
+    }
 
     @BeforeMethod
     public void mockServicesAndRequestContext() {
@@ -60,12 +78,10 @@ public class BookingCommandTest {
 
         sessionAttributes.put(USER_ID, USER_ID_VALUE);
         context = new RequestContext(param, new HashMap<>(), sessionAttributes);
-
-
     }
 
     @Test
-    public void testExecuteShouldReturnRedirect() throws ServiceException, ParseException {
+    public void testExecuteShouldReturnRedirectToProfileHistoryWhenValidData() throws ServiceException, ParseException {
         //given
         doNothing().when(service).save(any());
         Command command = new BookingCommand(service);
@@ -77,10 +93,28 @@ public class BookingCommandTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)//then
-    public void testExecuteShouldThrowServiceException() throws ServiceException {
+    public void testExecuteShouldThrowServiceExceptionWhenDaoExceptionIsCaught() throws ServiceException {
         //given
         ApplicationService service = Mockito.mock(ApplicationServiceImpl.class);
         doThrow(ServiceException.class).when(service).save(any());
+        Command command = new BookingCommand(service);
+        //when
+        command.execute(context);
+    }
+
+    @Test(expectedExceptions = ServiceException.class, expectedExceptionsMessageRegExp = PATTERN, dataProvider = "validationDataProvider")//then
+    public void testExecuteShouldThrowServiceExceptionWhenArrivalDateFromPast(String capacity, String arrivalDate, String leavingDate)
+            throws ServiceException {
+        //given
+        Map<String, String> param = new HashMap<>();
+        Map<String, Object> sessionAttributes = new HashMap<>();
+        param.put(PERSON_AMOUNT, capacity);
+        param.put(APARTMENT, STANDARD);
+        param.put(ARRIVAL_DATE, arrivalDate);
+        param.put(LEAVING_DATE, leavingDate);
+        sessionAttributes.put(USER_ID, USER_ID_VALUE);
+        RequestContext context = new RequestContext(param, new HashMap<>(), sessionAttributes);
+        ApplicationService service = Mockito.mock(ApplicationServiceImpl.class);
         Command command = new BookingCommand(service);
         //when
         command.execute(context);

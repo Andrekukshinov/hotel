@@ -2,7 +2,7 @@
     margin-left: 5%;
     margin-right: 5%;
     display: grid;
-    grid-template-columns:  auto auto;
+    grid-template-columns: auto auto;
     grid-gap: 20px;
     grid-template-rows: auto auto;
     background-color: #2196F3;
@@ -145,7 +145,7 @@ li.no-style-ul {
     .grid-container {
         grid-template-rows: auto auto auto auto ;
         grid-template-columns:  auto;
-        width: 100%;
+        width: 90%;
     }
 }
 
@@ -169,7 +169,7 @@ li.no-style-ul {
     .grid-container {
         grid-template-rows: auto auto auto auto ;
         grid-template-columns:  auto;
-        width: 160%;
+        width: 90%;
     }
 
     .modal-close {

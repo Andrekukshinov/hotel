@@ -59,7 +59,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
   @Override
-    public int getAvailableRoomAmount(LocalDate arrivalDate, LocalDate leavingDate) throws ServiceException {
+    public Integer getAvailableRoomAmount(LocalDate arrivalDate, LocalDate leavingDate) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             RoomDao roomDao = daoHelper.createRoomDao();
             return roomDao.getAvailableRoomAmountForPeriod(arrivalDate, leavingDate);
@@ -84,6 +84,16 @@ public class RoomServiceImpl implements RoomService {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             RoomDao roomDao = daoHelper.createRoomDao();
             return roomDao.findById(id);
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Optional<Room> findAvailableById(Long id) throws ServiceException {
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
+            RoomDao roomDao = daoHelper.createRoomDao();
+            return roomDao.findAvailableById(id);
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }

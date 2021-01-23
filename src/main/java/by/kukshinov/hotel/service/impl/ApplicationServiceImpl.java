@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class ApplicationServiceImpl implements ApplicationService {
-    private static final String WRONG_APPLICATION = "Wrong application";
-    private static final String WRONG_ROOM = "Wrong room";
 
 
     private final DaoHelperFactory helperFactory;
@@ -40,15 +38,12 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 
     @Override
-    public void approveApplication(Application application, Long roomId) throws ServiceException {
+    public void approveApplication(Application application, Room room) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
-            RoomDao roomDao = daoHelper.createRoomDao();
             ApplicationDao applicationDao = daoHelper.createApplicationDao();
 
-            Optional<Room> availableById = roomDao.findAvailableById(roomId);
-
-            Room room = availableById.orElseThrow(() -> new ServiceException(WRONG_ROOM));
             BigDecimal totalPrice = getTotalPrice(application, room);
+            Long roomId = room.getId();
 
             application.setStatus(ApplicationStatus.APPROVED);
             application.setRoomId(roomId);
@@ -180,21 +175,20 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public void rejectApplication(Application application) throws ServiceException {
-        application.setRoomId(null);
+    public void adminDenyOrderedApplication(Application application) throws ServiceException {
         updateApplicationStatus(application, ApplicationStatus.DENIED);
     }
 
     //TODO ASKKKKKKK
     @Override
-    public void userRejectApplication(Application application) throws ServiceException {
+    public void userRejectApprovedApplication(Application application) throws ServiceException {
         application.setRoomId(null);
         application.setTotalPrice(null);
         updateApplicationStatus(application, ApplicationStatus.USER_REJECTED);
     }
 
     @Override
-    public void userCancelApplication(Application application) throws ServiceException {
+    public void userCancelOrderedApplication(Application application) throws ServiceException {
         application.setRoomId(null);
         application.setTotalPrice(null);
         updateApplicationStatus(application, ApplicationStatus.CANCELLED);

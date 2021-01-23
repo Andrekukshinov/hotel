@@ -6,8 +6,8 @@ import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.model.Room;
 import by.kukshinov.hotel.service.api.RoomService;
-import by.kukshinov.hotel.validators.PageValidator;
-import by.kukshinov.hotel.validators.PageValidatorImpl;
+import by.kukshinov.hotel.util.PageHelper;
+import by.kukshinov.hotel.util.PageHelperImpl;
 
 import java.util.List;
 
@@ -18,9 +18,9 @@ public class AllRoomsCommand implements Command {
     private static final String ALL_ROOMS = "WEB-INF/view/allRooms.jsp";
     private static final String LAST_PAGE = "lastPage";
     private final RoomService service;
-    private final PageValidator validator;
+    private final PageHelper validator;
 
-    public AllRoomsCommand(RoomService service, PageValidatorImpl validator) {
+    public AllRoomsCommand(RoomService service, PageHelperImpl validator) {
         this.service = service;
         this.validator = validator;
     }

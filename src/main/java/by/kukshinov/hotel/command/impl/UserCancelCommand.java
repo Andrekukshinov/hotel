@@ -32,7 +32,7 @@ public class UserCancelCommand implements Command {
         Optional<Application> applicationOptional = service.findInOrderUserApplicationById(applicationId, userId);
         Application application = applicationOptional.orElseThrow(() -> new ServiceException(WRONG_APPLICATION));
 
-        service.userCancelApplication(application);
+        service.userCancelOrderedApplication(application);
         if (page == null) {
             return CommandResult.redirect(PROFILE_HISTORY);
         } else {

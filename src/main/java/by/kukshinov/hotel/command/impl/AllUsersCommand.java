@@ -6,8 +6,8 @@ import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.model.User;
 import by.kukshinov.hotel.service.api.UserService;
-import by.kukshinov.hotel.validators.PageValidator;
-import by.kukshinov.hotel.validators.PageValidatorImpl;
+import by.kukshinov.hotel.util.PageHelper;
+import by.kukshinov.hotel.util.PageHelperImpl;
 
 import java.util.List;
 
@@ -18,10 +18,11 @@ public class AllUsersCommand implements Command {
     private static final String PAGE = "page";
     private static final String USERS = "users";
     private static final String LAST_PAGE = "lastPage";
-    private final UserService userService;
-    private final PageValidator validator;
 
-    public AllUsersCommand(UserService userService, PageValidatorImpl validator) {
+    private final UserService userService;
+    private final PageHelper validator;
+
+    public AllUsersCommand(UserService userService, PageHelperImpl validator) {
         this.userService = userService;
         this.validator = validator;
     }

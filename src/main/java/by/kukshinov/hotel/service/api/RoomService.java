@@ -9,13 +9,15 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RoomService {
-    int getAvailableRoomAmount(LocalDate arrivalDate, LocalDate leavingDate) throws ServiceException;
+    Integer getAvailableRoomAmount(LocalDate arrivalDate, LocalDate leavingDate) throws ServiceException;
 
     int getRoomAmount() throws ServiceException;
 
     List<Room> findRangeAvailableRooms(LocalDate arrivalDate, LocalDate leavingDate, int startFrom, int finishWith) throws ServiceException;
 
     Optional<Room> findById(Long id) throws ServiceException;
+
+    Optional<Room> findAvailableById(Long id) throws ServiceException;
 
     List<Room> findRangeEntities(int startFrom, int finishWith) throws ServiceException;
 

@@ -19,6 +19,7 @@ public class ApplicationFieldsExtractor implements FieldsExtractor<Application> 
     private static final String PERSON_AMOUNT = "person_amount";
     private static final String APPLICATION_STATE = "application_state";
     private static final String ROOM_ID = "room_id";
+    private static final String TOTAL_PRICE = "total_price";
 
     @Override
     public Map<String, Object> extract(Application application) {
@@ -36,14 +37,13 @@ public class ApplicationFieldsExtractor implements FieldsExtractor<Application> 
 
         result.put(PERSON_AMOUNT, personAmount);
         result.put(TYPE, type.toString());
-        result.put(ARRIVAL_DATE, arrivalDate.toString());
-        result.put(LEAVING_DATE, leavingDate.toString());
+        result.put(ARRIVAL_DATE, arrivalDate);
+        result.put(LEAVING_DATE, leavingDate);
         result.put(APPLICATION_STATE, status.toString());
         result.put(USER_ID, userId);
         result.put(ROOM_ID, roomId);
-        result.put("total_price", totalPrice);
+        result.put(TOTAL_PRICE, totalPrice);
         result.put(ID, id);
-        // TODO: 06.01.2021 rework with T extends entity
 
         return result;
     }

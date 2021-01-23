@@ -14,7 +14,7 @@ import java.util.Optional;
 public class SaveUpdatedRoomCommand implements Command {
     private static final String ALL_ROOMS = "/hotel/controller?command=admin_rooms";
     private static final String ID = "id";
-    private static final String PERSON_AMOUNT = "personAmount";
+    private static final String PERSON_AMOUNT = "capacity";
     private static final String ROOM_STATUS = "roomStatus";
     private static final String PRICE = "price";
     private static final String ROOM_TYPE = "roomType";
