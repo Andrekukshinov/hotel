@@ -24,6 +24,7 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
                         " ) AND is_available = true" +
                         " LIMIT ?,?";
     private static final String GET_AVAILABLE_ROOM_BY_ID = "SELECT * FROM Room WHERE id=? AND is_available = true  ";
+    private static final String GET_DISABLED_ROOM_BY_ID = "SELECT * FROM Room WHERE id=? AND is_available = false  ";
     private static final String ID = "id";
     private static final String NO_CONDITION = "";
     private static final String STATUS_AVAILABLE =
@@ -36,7 +37,7 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
     private static final String ROOM_LIMIT = "SELECT * FROM room LIMIT ?,?";
 
     protected RoomDaoImpl(Connection connection) {
-        super(new <Room>RequestBuilder<Room>(), TABLE_NAME, connection, new RoomObjectMapper(), new RoomFieldsExtractor());
+        super(new <Room>RequestBuilder(), TABLE_NAME, connection, new RoomObjectMapper(), new RoomFieldsExtractor());
     }
 
     @Override
@@ -66,14 +67,8 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
     }
 
     @Override
-    protected String getDeleteParam() {
-        return ID;
-    }
-
-
-    @Override
-    protected String getDeleteQuery() {
-        return null;
+    public Optional<Room> findDisabledById(Long id) throws DaoException {
+        return executeForSingleItem(GET_DISABLED_ROOM_BY_ID, id);
     }
 
 }

@@ -20,7 +20,7 @@ public class ConnectionPool {
     private static final ReentrantLock SINGLETON_LOCKER = new ReentrantLock();
     private static final ReentrantLock LOCKER = new ReentrantLock();
     private static ConnectionPool pool;
-    private static final Semaphore CONNECTION_SEMAPHORE = new Semaphore(10);
+    private static final Semaphore CONNECTION_SEMAPHORE = new Semaphore(POOL_SIZE);
 
     private final Queue<ProxyConnection> availableConnections;
     private final Queue<ProxyConnection> connectionsInUse;
@@ -28,8 +28,8 @@ public class ConnectionPool {
 
     private ConnectionPool() throws DaoException {
         this.availableConnections = new ArrayDeque<>();
-        this.connectionFactory = new ConnectionFactory();
         this.connectionsInUse = new ArrayDeque<>();
+        this.connectionFactory = new ConnectionFactory();
         for (int runner = 0; runner < POOL_SIZE; ++runner) {
             ProxyConnection e = new ProxyConnection(connectionFactory.createConnection(), this);
             availableConnections.add(e);

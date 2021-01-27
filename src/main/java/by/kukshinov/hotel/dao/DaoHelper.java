@@ -10,6 +10,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 
 
 public class DaoHelper implements AutoCloseable {
@@ -35,6 +36,8 @@ public class DaoHelper implements AutoCloseable {
             connection.rollback();
         } catch (SQLException e) {
             throw new DaoException(e);
+        } finally {
+            endTransaction();
         }
     }
 
@@ -50,7 +53,6 @@ public class DaoHelper implements AutoCloseable {
         try {
             connection.setAutoCommit(true);
         } catch (SQLException e) {
-            // TODO: 16.01.2021 ask about except type
             throw new DaoException(e.getMessage(), e);
         }
     }

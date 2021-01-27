@@ -19,11 +19,11 @@ public class RequestBuilderTest {
         fields.put("id", 1);
         fields.put("capacity", 1);
         fields.put("arrival_date", LocalDate.now());
-        RequestBuilder<Application> requestBuilder = new RequestBuilder<>();
+        RequestBuilder requestBuilder = new RequestBuilder();
         Application app = new Application();
         app.setId(null);
 
-        String query = requestBuilder.buildQuery(app, "Application", fields);
+        String query = requestBuilder.getSaveQuery("Application", fields);
 
         Assert.assertEquals(query, SAVE_APPLICATION);
 
@@ -35,11 +35,11 @@ public class RequestBuilderTest {
         fields.put("capacity", 1);
         fields.put("arrival_date", LocalDate.now());
         fields.put("id", 17);
-        RequestBuilder<Application> requestBuilder = new RequestBuilder<>();
+        RequestBuilder requestBuilder = new RequestBuilder();
         Application app = new Application();
         app.setId(17l);
 
-        String query = requestBuilder.buildQuery(app, "Application", fields);
+        String query = requestBuilder.getUpdateQuery("Application", fields);
 
         Assert.assertEquals(query, UPDATE_APPLICATION);
 

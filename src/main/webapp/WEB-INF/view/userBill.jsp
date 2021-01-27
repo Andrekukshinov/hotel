@@ -77,7 +77,7 @@
                           action="${pageContext.request.contextPath}/controller?command=user_reject_application">
                         <input type="hidden" value="${application.application.id}" name="applicationId">
                         <input type="hidden" value="${application.room.id}" name="roomId">
-                        <button type="submit" class="history-button two-options"><fmt:message key="bill.deny"/></button>
+                        <button type="submit" class="history-button"><fmt:message key="bill.deny"/></button>
                     </form>
 
                     <c:if test="${tooLate != null}">

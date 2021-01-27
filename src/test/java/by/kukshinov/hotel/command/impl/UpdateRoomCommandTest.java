@@ -53,7 +53,7 @@ public class UpdateRoomCommandTest {
           //given
           SaveUpdatedRoomCommand command = new SaveUpdatedRoomCommand(service);
           CommandResult expected = CommandResult.redirect(ALL_ROOMS);
-          when(service.findById(anyLong())).thenReturn(Optional.of(new Room()));
+          when(service.findDisabledById(anyLong())).thenReturn(Optional.of(new Room()));
           doNothing().when(service).updateRoom(any());
           //when
           CommandResult actual = command.execute(context);

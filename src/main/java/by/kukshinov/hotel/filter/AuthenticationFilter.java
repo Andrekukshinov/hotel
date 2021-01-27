@@ -20,8 +20,6 @@ public class AuthenticationFilter implements Filter {
 
     }
 
-
-    //todo return 403 page
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;

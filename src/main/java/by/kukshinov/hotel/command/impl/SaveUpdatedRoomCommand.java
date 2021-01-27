@@ -34,7 +34,7 @@ public class SaveUpdatedRoomCommand implements Command {
         String stringRoomType = context.getRequestParameter(ROOM_TYPE);
 
         long id = Long.parseLong(stringId);
-        Optional<Room> roomOptional = roomService.findById(id);
+        Optional<Room> roomOptional = roomService.findDisabledById(id);
         Room room = roomOptional.orElseThrow(() -> new ServiceException(WRONG_ROOM));
         updateRoom(stringRoomStatus, stringPrice, stringRoomType, personAmount, room);
 

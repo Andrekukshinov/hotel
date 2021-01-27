@@ -11,7 +11,6 @@ import java.util.Optional;
 
 public class ChangeRoomActivityCommand implements Command {
     private static final String ALL_ROOMS = "/hotel/controller?command=admin_rooms";
-    private static final String IS_AVAILABLE = "isAvailable";
     private static final String ID = "id";
     private static final String WRONG_ROOM = "No such room exists!";
 
@@ -31,7 +30,7 @@ public class ChangeRoomActivityCommand implements Command {
         Room room = roomOptional.orElseThrow(() -> new ServiceException(WRONG_ROOM));
 
         Boolean isAvailable = room.getIsAvailable();
-        room.setIsAvailable(isAvailable);
+        room.setIsAvailable(!isAvailable);
 
         roomService.updateRoom(room);
 

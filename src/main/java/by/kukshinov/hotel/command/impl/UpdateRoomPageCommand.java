@@ -27,7 +27,7 @@ public class UpdateRoomPageCommand implements Command {
         String requestParameter = context.getRequestParameter(ID);
         Long id = Long.parseLong(requestParameter);
 
-        Optional<Room> roomOptional = roomService.findById(id);
+        Optional<Room> roomOptional = roomService.findDisabledById(id);
 
         Room room = roomOptional.orElseThrow(() -> new ServiceException(WRONG_ROOM));
 

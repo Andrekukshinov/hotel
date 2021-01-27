@@ -1,23 +1,3 @@
-function edit() {
-    let buttons = document.getElementsByClassName("edit-description");
-    for (let i = 0; i < buttons.length; i++) {
-        buttons[i].addEventListener("click", () => {
-                let description = document.getElementById("description" + (i + 1));
-                description.style.visibility = "visible";
-            }
-        )
-    }
-    let close = document.getElementsByClassName("modal-close");
-    for (let i = 0; i < buttons.length; i++) {
-        close[i].addEventListener("click", () => {
-                let description = document.getElementById("description" + (i + 1));
-                description.style.visibility = "hidden";
-            }
-        )
-    }
-}
-
-
 function validateForm(errors, invalidFieldCounter, inputs, consumer) {
     return (event) => {
         for (let i = 0; i < errors.length; i++) {
@@ -112,6 +92,40 @@ function validateRoomUpdate() {
                 event.preventDefault();
             }
         });
+    }
+}
+
+function closeModal(i) {
+    return () => {
+        let description = document.getElementById("myModal" + (i + 1));
+        description.style.display = "none";
+    };
+}
+
+function confirmDisable() {
+    let buttons = document.getElementsByClassName("open-modal");
+    for (let i = 0; i < buttons.length; i++) {
+        let button = buttons[i];
+        if(button.type !== "submit") {
+            button.addEventListener("click", () => {
+                    let description = document.getElementById("myModal" + (i + 1));
+                    description.style.display = "block";
+                    window.onclick = function (event) {
+                        if (event.target === description) {
+                            description.style.display = "none";
+                        }
+                    }
+                }
+            )
+        }
+    }
+    let close = document.getElementsByClassName("close");
+    let reject = document.getElementsByClassName("reject");
+    for (let i = 0; i < buttons.length; i++) {
+        let closeElement = close[i];
+        let rejectElement = reject[i];
+        closeElement.addEventListener("click", closeModal(i));
+        rejectElement.addEventListener("click", closeModal(i));
     }
 }
 

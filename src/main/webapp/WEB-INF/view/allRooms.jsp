@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/styles/rooms.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/styles/bookingStyles.css">
 </head>
-<body class="booking" onload="edit(); validateRoomUpdate()">
+<body class="booking" onload="confirmDisable()">
 <jsp:include page="templates/header.jsp"/>
 <div id="to-be-found">
     <jsp:include page="templates/leftMenu.jsp"/>
@@ -45,44 +45,76 @@
                         <fmt:message key="admin.room.type"/>
                         <fmt:message key="admin.room.type.${room.roomType}"/>
                     </div>
+
                     <ul class="no-style-ul">
-                        <li class="first-option">
-                            <form class="admin-users-form" method="get"
-                                  action="${pageContext.request.contextPath}/controller">
-                                <input type="hidden" name="command" value="admin_update_room">
-                                <input type="hidden" name="id" value="${room.id}">
-                                <button type="submit" ${!room.isAvailable? "disabled":""}
-                                        class="verdict-app-button two-options"><fmt:message
-                                        key="admin.room.button.edit"/></button>
-                            </form>
+                        <li class="no-style-ul">
+                            <c:if test="${room.isAvailable == false}">
+                                <form class="admin-users-form" method="get"
+                                      action="${pageContext.request.contextPath}/controller">
+                                    <input type="hidden" name="command" value="admin_update_room">
+                                    <input type="hidden" name="id" value="${room.id}">
+                                    <button type="submit" class="users-submit full-width">
+                                        <fmt:message key="admin.room.button.edit"/>
+                                    </button>
+                                </form>
+                            </c:if>
                         </li>
-                        <li class="first-option">
+                        <li>
                             <form class="admin-users-form" method="post"
                                   action="${pageContext.request.contextPath}/controller?command=admin_change_room_activity">
                                 <input type="hidden" name="id" value="${room.id}">
-                                <button type="submit" class="verdict-app-button "><fmt:message
-                                        key="admin.room.change.${room.isAvailable}"/></button>
+                                <c:choose>
+                                    <c:when test="${room.isAvailable == true}">
+                                        <button type="button" class="verdict-app-button open-modal">
+                                            <fmt:message key="admin.room.change.${room.isAvailable}"/>
+                                        </button>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <button type="submit" class="verdict-app-button open-modal">
+                                            <fmt:message key="admin.room.change.${room.isAvailable}"/>
+                                        </button>
+                                    </c:otherwise>
+                                </c:choose>
                             </form>
+
                         </li>
                     </ul>
                 </div>
-<%--                <div id="myModal" class="modal">--%>
-<%--                    <!-- Modal content -->--%>
-<%--                    <div class="modal-content">--%>
-<%--                        <div class="modal-header">--%>
-<%--                            <span class="close">&times;</span>--%>
-<%--                            <h2>Modal Header</h2>--%>
-<%--                        </div>--%>
-<%--                        <div class="modal-body">--%>
-<%--                            <p>Some text in the Modal Body</p>--%>
-<%--                            <p>Some other text...</p>--%>
-<%--                        </div>--%>
-<%--                        <div class="modal-footer">--%>
-<%--                            <h3>Modal Footer</h3>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-
-<%--                </div>--%>
+                <div id="myModal${index.count}" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span class="close">&times;</span>
+                            <h2> <fmt:message key="bill.user.room.description"/>   ${room.number}</h2>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                                <fmt:message key="admin.room.modal.confirm.message"/>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <p>
+                                <ul class="no-style-ul">
+                                <li class="first-option">
+                                    <form class="admin-users-form">
+                                        <button type="button" class="users-submit reject">
+                                            <fmt:message key="history.application.cancel"/>
+                                        </button>
+                                    </form>
+                                </li>
+                                <li class="first-option">
+                                    <form class="admin-users-form" method="post"
+                                          action="${pageContext.request.contextPath}/controller?command=admin_change_room_activity">
+                                        <input type="hidden" name="id" value="${room.id}">
+                                        <button type="submit" class="users-submit">
+                                            <fmt:message key="admin.room.change.true"/>
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </c:forEach>
 
         </div>
@@ -95,3 +127,4 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/main.js"></script>
 </body>
 </html>
+

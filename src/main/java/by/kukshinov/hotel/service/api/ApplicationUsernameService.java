@@ -6,6 +6,5 @@ import by.kukshinov.hotel.model.ApplicationUsernameDto;
 import java.util.List;
 
 public interface ApplicationUsernameService {
-//todo ask
     List<ApplicationUsernameDto> findRange(int startFrom, int finishWith) throws ServiceException;
 }

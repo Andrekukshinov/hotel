@@ -17,7 +17,7 @@ public class ConnectionFactory {
     private final String urlValue;
     private final Properties prop;
 
-    public ConnectionFactory() throws DaoException {
+    ConnectionFactory() throws DaoException {
         try (InputStream in = this.getClass().getClassLoader().getResourceAsStream(CONNECTION_PROPERTIES)) {
             prop = new Properties();
             prop.load(in);
@@ -28,7 +28,7 @@ public class ConnectionFactory {
         }
     }
 
-    public Connection createConnection() throws DaoException {
+    Connection createConnection() throws DaoException {
         try {
             return DriverManager.getConnection(urlValue, prop);
         } catch (SQLException e) {

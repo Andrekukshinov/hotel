@@ -34,7 +34,7 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
                     "LIMIT ?,?";
 
     public UserDaoImpl(Connection connection) {
-        super(new <User>RequestBuilder<User>(), USER_TABLE, connection, new UserObjectMapper(), new UserFieldExtractor());
+        super(new <User>RequestBuilder(), USER_TABLE, connection, new UserObjectMapper(), new UserFieldExtractor());
     }
 
     @Override
@@ -53,18 +53,7 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     }
 
     @Override
-    protected String getDeleteParam() {
-        return ID;
-    }
-
-    @Override
     public List<User> findRangeUsers(int startFrom, int finishWith) throws DaoException {
         return executeQuery(SELECT_FROM_USER_WHERE_ROLE_ADMIN, startFrom, finishWith);
     }
-
-    @Override
-    protected String getDeleteQuery() {
-        return null;
-    }
-
 }

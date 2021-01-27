@@ -1,6 +1,5 @@
 package by.kukshinov.hotel.service.api;
 
-import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.Room;
 
@@ -18,6 +17,8 @@ public interface RoomService {
     Optional<Room> findById(Long id) throws ServiceException;
 
     Optional<Room> findAvailableById(Long id) throws ServiceException;
+
+    Optional<Room> findDisabledById(Long id) throws ServiceException;
 
     List<Room> findRangeEntities(int startFrom, int finishWith) throws ServiceException;
 

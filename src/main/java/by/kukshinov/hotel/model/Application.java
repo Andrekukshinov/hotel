@@ -181,4 +181,3 @@ public class Application implements Entity{
         return result;
     }
 }
-// TODO: 14.12.2020 ask about if it's fine for update method 2 update only 1 field if if others cannot be updated acc 2 task

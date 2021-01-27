@@ -24,12 +24,12 @@ public abstract class AbstractDao<T extends Entity> implements Dao<T> {
     private final String entitiesCount = "SELECT COUNT(*) FROM ";
 
     private Connection connection;
-    private final RequestBuilder<T> requestBuilder;
+    private final RequestBuilder requestBuilder;
     private ObjectMapper<T> objectMapper;
     private FieldsExtractor<T> fieldsExtractor;
 
 
-    protected AbstractDao(RequestBuilder<T> requestBuilder, String tableName, Connection connection, ObjectMapper<T> objectMapper, FieldsExtractor<T> fieldsExtractor) {
+    protected AbstractDao(RequestBuilder requestBuilder, String tableName, Connection connection, ObjectMapper<T> objectMapper, FieldsExtractor<T> fieldsExtractor) {
         this.tableName = tableName;
         this.connection = connection;
         this.objectMapper = objectMapper;
@@ -60,7 +60,13 @@ public abstract class AbstractDao<T extends Entity> implements Dao<T> {
         Map<String, Object> extracted = fieldsExtractor.extract(item);
         List<Object> fields = new ArrayList<>(extracted.values());
         Object[] values = fields.toArray();
-        String query = requestBuilder.buildQuery(item, tableName, extracted);
+        String query;
+        Long id = item.getId();
+        if (id == null || id == 0) {
+            query = requestBuilder.getSaveQuery(tableName, extracted);
+        } else {
+            query = requestBuilder.getUpdateQuery(tableName, extracted);
+        }
         executeForSave(query, values);
     }
 
@@ -106,8 +112,5 @@ public abstract class AbstractDao<T extends Entity> implements Dao<T> {
         }
     }
 
-    protected abstract String getDeleteQuery();
-
-    protected abstract String getDeleteParam();
 
 }

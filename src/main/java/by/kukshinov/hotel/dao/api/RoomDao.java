@@ -16,6 +16,8 @@ public interface RoomDao extends Dao<Room> {
 
     Optional<Room> findAvailableById(Long id)  throws DaoException;
 
+    Optional<Room> findDisabledById(Long id)  throws DaoException;
+
     int getAllRoomAmount() throws DaoException;
 
     int getAvailableRoomAmountForPeriod(LocalDate arrivalDate, LocalDate leavingDate) throws DaoException;

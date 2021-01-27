@@ -98,4 +98,14 @@ public class RoomServiceImpl implements RoomService {
             throw new ServiceException(e.getMessage(), e);
         }
     }
+
+    @Override
+    public Optional<Room> findDisabledById(Long id) throws ServiceException {
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
+            RoomDao roomDao = daoHelper.createRoomDao();
+            return roomDao.findDisabledById(id);
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
 }

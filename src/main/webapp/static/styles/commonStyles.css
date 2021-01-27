@@ -6,6 +6,7 @@
     text-align: center;
 }
 
+
 .current-page{
     background-color: rgba(151, 197, 248, 0.3);
 }
@@ -348,6 +349,7 @@ body.no-margin {
 
 .admin-users-form {
     margin: 0;
+    width: 100%;
 }
 
 .margin-bill-form {
@@ -455,4 +457,5 @@ body.no-margin {
         width: 70%;
         background-color: #f2f2f2;
     }
+
 }

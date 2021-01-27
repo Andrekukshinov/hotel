@@ -7,7 +7,6 @@
 }
 
 .verdict-app-button {
-    box-shadow: 0 0 10px #111111;
     background-color: #255a94;
     color: white;
     padding: 8px 8px;
@@ -42,7 +41,9 @@
     cursor: pointer;
     text-decoration: none;
 }
-
+ .full-width{
+     width: content-box;
+ }
 
 .history-button:hover {
     background-color: #1f4975;
@@ -146,6 +147,9 @@
 .small-letters {
     text-transform: lowercase;
 }
+.twenty-margin{
+    padding-left: 30%;
+}
 
 @media screen and (max-width: 780px) {
     .first-label {
@@ -185,5 +189,9 @@
     .for-user-approve-link {
         display: inline-block;
         padding-top: 0;
+    }
+
+    .twenty-margin{
+        margin-left:10%
     }
 }

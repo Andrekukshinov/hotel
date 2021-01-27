@@ -27,6 +27,7 @@ import static org.mockito.Mockito.when;
 
 public class AvailableRoomsCommandTest {
     private static final String WRONG_APPLICATION = "Wrong application!";
+    private static final String TOO_LATE_TO_APPROVE = "Too late to approve";
     private static final String LAST_PAGE = "lastPage";
     private static final String APPLICATION_ID = "applicationId";
     private static final String PAGE = "page";
@@ -88,24 +89,17 @@ public class AvailableRoomsCommandTest {
         Assert.assertEquals(actualResult, expectedResult);
     }
 
-    @Test
-    public void testExecuteShouldReturnForwardToTooLatePageWhenDataIsValidAndArrivalDateFromFuture() throws ServiceException {
+    @Test(expectedExceptions = ServiceException.class, expectedExceptionsMessageRegExp = TOO_LATE_TO_APPROVE)
+    public void testExecuteShouldThrowServiceExceptionWhenDataIsValidAndArrivalDateHasPassed() throws ServiceException {
         context.setRequestParameter(APPLICATION_ID, ONE);
 
         Application pastApplication = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.BUSINESS, LocalDate.now().minusDays(1), LocalDate.now().minusDays(1), ApplicationStatus.APPROVED, PRICE, ROOM_ID, USER_ID);
         when(applicationService.findInOrderApplicationById(anyLong())).thenReturn(Optional.of(pastApplication));
         when(roomService.findAvailableById(anyLong())).thenReturn(Optional.of(AVAILABLE_ROOM));
         AvailableRoomsCommand availableRoomsCommand = new AvailableRoomsCommand(applicationService, roomService, validator);
-        String url = "WEB-INF/view/tooLate.jsp";
-        CommandResult expectedResult = CommandResult.forward(url);
 
-        CommandResult actualResult = availableRoomsCommand.execute(context);
-
-        Application actualApp = (Application) context.getRequestAttribute(APPLICATION);
-        Assert.assertEquals(actualApp, pastApplication);
-        Assert.assertEquals(actualResult, expectedResult);
+        availableRoomsCommand.execute(context);
     }
-
 
     @Test(expectedExceptions = ServiceException.class, expectedExceptionsMessageRegExp = WRONG_APPLICATION)
     public void testExecuteShouldThrowServiceExceptionWhenApplicationIsNotFound() throws ServiceException {

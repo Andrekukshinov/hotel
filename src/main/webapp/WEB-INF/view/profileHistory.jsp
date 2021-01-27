@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/styles/applications.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/styles/rooms.css">
 </head>
-<body class="booking">
+<body class="booking" onload="confirmDisable()">
 <jsp:include page="templates/header.jsp"/>
 <div id="to-be-found">
     <jsp:include page="templates/leftMenu.jsp"/>
@@ -43,11 +43,14 @@
                                     <li><fmt:message key="admin.room.type"/> <fmt:message
                                             key="admin.room.type.${applicationDto.type}"/></li>
                                     <li><fmt:message key="booking.book.date.arrival"/>
-                                        <ex:date-format date="${applicationDto.arrivalDate}" locale="${sessionScope.lang}"/>
+                                        <ex:date-format date="${applicationDto.arrivalDate}"
+                                                        locale="${sessionScope.lang}"/>
                                     </li>
                                     <li><fmt:message key="booking.book.date.leave"/>
-                                        <ex:date-format date="${applicationDto.leavingDate}" locale="${sessionScope.lang}"/>
-                                    </li>  </ul>
+                                        <ex:date-format date="${applicationDto.leavingDate}"
+                                                        locale="${sessionScope.lang}"/>
+                                    </li>
+                                </ul>
                             </td>
                             <td>
                                 <div class="small-font">
@@ -63,14 +66,11 @@
                                         <br>
                                     </c:when>
                                     <c:when test="${applicationDto.status == 'IN_ORDER'}">
-                                        <form class="admin-users-form" method="post"
-                                              action="${pageContext.request.contextPath}/controller?command=user_cancel_order">
-                                            <input type="hidden" name="id" value="${applicationDto.id}">
-                                            <button type="submit" class="check-the-bill-button no-style-ul">
+                                        <form class="admin-users-form open-modal">
+                                            <button type="button" class="check-the-bill-button no-style-ul">
                                                 <fmt:message key="history.application.cancel"/>
                                             </button>
                                         </form>
-
                                     </c:when>
                                     <c:when test="${applicationDto.status == 'APPROVED'}">
                                         <br>
@@ -84,6 +84,39 @@
 
                             </td>
                         </tr>
+                        <div id="myModal${index.count}" class="modal">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <span class="close">&times;</span>
+                                    <h2>  <fmt:message key="history.user.modal.title"/></h2>
+                                </div>
+                                <div class="modal-body">
+                                    <p><fmt:message key="history.user.modal.massage"/></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <p>
+                                    <ul class="no-style-ul">
+                                        <li class="first-option">
+                                            <form class="admin-users-form">
+                                                <button type="button" class="users-submit reject">
+                                                    <fmt:message key="history.application.cancel"/>
+                                                </button>
+                                            </form>
+                                        </li>
+                                        <li class="first-option">
+                                            <form class="admin-users-form" method="post"
+                                                  action="${pageContext.request.contextPath}/controller?command=user_cancel_order">
+                                                <input type="hidden" name="id" value="${applicationDto.id}">
+                                                <button type="submit" class="users-submit">
+                                                    <fmt:message key="admin.room.change.true"/>
+                                                </button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </c:forEach>
                 </c:when>
                 <c:otherwise>

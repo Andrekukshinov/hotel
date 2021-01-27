@@ -5,7 +5,7 @@ import by.kukshinov.hotel.model.Entity;
 import java.util.Map;
 import java.util.Set;
 
-public class RequestBuilder<T extends Entity> {
+public class RequestBuilder{
 
     private static final String INSERT_INTO = "INSERT INTO ";
     private static final String OPEN_BRACKET = " (";
@@ -19,47 +19,36 @@ public class RequestBuilder<T extends Entity> {
     private static final String WHERE_ID = " WHERE id=?";
     private static final String EQUALS_QUESTION = "=?";
 
-    public String buildQuery(T item, String tableName, Map<String, Object> fields) {
-        Long id = item.getId();
-        if (id == null || id == 0) {
-            return getSaveQuery(tableName, fields);
-        } else {
-            return getUpdateQuery(tableName, fields);
-        }
-    }
 
-    private String getSaveQuery(String tableName, Map<String, Object> fields) {
+    public String getSaveQuery(String tableName, Map<String, Object> fields) {
         Set<String> fieldNames = fields.keySet();
         StringBuilder query = new StringBuilder(INSERT_INTO);
         query.append(tableName);
         query.append(OPEN_BRACKET);
         int counter = 0;
         for (String fieldName : fieldNames) {
-            counter++;
-            query.append(fieldName);
-            if (counter != fieldNames.size()) {
-                query.append(COMMA_SPACE);
-            } else {
-                query.append(CLOSING_BRACKET);
-                counter = 0;
-            }
+            counter = buildQueryPart(fieldNames, query, counter, fieldName);
         }
         query.append(VALUES);
-
         for (String ignored : fieldNames) {
-            counter++;
-            query.append(QUESTION);
-            if (counter != fieldNames.size()) {
-                query.append(COMMA_SPACE);
-            } else {
-                query.append(CLOSING_BRACKET);
-                counter = 0;
-            }
+            counter = buildQueryPart(fieldNames, query, counter, QUESTION);
         }
         return query.toString();
     }
 
-    private String getUpdateQuery(String tableName, Map<String, Object> fields) {
+    private int buildQueryPart(Set<String> fieldNames, StringBuilder query, int counter, String fieldName) {
+        counter++;
+        query.append(fieldName);
+        if (counter != fieldNames.size()) {
+            query.append(COMMA_SPACE);
+        } else {
+            query.append(CLOSING_BRACKET);
+            counter = 0;
+        }
+        return counter;
+    }
+
+    public String getUpdateQuery(String tableName, Map<String, Object> fields) {
         Set<String> fieldNames = fields.keySet();
         StringBuilder query = new StringBuilder(UPDATE);
         query.append(tableName);

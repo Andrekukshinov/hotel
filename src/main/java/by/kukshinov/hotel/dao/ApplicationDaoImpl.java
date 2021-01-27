@@ -31,7 +31,7 @@ public class ApplicationDaoImpl extends AbstractDao<Application> implements Appl
     private static final String ID = "id";
 
     protected ApplicationDaoImpl(Connection connection) {
-        super(new<Application> RequestBuilder<Application>(), BOOKING_TABLE, connection, new ApplicationObjectMapper(), new ApplicationFieldsExtractor());
+        super(new<Application> RequestBuilder(), BOOKING_TABLE, connection, new ApplicationObjectMapper(), new ApplicationFieldsExtractor());
     }
 
     @Override
@@ -67,7 +67,6 @@ public class ApplicationDaoImpl extends AbstractDao<Application> implements Appl
         return executeQuery(GET_QUEUED_APPLICATIONS_FOR_TABLE, startFrom, finishWith);
     }
 
-
     @Override
     public     List<Application> findRangeApplications(int startFrom, int finishWith) throws DaoException {
         return executeQuery(GET_APPLICATIONS_RANGE, startFrom, finishWith);
@@ -91,17 +90,6 @@ public class ApplicationDaoImpl extends AbstractDao<Application> implements Appl
     @Override
     public Optional<Application> findApprovedAppById(Long appId)  throws DaoException {
         return executeForSingleItem(GET_APPROVED_APPLICATION_BY_ID, appId);
-    }
-
-    @Override
-    protected String getDeleteParam() {
-        return ID;
-    }
-
-
-    @Override
-    protected String getDeleteQuery() {
-        return null;
     }
 
 }
