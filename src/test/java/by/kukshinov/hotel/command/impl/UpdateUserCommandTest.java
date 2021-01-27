@@ -59,7 +59,7 @@ public class UpdateUserCommandTest {
         doNothing().when(service).changeUserStatus(any(), anyBoolean());
         Command command = new UpdateUserCommand(service);
         CommandResult expected = CommandResult.redirect(ALL_USERS);
-        User value = new User(1L, "l", "appa", false, Role.ADMIN);
+        User value = new User(1L, "l", false, Role.ADMIN);
         when(service.findById(anyLong())).thenReturn(Optional.of(value));
         //when
         CommandResult actual = command.execute(context);

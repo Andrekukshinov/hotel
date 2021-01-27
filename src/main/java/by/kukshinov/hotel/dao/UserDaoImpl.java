@@ -20,7 +20,7 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
             "AND password=SHA1(?)";
     private static final String USER_TABLE = "user";
     private static final String FIND_BY_ID =
-            "SELECT user.id, login, password, is_disabled, role " +
+            "SELECT user.id, login, is_disabled, role " +
             "FROM user LEFT JOIN Role R on R.id = User.role_id " +
             "WHERE User.id=?";
     private static final String ID = "id";

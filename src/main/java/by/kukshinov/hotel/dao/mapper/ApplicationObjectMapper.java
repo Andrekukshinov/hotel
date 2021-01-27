@@ -28,11 +28,11 @@ public class ApplicationObjectMapper implements ObjectMapper<Application> {
         String applicationStateString = resultSet.getString(APPLICATION_STATE);
         ApplicationStatus applicationState = ApplicationStatus.valueOf(applicationStateString);
         long id = resultSet.getLong(ID);
-        long userId = resultSet.getLong(USER_ID);
+        Long userId = resultSet.getLong(USER_ID);
         byte person_amount = resultSet.getByte(PERSON_AMOUNT);
         LocalDate arrival_date = resultSet.getObject(ARRIVAL_DATE, LocalDate.class);
         LocalDate leaving_date = resultSet.getObject(LEAVING_DATE, LocalDate.class);
-        Long roomId = resultSet.getLong(ROOM_ID);
+        Long roomId = (Long)resultSet.getObject(ROOM_ID);
         BigDecimal totalPrice = resultSet.getBigDecimal(TOTAL_PRICE);
         ApartmentType apartmentType = ApartmentType.valueOf(apartment);
 

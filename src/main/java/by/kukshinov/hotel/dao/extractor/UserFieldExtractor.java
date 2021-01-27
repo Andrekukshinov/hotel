@@ -9,7 +9,6 @@ import java.util.Map;
 public class UserFieldExtractor implements FieldsExtractor<User> {
 
 
-    private static final String PASSWORD = "password";
     private static final String LOGIN = "login";
     private static final String IS_DISABLED = "is_disabled";
     private static final String ID = "id";
@@ -18,13 +17,11 @@ public class UserFieldExtractor implements FieldsExtractor<User> {
     public Map<String, Object> extract(User user) {
         long userId = user.getId();
         String login = user.getLogin();
-        String password = user.getPassword();
         boolean isDisabled = user.getIsDisabled();
         int falseInt = parseBooleanToInt(isDisabled);
 
         Map<String, Object> result = new LinkedHashMap<>();
 
-        result.put(PASSWORD, password);
         result.put(LOGIN, login);
         result.put(IS_DISABLED, falseInt);
         result.put(ID, userId);

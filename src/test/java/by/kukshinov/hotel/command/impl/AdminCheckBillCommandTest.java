@@ -35,7 +35,7 @@ public class AdminCheckBillCommandTest {
 
     private static final Application FIRST_APPLICATION = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.BUSINESS, LocalDate.now(), LocalDate.now(), ApplicationStatus.APPROVED, PRICE, ROOM_ID, USER_ID);
     private static final Room AVAILABLE_ROOM = new Room(ROOM_ID, 303, ApartmentType.BUSINESS, new Byte(CAPACITY_STRING), true, PRICE);
-    private static final User USER = new User(2l, LOGIN, PASS, false, Role.USER);
+    private static final User USER = new User(2l, LOGIN, false, Role.USER);
     private static final String APPLICATION_ID = "id";
     private static final String ROLE = "ANY";
     private static final String ROLE_NAME = "ROLE";

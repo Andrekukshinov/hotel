@@ -6,14 +6,12 @@ import by.kukshinov.hotel.model.enums.Role;
 public class User implements Entity {
     private Long userId;
     private String login;
-    private String password;
     private boolean isDisabled;
     private Role role;
 
-    public User(Long userId, String login, String password, boolean isDisabled, Role role) {
+    public User(Long userId, String login, boolean isDisabled, Role role) {
         this.userId = userId;
         this.login = login;
-        this.password = password;
         this.isDisabled = isDisabled;
         this.role = role;
     }
@@ -49,17 +47,19 @@ public class User implements Entity {
         isDisabled = disabled;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     @Override
     public Long getId() {
         return userId;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", login='" + login + '\'' +
+                ", isDisabled=" + isDisabled +
+                ", role=" + role +
+                '}';
     }
 
     @Override
@@ -76,13 +76,10 @@ public class User implements Entity {
         if (isDisabled != user.isDisabled) {
             return false;
         }
-        if (getId() != null ? !getId().equals(user.getId()) : user.getId() != null) {
+        if (userId != null ? !userId.equals(user.userId) : user.userId != null) {
             return false;
         }
         if (getLogin() != null ? !getLogin().equals(user.getLogin()) : user.getLogin() != null) {
-            return false;
-        }
-        if (getPassword() != null ? !getPassword().equals(user.getPassword()) : user.getPassword() != null) {
             return false;
         }
         return getRole() == user.getRole();
@@ -90,22 +87,10 @@ public class User implements Entity {
 
     @Override
     public int hashCode() {
-        int result = getId() != null ? getId().hashCode() : 0;
+        int result = userId != null ? userId.hashCode() : 0;
         result = 31 * result + (getLogin() != null ? getLogin().hashCode() : 0);
-        result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
         result = 31 * result + (isDisabled ? 1 : 0);
         result = 31 * result + (getRole() != null ? getRole().hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", isDisabled=" + isDisabled +
-                ", role=" + role +
-                '}';
     }
 }

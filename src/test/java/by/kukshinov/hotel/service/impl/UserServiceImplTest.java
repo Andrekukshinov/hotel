@@ -26,13 +26,13 @@ public class UserServiceImplTest {
     private static final String LOGIN = "login";
 
     private static final long USER_ID = 1l;
-    private static final User FIRST = new User(USER_ID, LOGIN, PASS, false, Role.USER);
-    private static final User SECOND = new User(2l, LOGIN, PASS, false, Role.USER);
-    private static final User THIRD = new User(3l, LOGIN, PASS, false, Role.USER);
-    private static final User FOURTH = new User(4l, LOGIN, PASS, false, Role.USER);
-    private static final User FIFTH = new User(5l, LOGIN, PASS, false, Role.USER);
-    private static final User SIXTH = new User(6l, LOGIN, PASS, false, Role.USER);
-    private static final User SEVENTH = new User(7l, LOGIN, PASS, false, Role.USER);
+    private static final User FIRST = new User(USER_ID, LOGIN, false, Role.USER);
+    private static final User SECOND = new User(2l, LOGIN, false, Role.USER);
+    private static final User THIRD = new User(3l, LOGIN, false, Role.USER);
+    private static final User FOURTH = new User(4l, LOGIN, false, Role.USER);
+    private static final User FIFTH = new User(5l, LOGIN, false, Role.USER);
+    private static final User SIXTH = new User(6l, LOGIN, false, Role.USER);
+    private static final User SEVENTH = new User(7l, LOGIN, false, Role.USER);
     private static final List<User> USERS = Arrays.asList(FIRST, SECOND, THIRD, FOURTH, FIFTH, SIXTH, SEVENTH);
     private static final int START_FROM = 1;
     private static final int FINISH_WITH = 7;
@@ -89,8 +89,8 @@ public class UserServiceImplTest {
     @Test
     public void testChangeUserStatusShouldUpdateUserActivity() throws DaoException, ServiceException {
         //given
-        User actual = new User(USER_ID, LOGIN, PASS, false, Role.USER);
-        User expected = new User(USER_ID, LOGIN, PASS, true, Role.USER);
+        User actual = new User(USER_ID, LOGIN, false, Role.USER);
+        User expected = new User(USER_ID, LOGIN, true, Role.USER);
         UserService userService = new UserServiceImpl(helperFactory);
         doNothing().when(dao).save(actual);
         //when

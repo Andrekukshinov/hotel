@@ -25,12 +25,11 @@ public class LoginCommandTest {
     private static final String LOGIN = "login";
     private static final Long USER_ID = 1L;
     private static final Role USER_ROLE = Role.USER;
-    private static final User USER = new User(USER_ID, LOGIN, PASS, false, USER_ROLE);
+    private static final User USER = new User(USER_ID, LOGIN, false, USER_ROLE);
     private static final String LOGIN_PARAM = "login";
     private static final String ROLE = "role";
     private static final String USER_ID_PARAM = "user_id";
     private static final String HOME_PAGE = "/hotel/controller?command=home";
-    private static final String LOGIN_PAGE = "WEB-INF/view/login.jsp";
     private static final String EMPTY = "";
     private static final String ERROR_MASSAGE_ATTRIBUTE = "errorMassage";
     private static final String ERROR_MASSAGE_VALUE = "not.found";

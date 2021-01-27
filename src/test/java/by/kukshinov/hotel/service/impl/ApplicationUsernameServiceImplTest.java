@@ -30,7 +30,6 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 public class ApplicationUsernameServiceImplTest {
-    private static final String PASS = "password";
     private static final String LOGIN = "login";
 
     private static final long USER_ID = 1L;
@@ -39,7 +38,7 @@ public class ApplicationUsernameServiceImplTest {
     private static final BigDecimal PRICE = new BigDecimal("505");
     private static final String CAPACITY_STRING = "1";
 
-    private static final User FIRST_USER = new User(USER_ID, LOGIN, PASS, false, Role.USER);
+    private static final User FIRST_USER = new User(USER_ID, LOGIN, false, Role.USER);
 
     private static final Application FIRST_APPLICATION = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.BUSINESS, LocalDate.now(), LocalDate.now(), ApplicationStatus.APPROVED, PRICE, ROOM_ID, USER_ID);
     private static final Application SECOND_APPLICATION = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.STANDARD, LocalDate.now(), LocalDate.now(), ApplicationStatus.APPROVED, PRICE, ROOM_ID, USER_ID);
