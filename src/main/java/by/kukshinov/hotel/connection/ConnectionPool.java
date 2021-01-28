@@ -2,7 +2,6 @@ package by.kukshinov.hotel.connection;
 
 import by.kukshinov.hotel.exceptions.ConnectionPoolException;
 import by.kukshinov.hotel.exceptions.DaoException;
-import by.kukshinov.hotel.exceptions.PoolOverflowException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -63,7 +62,7 @@ public class ConnectionPool {
             connectionsInUse.offer(proxyConnection);
             return proxyConnection;
         } catch (InterruptedException e) {
-            throw new PoolOverflowException(e.getMessage(), e);
+            throw new ConnectionPoolException(e.getMessage(), e);
         } finally {
             LOCKER.unlock();
         }

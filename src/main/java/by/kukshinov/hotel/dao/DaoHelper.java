@@ -31,13 +31,11 @@ public class DaoHelper implements AutoCloseable {
         }
     }
 
-    private void rollback() throws DaoException {
+    public void rollback() throws DaoException {
         try {
             connection.rollback();
         } catch (SQLException e) {
             throw new DaoException(e);
-        } finally {
-            endTransaction();
         }
     }
 
@@ -46,6 +44,8 @@ public class DaoHelper implements AutoCloseable {
             connection.commit();
         } catch (SQLException e) {
             rollback();
+        } finally {
+            endTransaction();
         }
     }
 

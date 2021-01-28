@@ -37,7 +37,7 @@ public class RequestBuilderTest {
         fields.put("id", 17);
         RequestBuilder requestBuilder = new RequestBuilder();
         Application app = new Application();
-        app.setId(17l);
+        app.setId(17L);
 
         String query = requestBuilder.getUpdateQuery("Application", fields);
 
