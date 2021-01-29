@@ -33,7 +33,6 @@
                     <th><fmt:message key="admin.user.role"/></th>
                     <th><fmt:message key="admin.user.status.change"/></th>
                 </tr>
-                <%--            todo think of resizing table--%>
                 <c:forEach var="user" items="${users}" varStatus="index">
                     <tr>
                         <td>${(itemsPerPage)*(page - 1) + index.count}</td>

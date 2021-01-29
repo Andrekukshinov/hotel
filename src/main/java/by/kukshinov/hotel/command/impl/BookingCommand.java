@@ -36,8 +36,6 @@ public class BookingCommand implements Command {
 
     @Override
     public CommandResult execute(RequestContext context) throws ServiceException {
-        // TODO: 25.11.2020 correct validation
-        // TODO: 15.12.2020 ask about that
 
         String personAmount = context.getRequestParameter(PERSON_AMOUNT);
         String apartment = context.getRequestParameter(APARTMENT);

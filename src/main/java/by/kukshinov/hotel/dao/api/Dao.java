@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface Dao<T extends Entity> {
-    // TODO: 04.12.2020 write tests
 
     Optional<T> findById(Long id) throws DaoException;
 

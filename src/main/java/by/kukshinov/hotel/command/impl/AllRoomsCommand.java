@@ -24,7 +24,6 @@ public class AllRoomsCommand implements Command {
         this.validator = validator;
     }
 
-    // TODO: 11.12.2020 add validation for the page
     @Override
     public CommandResult execute(RequestContext context) throws ServiceException {
         int roomAmount = service.getRoomAmount();
