@@ -119,7 +119,7 @@ public class RoomServiceImplTest {
         RoomService userService = new RoomServiceImpl(helperFactory);
         doThrow(DaoException.class).when(roomDao).save(any());
         //when
-        userService.updateRoom(FIRST);
+        userService.saveRoom(FIRST);
     }
 
 }

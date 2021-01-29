@@ -5,6 +5,7 @@ import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.service.api.RoomService;
 import by.kukshinov.hotel.service.impl.RoomServiceImpl;
+import by.kukshinov.hotel.util.RoomValidator;
 import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -17,6 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class AddRoomCommandTest {
+    private static final String INVALID_ROOM = "invalid room!";
     private static final String URL = "/hotel/controller?command=admin_rooms&page=1";
     private static final String ROOM_CAPACITY = "capacity";
     private static final String APARTMENT_TYPE = "apartment-type";
@@ -27,16 +29,17 @@ public class AddRoomCommandTest {
     private static final String LUX = "LUX";
     private static final String UNKNOWN = "no";
     private static final String PRICE_VALUE = "255";
-    private static final String WRONG_PRICE = "Wrong price!";
-    private static final String WRONG_CAPACITY = "Wrong capacity!";
+
 
 
     private RoomService service;
     private RequestContext context;
+    private RoomValidator validator;
 
     @BeforeMethod
     public void mockServicesAndRequestContext() {
         service = Mockito.mock(RoomServiceImpl.class);
+        validator = mock(RoomValidator.class);
     }
 
 
@@ -51,7 +54,8 @@ public class AddRoomCommandTest {
         context = new RequestContext(param, new HashMap<>(), null);
         CommandResult expected = CommandResult.redirect(URL);
         doNothing().when(service).saveRoom(any());
-        AddRoomCommand command = new AddRoomCommand(service);
+        when(validator.validateRoom(any())).thenReturn(true);
+        AddRoomCommand command = new AddRoomCommand(service, validator);
         //when
         CommandResult actual = command.execute(context);
         //then
@@ -69,12 +73,12 @@ public class AddRoomCommandTest {
         param.put(PRICE, NEGATIVE_VALUE);
         context = new RequestContext(param, new HashMap<>(), null);
         //when
-        AddRoomCommand command = new AddRoomCommand(service);
+        AddRoomCommand command = new AddRoomCommand(service, validator);
         //then
         command.execute(context);
     }
 
-    @Test( expectedExceptions = ServiceException.class, expectedExceptionsMessageRegExp = WRONG_PRICE)
+    @Test( expectedExceptions = ServiceException.class, expectedExceptionsMessageRegExp = INVALID_ROOM)
     public void testExecuteShouldThrowServiceExceptionWhenPriceIsNegative() throws ServiceException {
         //given
         Map<String, String> param = new HashMap<>();
@@ -83,38 +87,9 @@ public class AddRoomCommandTest {
         param.put(APARTMENT_TYPE, LUX);
         param.put(PRICE, NEGATIVE_VALUE);
         context = new RequestContext(param, new HashMap<>(), null);
+        when(validator.validateRoom(any())).thenReturn(false);
         //when
-        AddRoomCommand command = new AddRoomCommand(service);
-        //then
-        command.execute(context);
-    }
-
-    @Test( expectedExceptions = ServiceException.class, expectedExceptionsMessageRegExp = WRONG_CAPACITY)
-    public void testExecuteShouldThrowServiceExceptionWhenCapacityIsNegative() throws ServiceException {
-        //given
-        Map<String, String> param = new HashMap<>();
-        param.put(ROOM_NUMBER, NUMBER_VALUE);
-        param.put(ROOM_CAPACITY, NEGATIVE_VALUE);
-        param.put(APARTMENT_TYPE, LUX);
-        param.put(PRICE, NUMBER_VALUE);
-        context = new RequestContext(param, new HashMap<>(), null);
-        //when
-        AddRoomCommand command = new AddRoomCommand(service);
-        //then
-        command.execute(context);
-    }
-
-    @Test( expectedExceptions = ServiceException.class, expectedExceptionsMessageRegExp = "Wrong number!")
-    public void testExecuteShouldThrowServiceExceptionWhenRoomNumberIsNegative() throws ServiceException {
-        //given
-        Map<String, String> param = new HashMap<>();
-        param.put(ROOM_NUMBER, NEGATIVE_VALUE);
-        param.put(ROOM_CAPACITY, NUMBER_VALUE);
-        param.put(APARTMENT_TYPE, LUX);
-        param.put(PRICE, NUMBER_VALUE);
-        context = new RequestContext(param, new HashMap<>(), null);
-        //when
-        AddRoomCommand command = new AddRoomCommand(service);
+        AddRoomCommand command = new AddRoomCommand(service, validator);
         //then
         command.execute(context);
     }

@@ -15,7 +15,6 @@ public class UpdateRoomPageCommand implements Command {
     private static final String ROOM = "room";
     private static final String ROOM_JSP = "WEB-INF/view/updRoom.jsp";
 
-
     private final RoomService roomService;
 
     public UpdateRoomPageCommand(RoomService roomService) {

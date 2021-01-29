@@ -7,6 +7,7 @@ import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.model.Room;
 import by.kukshinov.hotel.model.enums.ApartmentType;
 import by.kukshinov.hotel.service.api.RoomService;
+import by.kukshinov.hotel.util.RoomValidator;
 
 import java.math.BigDecimal;
 
@@ -16,14 +17,14 @@ public class AddRoomCommand implements Command {
     private static final String APARTMENT_TYPE = "apartment-type";
     private static final String NUMBER = "number";
     private static final String PRICE = "price";
-    private static final String WRONG_PRICE = "Wrong price!";
-    private static final String WRONG_NUMBER = "Wrong number!";
-    private static final String WRONG_CAPACITY = "Wrong capacity!";
-    private static final int MAX_NUMBER_LENGTH = 7;
-    private final RoomService roomService;
+    private static final String INVALID_ROOM = "invalid room!";
 
-    public AddRoomCommand(RoomService roomService) {
+    private final RoomService roomService;
+    private final RoomValidator validator;
+
+    public AddRoomCommand(RoomService roomService, RoomValidator validator) {
         this.roomService = roomService;
+        this.validator = validator;
     }
 
     @Override
@@ -38,23 +39,13 @@ public class AddRoomCommand implements Command {
         int number = Integer.parseInt(numberString);
         byte capacity = Byte.parseByte(capacityString);
 
-        validateRoomData(numberString, price, number, capacity);
-
         Room room = new Room(null, number, apartmentType, capacity, true, price);
 
+        if (!validator.validateRoom(room)) {
+           throw new ServiceException(INVALID_ROOM);
+        }
         roomService.saveRoom(room);
         return CommandResult.redirect(ALL_ROOMS_PAGE);
     }
-
-    private void validateRoomData(String numberString, BigDecimal price, int number, byte capacity) throws ServiceException {
-        if (price.compareTo(BigDecimal.ZERO) < 0) {
-            throw new ServiceException(WRONG_PRICE);
-        }
-        if (numberString.length() > MAX_NUMBER_LENGTH || number < 0) {
-            throw new ServiceException(WRONG_NUMBER);
-        }
-        if (capacity <= 0 || capacity > 5) {
-            throw new ServiceException(WRONG_CAPACITY);
-        }
-    }
 }
+

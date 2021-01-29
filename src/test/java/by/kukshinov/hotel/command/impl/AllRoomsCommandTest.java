@@ -6,7 +6,7 @@ import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.model.Room;
 import by.kukshinov.hotel.service.api.RoomService;
 import by.kukshinov.hotel.service.impl.RoomServiceImpl;
-import by.kukshinov.hotel.util.PageHelperImpl;
+import by.kukshinov.hotel.util.PageHelper;
 import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -31,13 +31,13 @@ public class AllRoomsCommandTest {
 
     private RoomService service;
     private RequestContext context;
-    private PageHelperImpl pageValidator;
+    private PageHelper pageValidator;
 
 
     @BeforeMethod
     public void mockServicesAndRequestContext() {
         service = Mockito.mock(RoomServiceImpl.class);
-        pageValidator = Mockito.mock(PageHelperImpl.class);
+        pageValidator = Mockito.mock(PageHelper.class);
 
         Map<String, String> param = new HashMap<>();
         param.put(PAGE, FIRST);

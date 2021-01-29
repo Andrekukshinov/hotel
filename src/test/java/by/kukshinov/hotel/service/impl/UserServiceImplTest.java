@@ -9,7 +9,6 @@ import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.User;
 import by.kukshinov.hotel.model.enums.Role;
 import by.kukshinov.hotel.service.api.UserService;
-import by.kukshinov.hotel.service.impl.UserServiceImpl;
 import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -94,7 +93,7 @@ public class UserServiceImplTest {
         UserService userService = new UserServiceImpl(helperFactory);
         doNothing().when(dao).save(actual);
         //when
-        userService.changeUserStatus(actual, !actual.getIsDisabled());
+        userService.switchUserStatus(actual);
         //then
         Assert.assertEquals(actual, expected);
     }
@@ -137,7 +136,7 @@ public class UserServiceImplTest {
         UserService userService = new UserServiceImpl(helperFactory);
         doThrow(new DaoException(EMPTY)).when(dao).save(any());
         //when
-        userService.changeUserStatus(FIFTH, false);
+        userService.switchUserStatus(FIFTH);
     }
 
     @Test(expectedExceptions = ServiceException.class)//then

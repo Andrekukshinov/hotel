@@ -7,7 +7,6 @@ import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.model.User;
 import by.kukshinov.hotel.service.api.UserService;
 import by.kukshinov.hotel.util.PageHelper;
-import by.kukshinov.hotel.util.PageHelperImpl;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class AllUsersCommand implements Command {
     private final UserService userService;
     private final PageHelper validator;
 
-    public AllUsersCommand(UserService userService, PageHelperImpl validator) {
+    public AllUsersCommand(UserService userService, PageHelper validator) {
         this.userService = userService;
         this.validator = validator;
     }

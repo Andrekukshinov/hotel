@@ -77,11 +77,11 @@ public class AllInOrderApplicationsCommandTest {
         Integer actualLastPage = (Integer) context.getRequestAttribute(LAST_PAGE);
         Integer actualPage = (Integer) context.getRequestAttribute(PAGE);
         Integer actualItemsPerPage = (Integer) context.getRequestAttribute(PER_PAGE);
-        Assert.assertEquals(actual, expected);
         Assert.assertEquals(actualAppUsernameList, APPLICATIONS_VALUE);
         Assert.assertEquals(actualLastPage, NUMBER);
         Assert.assertEquals(actualPage, NUMBER);
         Assert.assertEquals(actualItemsPerPage, ITEMS_PER_PAGE);
+        Assert.assertEquals(actual, expected);
     }
 
     @Test(expectedExceptions = {ServiceException.class})//then

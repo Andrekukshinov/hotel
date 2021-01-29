@@ -24,6 +24,6 @@ public interface RoomService {
 
     void saveRoom(Room room)  throws ServiceException;
 
-    void updateRoom(Room room) throws ServiceException;
+    void switchRoomActivity(Room room) throws ServiceException;
 
 }

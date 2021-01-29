@@ -18,24 +18,24 @@ public class UserFieldExtractor implements FieldsExtractor<User> {
         long userId = user.getId();
         String login = user.getLogin();
         boolean isDisabled = user.getIsDisabled();
-        int falseInt = parseBooleanToInt(isDisabled);
+
 
         Map<String, Object> result = new LinkedHashMap<>();
 
         result.put(LOGIN, login);
-        result.put(IS_DISABLED, falseInt);
+        result.put(IS_DISABLED, isDisabled);
         result.put(ID, userId);
 
         return result;
     }
 
-    private int parseBooleanToInt(boolean isDisabled) {
-        int falseInt;
-        if (isDisabled) {
-            falseInt = 0;
-        } else {
-            falseInt = 1;
-        }
-        return falseInt;
-    }
+//    private int parseBooleanToInt(boolean isDisabled) {
+//        int falseInt;
+//        if (isDisabled) {
+//            falseInt = 0;
+//        } else {
+//            falseInt = 1;
+//        }
+//        return falseInt;
+//    }
 }

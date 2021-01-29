@@ -19,8 +19,12 @@ public class RoomServiceImpl implements RoomService {
         this.helperFactory = helperFactory;
     }
 
+
+
     @Override
-    public void updateRoom(Room room) throws ServiceException {
+    public void switchRoomActivity(Room room) throws ServiceException {
+        Boolean isAvailable = room.getIsAvailable();
+        room.setIsAvailable(!isAvailable);
         saveAndUpdate(room);
     }
 
@@ -40,7 +44,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<Room> findRangeEntities(int startFrom, int finishWith) throws ServiceException {
-        try (DaoHelper daoHelper = helperFactory.createDaoHelper()){
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             RoomDao dao = daoHelper.createRoomDao();
             return dao.findRangeRooms(startFrom, finishWith);
         } catch (DaoException e) {
@@ -58,7 +62,7 @@ public class RoomServiceImpl implements RoomService {
         }
     }
 
-  @Override
+    @Override
     public Integer getAvailableRoomAmount(LocalDate arrivalDate, LocalDate leavingDate) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             RoomDao roomDao = daoHelper.createRoomDao();

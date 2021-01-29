@@ -56,7 +56,7 @@ public class UpdateUserCommandTest {
     @Test
     public void testExecuteShouldReturnRedirectToHomePage() throws ServiceException {
         //given
-        doNothing().when(service).changeUserStatus(any(), anyBoolean());
+        doNothing().when(service).switchUserStatus(any());
         Command command = new UpdateUserCommand(service);
         CommandResult expected = CommandResult.redirect(ALL_USERS);
         User value = new User(1L, "l", false, Role.ADMIN);

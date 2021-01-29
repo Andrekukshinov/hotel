@@ -4,7 +4,8 @@ import by.kukshinov.hotel.command.impl.*;
 import by.kukshinov.hotel.dao.DaoHelperFactory;
 import by.kukshinov.hotel.exceptions.NoSuchCommandException;
 import by.kukshinov.hotel.service.impl.*;
-import by.kukshinov.hotel.util.PageHelperImpl;
+import by.kukshinov.hotel.util.PageHelper;
+import by.kukshinov.hotel.util.RoomValidator;
 
 public class CommandFactory {
 
@@ -42,12 +43,12 @@ public class CommandFactory {
     public static Command createCommand(String commandParam) {
         switch (commandParam) {
             case ADMIN_ADD_ROOM:
-                return new AddRoomCommand(new RoomServiceImpl(new DaoHelperFactory()));
+                return new AddRoomCommand(new RoomServiceImpl(new DaoHelperFactory()), new RoomValidator());
             case ADMIN_ALL_APPLICATIONS:
                 return new AllApplicationsCommand(
                         new ApplicationServiceImpl(new DaoHelperFactory()),
                         new ApplicationUsernameServiceImpl(new DaoHelperFactory()),
-                        new PageHelperImpl()
+                        new PageHelper()
                 );
             case ADMIN_CHECK_STATUS:
                 return new AdminCheckBillCommand(
@@ -58,12 +59,12 @@ public class CommandFactory {
                 return new AvailableRoomsCommand(
                         new ApplicationServiceImpl(new DaoHelperFactory()),
                         new RoomServiceImpl(new DaoHelperFactory()),
-                        new PageHelperImpl()
+                        new PageHelper()
                 );
             case ADMIN_USERS:
-                return new AllUsersCommand(new UserServiceImpl(new DaoHelperFactory()), new PageHelperImpl());
+                return new AllUsersCommand(new UserServiceImpl(new DaoHelperFactory()), new PageHelper());
             case ADMIN_ACTIVE_APPLICATIONS:
-                return new AllInOrderApplicationsCommand(new ApplicationServiceImpl(new DaoHelperFactory()), new PageHelperImpl());
+                return new AllInOrderApplicationsCommand(new ApplicationServiceImpl(new DaoHelperFactory()), new PageHelper());
             case ADMIN_APPROVE_APPLICATION:
                 return new ApproveApplicationCommand(
                         new ApplicationServiceImpl(new DaoHelperFactory()),
@@ -77,7 +78,7 @@ public class CommandFactory {
             case ADMIN_CREATE_ROOM:
                 return new ForwardCommand(ADD_ROOM_PAGE);
             case ADMIN_SAVE_UPDATED_ROOM:
-                return new SaveUpdatedRoomCommand(new RoomServiceImpl(new DaoHelperFactory()));
+                return new SaveUpdatedRoomCommand(new RoomValidator(), new RoomServiceImpl(new DaoHelperFactory()));
             case ADMIN_UPDATE_USER:
                 return new UpdateUserCommand(new UserServiceImpl(new DaoHelperFactory()));
             case ADMIN_UPDATE_ROOM:
@@ -85,7 +86,7 @@ public class CommandFactory {
             case ADMIN_REJECT_APPLICATION:
                 return new RejectApplicationCommand(new ApplicationServiceImpl(new DaoHelperFactory()));
             case ADMIN_ROOMS:
-                return new AllRoomsCommand(new RoomServiceImpl(new DaoHelperFactory()), new PageHelperImpl());
+                return new AllRoomsCommand(new RoomServiceImpl(new DaoHelperFactory()), new PageHelper());
             case HOME:
                 return new ForwardCommand(HOME_LOCATION);
             case DEFAULT_REJECT_REASON:
@@ -95,7 +96,7 @@ public class CommandFactory {
             case LOGOUT:
                 return new LogoutCommand();
             case PROFILE_HISTORY:
-                return new HistoryCommand(new ApplicationServiceImpl(new DaoHelperFactory()), new PageHelperImpl());
+                return new HistoryCommand(new ApplicationServiceImpl(new DaoHelperFactory()), new PageHelper());
             case USER_BILL:
                 return new UserBillCommand(
                         new ApplicationRoomServiceImpl(new DaoHelperFactory())
@@ -103,7 +104,7 @@ public class CommandFactory {
             case USER_BILLS:
                 return new AllUserBillsCommand(
                         new ApplicationServiceImpl(new DaoHelperFactory()),
-                        new PageHelperImpl()
+                        new PageHelper()
                 );
             case USER_CANCEL_APPLICATION:
                 return new UserCancelCommand(

@@ -43,16 +43,14 @@ public class ChangeRoomActivityCommandTest {
     public void testExecuteShouldUpdateRoomAndReturnRedirectToAllPages() throws ServiceException {
         context.setRequestParameter(ID, ONE);
         context.setRequestParameter(IS_AVAILABLE, FALSE);
-        Room startRoom = new Room(ROOM_ID, 303, ApartmentType.BUSINESS, new Byte(CAPACITY_STRING), true, PRICE);
-        when(roomService.findById(anyLong())).thenReturn(Optional.of(startRoom));
         Room expectedRoom = new Room(ROOM_ID, 303, ApartmentType.BUSINESS, new Byte(CAPACITY_STRING), false, PRICE);
+        when(roomService.findById(anyLong())).thenReturn(Optional.of(expectedRoom));
         String url = "/hotel/controller?command=admin_rooms";
         CommandResult expectedResult = CommandResult.redirect(url);
         ChangeRoomActivityCommand  command = new ChangeRoomActivityCommand(roomService);
 
         CommandResult actualResult = command.execute(context);
 
-        Assert.assertEquals(startRoom, expectedRoom);
         Assert.assertEquals(actualResult, expectedResult);
     }
 }

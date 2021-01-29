@@ -9,7 +9,7 @@ import by.kukshinov.hotel.model.User;
 import by.kukshinov.hotel.model.enums.Role;
 import by.kukshinov.hotel.service.api.UserService;
 import by.kukshinov.hotel.service.impl.UserServiceImpl;
-import by.kukshinov.hotel.util.PageHelperImpl;
+import by.kukshinov.hotel.util.PageHelper;
 import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -34,13 +34,13 @@ public class AllUsersCommandTest {
 
     private UserService service;
     private RequestContext context;
-    private PageHelperImpl pageValidator;
+    private PageHelper pageValidator;
 
 
     @BeforeMethod
     public void mockServicesAndRequestContext() {
         service = Mockito.mock(UserServiceImpl.class);
-        pageValidator = Mockito.mock(PageHelperImpl.class);
+        pageValidator = Mockito.mock(PageHelper.class);
 
         Map<String, String> param = new HashMap<>();
         param.put(PAGE, FIRST);
@@ -53,7 +53,7 @@ public class AllUsersCommandTest {
     public void testExecuteShouldThrowServiceException () throws ServiceException {
         //given
         when(service.getRangeUsers(anyInt(), anyInt())).thenThrow(ServiceException.class);
-        PageHelperImpl pageValidator = Mockito.mock(PageHelperImpl.class);
+        PageHelper pageValidator = Mockito.mock(PageHelper.class);
         Command command = new AllUsersCommand(service, pageValidator);
         //when
         command.execute(context);

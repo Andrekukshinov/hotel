@@ -13,7 +13,6 @@ public class RequestContextHelper {
 
     public RequestContext create(HttpServletRequest req) {
         HttpSession session = req.getSession();
-//        String referer = req.getHeader("Referer");
         Enumeration<String> parameterNames = req.getParameterNames();
         Enumeration<String> attributeNames = req.getAttributeNames();
         Enumeration<String> sessionAttributeNames = session.getAttributeNames();

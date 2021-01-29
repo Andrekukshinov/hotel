@@ -15,7 +15,7 @@ public interface UserService {
 
     void updateUser(User user) throws ServiceException;
 
-    void changeUserStatus(User user, boolean isDisabled) throws ServiceException;
+    void switchUserStatus(User user) throws ServiceException;
 
     int getUsersAmount() throws ServiceException;
 }

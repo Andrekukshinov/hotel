@@ -7,6 +7,7 @@ import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.model.Room;
 import by.kukshinov.hotel.model.enums.ApartmentType;
 import by.kukshinov.hotel.service.api.RoomService;
+import by.kukshinov.hotel.util.RoomValidator;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -14,54 +15,47 @@ import java.util.Optional;
 public class SaveUpdatedRoomCommand implements Command {
     private static final String ALL_ROOMS = "/hotel/controller?command=admin_rooms";
     private static final String ID = "id";
-    private static final String PERSON_AMOUNT = "capacity";
-    private static final String ROOM_STATUS = "roomStatus";
+    private static final String CAPACITY = "capacity";
     private static final String PRICE = "price";
     private static final String ROOM_TYPE = "roomType";
     private static final String WRONG_ROOM = "No such room exists!";
+    private static final String WRONG_DATA = "Wrong data!";
+
+    private final RoomValidator validator;
     private final RoomService roomService;
 
-    public SaveUpdatedRoomCommand(RoomService roomService) {
+    public SaveUpdatedRoomCommand(RoomValidator validator, RoomService roomService) {
+        this.validator = validator;
         this.roomService = roomService;
     }
 
     @Override
     public CommandResult execute(RequestContext context) throws ServiceException {
-        String personAmount = context.getRequestParameter(PERSON_AMOUNT);
+        String capacityString = context.getRequestParameter(CAPACITY);
         String stringId = context.getRequestParameter(ID);
-        String stringRoomStatus = context.getRequestParameter(ROOM_STATUS);
-        String stringPrice = context.getRequestParameter(PRICE);
-        String stringRoomType = context.getRequestParameter(ROOM_TYPE);
+        String priceString = context.getRequestParameter(PRICE);
+        String apartmentTypeString = context.getRequestParameter(ROOM_TYPE);
+
+        ApartmentType apartmentType = ApartmentType.valueOf(apartmentTypeString);
+        BigDecimal price = new BigDecimal(priceString);
+        byte capacity = Byte.parseByte(capacityString);
 
         long id = Long.parseLong(stringId);
         Optional<Room> roomOptional = roomService.findDisabledById(id);
         Room room = roomOptional.orElseThrow(() -> new ServiceException(WRONG_ROOM));
-        updateRoom(stringRoomStatus, stringPrice, stringRoomType, personAmount, room);
 
-        roomService.updateRoom(room);
+        room.setRoomType(apartmentType);
+        room.setPrice(price);
+        room.setCapacity(capacity);
+
+        if(!validator.validateRoom(room)) {
+            throw new ServiceException(WRONG_DATA);
+        }
+
+        roomService.saveRoom(room);
 
         return CommandResult.redirect(ALL_ROOMS);
-    }
 
-    private void updateRoom(String stringRoomStatus, String stringPrice, String stringRoomType, String personAmountString, Room room) throws ServiceException {
-        if (stringRoomType != null) {
-            ApartmentType apartmentType = ApartmentType.valueOf(stringRoomType);
-            room.setRoomType(apartmentType);
-        }
-
-        if (!stringPrice.isEmpty() && !stringPrice.startsWith("-")) {
-            BigDecimal price = new BigDecimal(stringPrice);
-            room.setPrice(price);
-        }
-        if (personAmountString != null) {
-            byte personAmountByte = Byte.parseByte(personAmountString);
-            room.setCapacity(personAmountByte);
-        }
-
-        if (stringRoomStatus != null) {
-            Boolean roomStatus = Boolean.valueOf(stringRoomStatus);
-            room.setIsAvailable(roomStatus);
-        }
     }
 
 }

@@ -13,7 +13,6 @@ public class RoomFieldsExtractor implements FieldsExtractor<Room> {
     private static final String IS_AVAILABLE = "is_available";
     private static final String PRICE = "price";
     private static final String CAPACITY = "capacity";
-    private static final String URL = "picture_url";
     private static final String ID = "id";
     private static final String ROOM_NUMBER = "room_number";
 

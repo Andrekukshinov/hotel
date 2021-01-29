@@ -106,7 +106,7 @@ function confirmDisable() {
     let buttons = document.getElementsByClassName("open-modal");
     for (let i = 0; i < buttons.length; i++) {
         let button = buttons[i];
-        if(button.type !== "submit") {
+        if(button.type.toLowerCase() === "button" && button.tagName.toLowerCase() === "button") {
             button.addEventListener("click", () => {
                     let description = document.getElementById("myModal" + (i + 1));
                     description.style.display = "block";

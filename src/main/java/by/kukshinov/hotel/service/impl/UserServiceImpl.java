@@ -51,10 +51,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changeUserStatus(User user, boolean isDisabled) throws ServiceException {
+    public void switchUserStatus(User user) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             UserDao dao = daoHelper.createUserDao();
-            user.setIsDisabled(isDisabled);
+            boolean isDisabled = user.getIsDisabled();
+            user.setIsDisabled(!isDisabled);
             dao.save(user);
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);

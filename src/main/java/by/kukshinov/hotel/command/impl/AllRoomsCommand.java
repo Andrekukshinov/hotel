@@ -7,7 +7,6 @@ import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.model.Room;
 import by.kukshinov.hotel.service.api.RoomService;
 import by.kukshinov.hotel.util.PageHelper;
-import by.kukshinov.hotel.util.PageHelperImpl;
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class AllRoomsCommand implements Command {
     private final RoomService service;
     private final PageHelper validator;
 
-    public AllRoomsCommand(RoomService service, PageHelperImpl validator) {
+    public AllRoomsCommand(RoomService service, PageHelper validator) {
         this.service = service;
         this.validator = validator;
     }

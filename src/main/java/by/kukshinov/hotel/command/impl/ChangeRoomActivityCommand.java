@@ -29,10 +29,7 @@ public class ChangeRoomActivityCommand implements Command {
         Optional<Room> roomOptional = roomService.findById(id);
         Room room = roomOptional.orElseThrow(() -> new ServiceException(WRONG_ROOM));
 
-        Boolean isAvailable = room.getIsAvailable();
-        room.setIsAvailable(!isAvailable);
-
-        roomService.updateRoom(room);
+        roomService.switchRoomActivity(room);
 
         return CommandResult.redirect(ALL_ROOMS);
     }

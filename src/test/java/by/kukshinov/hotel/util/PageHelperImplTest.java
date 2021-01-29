@@ -53,7 +53,7 @@ public class PageHelperImplTest {
 
     @Test(dataProvider = "currentPageDataProvider")
     public void tesGetValidPageShouldReturnFirstPage(String pageString, int itemsPerPage, int totalItemsAmount, int expected) {
-        PageHelper pageValidator = new PageHelperImpl();
+        PageHelper pageValidator = new PageHelper();
 
         int page = pageValidator.getValidPage(pageString, totalItemsAmount, itemsPerPage);
 
@@ -62,7 +62,7 @@ public class PageHelperImplTest {
 
     @Test(dataProvider = "lastPageDataProvider")
     public void testGetLastPageShouldReturnLastPage(int totalItemsAmount, int itemsPerPage, int expected) {
-        PageHelper pageValidator = new PageHelperImpl();
+        PageHelper pageValidator = new PageHelper();
 
         int page = pageValidator.getLastPage(totalItemsAmount, itemsPerPage);
 

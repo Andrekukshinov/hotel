@@ -10,11 +10,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
-import java.util.Arrays;
 
 
 public class DaoHelper implements AutoCloseable {
     private static final Logger LOGGER = LogManager.getLogger();
+    private static final String CLOSING_TRANSACTION_ERROR = "Closing transaction error";
 
     private final ProxyConnection connection;
 
@@ -36,6 +36,8 @@ public class DaoHelper implements AutoCloseable {
             connection.rollback();
         } catch (SQLException e) {
             throw new DaoException(e);
+        } finally {
+            endTransaction();
         }
     }
 
@@ -49,11 +51,11 @@ public class DaoHelper implements AutoCloseable {
         }
     }
 
-    public void endTransaction() throws DaoException {
+    public void endTransaction() {
         try {
             connection.setAutoCommit(true);
         } catch (SQLException e) {
-            throw new DaoException(e.getMessage(), e);
+            LOGGER.error(CLOSING_TRANSACTION_ERROR, e);
         }
     }
 

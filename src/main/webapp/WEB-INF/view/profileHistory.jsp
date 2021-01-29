@@ -39,7 +39,9 @@
 
                             <td class="small-font">
                                 <ul class="no-style-ul">
-                                    <li><fmt:message key="admin.room.capacity"/> ${applicationDto.personAmount}</li>
+                                    <li>
+                                        <fmt:message key="admin.room.capacity"/> ${applicationDto.personAmount}
+                                    </li>
                                     <li><fmt:message key="admin.room.type"/> <fmt:message
                                             key="admin.room.type.${applicationDto.type}"/></li>
                                     <li><fmt:message key="booking.book.date.arrival"/>
@@ -59,27 +61,30 @@
                                 <c:choose>
                                     <c:when test="${applicationDto.status == 'DENIED'}">
                                         <br>
-                                        <a class="check-the-bill-button small-font"
+                                        <a class="check-the-bill-button small-font open-modal"
                                            href="${pageContext.request.contextPath}/controller?command=reject_reason">
                                             <fmt:message key="history.user.reject.details"/>
                                         </a>
                                         <br>
                                     </c:when>
                                     <c:when test="${applicationDto.status == 'IN_ORDER'}">
-                                        <form class="admin-users-form open-modal">
-                                            <button type="button" class="check-the-bill-button no-style-ul">
+                                        <form class="admin-users-form">
+                                            <button type="button" class="check-the-bill-button no-style-ul open-modal">
                                                 <fmt:message key="history.application.cancel"/>
                                             </button>
                                         </form>
                                     </c:when>
                                     <c:when test="${applicationDto.status == 'APPROVED'}">
                                         <br>
-                                        <a class="check-the-bill-button small-font"
+                                        <a class="check-the-bill-button small-font open-modal"
                                            href="${pageContext.request.contextPath}/controller?command=user_bill&id=${applicationDto.id}">
                                             <fmt:message key="history.check.bill"/>
                                         </a>
                                         <br>
                                     </c:when>
+                                    <c:otherwise>
+                                        <input type="hidden" class="open-modal"/>
+                                    </c:otherwise>
                                 </c:choose>
 
                             </td>
@@ -107,6 +112,7 @@
                                             <form class="admin-users-form" method="post"
                                                   action="${pageContext.request.contextPath}/controller?command=user_cancel_order">
                                                 <input type="hidden" name="id" value="${applicationDto.id}">
+                                                <input type="hidden" name="page" value="${page}">
                                                 <button type="submit" class="users-submit">
                                                     <fmt:message key="admin.room.change.true"/>
                                                 </button>

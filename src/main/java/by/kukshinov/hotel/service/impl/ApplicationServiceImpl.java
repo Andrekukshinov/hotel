@@ -179,7 +179,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         updateApplicationStatus(application, ApplicationStatus.DENIED);
     }
 
-    //TODO ASKKKKKKK
     @Override
     public void userRejectApprovedApplication(Application application) throws ServiceException {
         application.setRoomId(null);
