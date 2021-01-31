@@ -29,7 +29,7 @@ public class ApplicationRoomServiceImpl implements ApplicationRoomService {
     @Override
     public ApplicationRoom findByApplicationId(Long applicationId) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
-            Application application = getApplication(applicationId, daoHelper);
+            Application application = getApprovedApplication(applicationId, daoHelper);
             Long roomId = application.getRoomId();
 
             Room room = getRoom(daoHelper, roomId);
@@ -43,7 +43,7 @@ public class ApplicationRoomServiceImpl implements ApplicationRoomService {
     @Override
     public ApplicationRoom findUserBillByApplicationId(Long applicationId, Long userId) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
-            Application application = getApplication(applicationId, daoHelper);
+            Application application = getApprovedApplication(applicationId, daoHelper);
             Validation.validate(userId.equals(application.getUserId()), new ServiceException(WRONG_APPLICATION));
 
             Long roomId = application.getRoomId();
@@ -62,7 +62,7 @@ public class ApplicationRoomServiceImpl implements ApplicationRoomService {
         return optionalRoom.orElseThrow(() -> new ServiceException(WRONG_APPLICATION));
     }
 
-    private Application getApplication(Long applicationId, DaoHelper daoHelper) throws DaoException, ServiceException {
+    private Application getApprovedApplication(Long applicationId, DaoHelper daoHelper) throws DaoException, ServiceException {
         ApplicationDao applicationDao = daoHelper.createApplicationDao();
         Optional<Application> approvedById = applicationDao.findById(applicationId);
 

@@ -120,29 +120,29 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Application findInOrderApplicationById(Long id) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
-            ApplicationDao applicationDao = daoHelper.createApplicationDao();
-            Optional<Application> optionalApplication = applicationDao.findById(id);
-            Application application = optionalApplication.orElseThrow(() -> new ServiceException(WRONG_APPLICATION));
+            Application application = getApplicationById(id, daoHelper);
 
-            boolean isInOrder = application.getStatus().equals(ApplicationStatus.IN_ORDER);
-            Validation.validate(isInOrder, new ServiceException(WRONG_APPLICATION));
+            isInOrder(application.getStatus());
 
             return application;
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
+    }
+
+    private Application getApplicationById(Long applicationId, DaoHelper daoHelper) throws DaoException, ServiceException {
+        ApplicationDao applicationDao = daoHelper.createApplicationDao();
+        Optional<Application> optionalApplication = applicationDao.findById(applicationId);
+        return optionalApplication.orElseThrow(() -> new ServiceException(WRONG_APPLICATION));
     }
 
     @Override
     public Application findFutureArrivalInOrderApplicationById(Long id) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
-            ApplicationDao applicationDao = daoHelper.createApplicationDao();
-            Optional<Application> optionalApplication = applicationDao.findById(id);
-            Application application = optionalApplication.orElseThrow(() -> new ServiceException(WRONG_APPLICATION));
+            Application application = getApplicationById(id, daoHelper);
 
-            boolean isFutureArrival = application.getArrivalDate().isAfter(LocalDate.now());
-            boolean isInOrder = application.getStatus().equals(ApplicationStatus.IN_ORDER);
-            Validation.validate(isFutureArrival && isInOrder, new ServiceException(WRONG_APPLICATION));
+            isInOrder(application.getStatus());
+            isDateValid(application.getArrivalDate(), application.getLeavingDate());
 
             return application;
         } catch (DaoException e) {
@@ -150,12 +150,11 @@ public class ApplicationServiceImpl implements ApplicationService {
         }
     }
 
+
     @Override
     public Application findInOrderUserApplicationById(Long appId, Long userId) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
-            ApplicationDao applicationDao = daoHelper.createApplicationDao();
-            Optional<Application> optionalApplication = applicationDao.findById(appId);
-            Application application = optionalApplication.orElseThrow(() -> new ServiceException(WRONG_APPLICATION));
+            Application application = getApplicationById(appId, daoHelper);
 
             boolean isInOrder = application.getStatus().equals(ApplicationStatus.IN_ORDER);
             boolean isUserApplication = userId.equals(application.getUserId());
@@ -170,9 +169,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public Application findApprovedUserApplicationById(Long id, Long userId) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
-            ApplicationDao applicationDao = daoHelper.createApplicationDao();
-            Optional<Application> optionalApplication = applicationDao.findById(id);
-            Application application = optionalApplication.orElseThrow(() -> new ServiceException(WRONG_APPLICATION));
+            Application application = getApplicationById(id, daoHelper);
 
             boolean isApproved = application.getStatus().equals(ApplicationStatus.APPROVED);
             boolean isUserApplication = userId.equals(application.getUserId());
@@ -201,12 +198,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public void approveApplication(Application application, Room room) throws ServiceException {
-        LocalDate arrivalDate = application.getArrivalDate();
-        LocalDate leavingDate = application.getLeavingDate();
-        LocalDate now = LocalDate.now();
-        if (!now.isBefore(arrivalDate) || leavingDate.isBefore(arrivalDate)) {
-            throw new ServiceException(TOO_LATE_TO_APPROVE);
-        }
+        isDateValid(application.getArrivalDate(), application.getLeavingDate());
 
         BigDecimal totalPrice = getTotalPrice(application, room);
         Long roomId = room.getId();
@@ -218,12 +210,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public void userRejectApprovedApplication(Application application) throws ServiceException {
-        LocalDate arrivalDate = application.getArrivalDate();
-        LocalDate leavingDate = application.getLeavingDate();
-        LocalDate now = LocalDate.now();
-        if (!now.isBefore(arrivalDate) || leavingDate.isBefore(arrivalDate)) {
-            throw new ServiceException(TOO_LATE_TO_APPROVE);
-        }
+        isDateValid(application.getArrivalDate(), application.getLeavingDate());
 
         application.setRoomId(null);
         application.setTotalPrice(null);
@@ -236,5 +223,16 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setRoomId(null);
         application.setTotalPrice(null);
         updateApplicationStatus(application, ApplicationStatus.CANCELLED);
+    }
+
+    private void isDateValid(LocalDate arrivalDate, LocalDate leavingDate) throws ServiceException {
+        LocalDate now = LocalDate.now();
+        if (!now.isBefore(arrivalDate) || leavingDate.isBefore(arrivalDate)) {
+            throw new ServiceException(TOO_LATE_TO_APPROVE);
+        }
+    }
+    private void isInOrder(ApplicationStatus applicationStatus) throws ServiceException {
+        boolean isInOrder = applicationStatus.equals(ApplicationStatus.IN_ORDER);
+        Validation.validate(isInOrder, new ServiceException(WRONG_APPLICATION));
     }
 }
