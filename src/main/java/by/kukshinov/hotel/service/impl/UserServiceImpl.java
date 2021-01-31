@@ -6,12 +6,15 @@ import by.kukshinov.hotel.dao.api.UserDao;
 import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.User;
+import by.kukshinov.hotel.model.enums.Role;
 import by.kukshinov.hotel.service.api.UserService;
+import org.valid4j.Validation;
 
 import java.util.List;
 import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
+    private static final String WRONG_USER = "Wrong user";
 
     private DaoHelperFactory helperFactory;
 
@@ -31,10 +34,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findById(Long id) throws ServiceException {
+    public User findCustomerById(Long id) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             UserDao userDao = daoHelper.createUserDao();
-            return userDao.findById(id);
+            Optional<User> optionalUser = userDao.findById(id);
+
+            User user = optionalUser.orElseThrow(() -> new ServiceException(WRONG_USER));
+            Validation.validate(!Role.ADMIN.equals(user.getRole()), new ServiceException(WRONG_USER));
+
+            return user;
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }

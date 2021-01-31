@@ -76,11 +76,11 @@ public class PaginationTag extends TagSupport implements Tag {
     }
 
     private void currentPage(JspWriter writer) throws IOException {
-            if (lastPage <= THIRD_PAGE) {
-                displayAllPages(writer);
-            } else {
-                multiplePages(writer);
-            }
+        if (lastPage <= THIRD_PAGE) {
+            displayAllPages(writer);
+        } else {
+            multiplePages(writer);
+        }
     }
 
     private void previousPage(JspWriter writer) throws IOException {
@@ -110,7 +110,7 @@ public class PaginationTag extends TagSupport implements Tag {
     }
 
     private void printLastPage(JspWriter writer) throws IOException {
-        if(currentPage == lastPage) {
+        if (currentPage == lastPage) {
             writer.write(DIV_CURRENT_PAGE + currentPage + CLOSING_DIV);
         } else {
             writer.write(HREF_1ST_PART + href + lastPage + HREF_2ND_PART + lastPage + CLOSING_HREF);

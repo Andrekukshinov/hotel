@@ -7,15 +7,15 @@
 }
 
 
-.current-page{
+.current-page {
     background-color: rgba(151, 197, 248, 0.3);
 }
 
-.home-welcome{
+.home-welcome {
     margin-left: 44%;
 }
 
-.home-txt{
+.home-txt {
     margin-left: 2%;
 }
 
@@ -83,7 +83,7 @@ button.login-submit {
     cursor: pointer;
 }
 
-.go-back-margin{
+.go-back-margin {
     box-shadow: 0 0 10px #111111;
     width: 25%;
     background-color: #255a94;
@@ -110,12 +110,12 @@ div.login-form {
     min-height: 60%;
 }
 
-#thinner{
+#thinner {
     margin-left: 25%;
     width: 40%;
 }
 
-.shorter{
+.shorter {
     margin-bottom: 2%;
     height: 40%;
 }
@@ -125,7 +125,7 @@ div.login-form {
     display: flex;
 }
 
-.room-update-form{
+.room-update-form {
     min-height: 70%;
 }
 
@@ -145,7 +145,7 @@ body.standard-color {
     margin-left: 41%;
 }
 
-.active{
+.active {
     background-color: rgba(151, 197, 248, 0.3);
 }
 
@@ -222,7 +222,7 @@ button.auth:active {
     box-shadow: none;
 }
 
-button.auth:focus{
+button.auth:focus {
     background-color: #111;
     border-style: none;
     outline: none;
@@ -330,12 +330,12 @@ body.no-margin {
     margin: 0;
 }
 
-.reject-reason{
+.reject-reason {
     margin: 10% 4%;
     text-align: justify;
 }
 
-.too-late{
+.too-late {
     margin: 10% 4%;
     font-size: larger;
     padding: 2%;
@@ -411,7 +411,7 @@ body.no-margin {
     }
 
 
-    .room-update-form{
+    .room-update-form {
         min-height: 90%;
     }
 
@@ -448,11 +448,11 @@ body.no-margin {
     }
 
 
-    .go-back-margin{
+    .go-back-margin {
         margin: 1% 0 1% 38%;
     }
 
-    #thinner{
+    #thinner {
         margin-left: 15%;
         width: 70%;
         background-color: #f2f2f2;

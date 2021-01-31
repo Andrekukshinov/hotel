@@ -15,7 +15,10 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -50,7 +53,7 @@ public class AllUsersCommandTest {
     }
 
     @Test(expectedExceptions = {ServiceException.class})//then
-    public void testExecuteShouldThrowServiceException () throws ServiceException {
+    public void testExecuteShouldThrowServiceException() throws ServiceException {
         //given
         when(service.getRangeUsers(anyInt(), anyInt())).thenThrow(ServiceException.class);
         PageHelper pageValidator = Mockito.mock(PageHelper.class);
@@ -60,7 +63,7 @@ public class AllUsersCommandTest {
     }
 
     @Test
-     public void testExecuteShouldReturnForwardToAllUsersAndSetUsersToContext() throws ServiceException {
+    public void testExecuteShouldReturnForwardToAllUsersAndSetUsersToContext() throws ServiceException {
         //given
         List<User> expectedUsers = Collections.singletonList(USER);
         when(service.getRangeUsers(anyInt(), anyInt())).thenReturn(expectedUsers);
@@ -73,6 +76,6 @@ public class AllUsersCommandTest {
         List<Room> actualRooms = (List<Room>) context.getRequestAttribute(USERS);
         Assert.assertEquals(actualRooms, expectedUsers);
         Assert.assertEquals(actual, expected);
-     }
+    }
 
 }

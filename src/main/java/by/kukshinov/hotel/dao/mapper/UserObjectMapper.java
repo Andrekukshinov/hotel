@@ -1,7 +1,7 @@
 package by.kukshinov.hotel.dao.mapper;
 
-import by.kukshinov.hotel.model.enums.Role;
 import by.kukshinov.hotel.model.User;
+import by.kukshinov.hotel.model.enums.Role;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

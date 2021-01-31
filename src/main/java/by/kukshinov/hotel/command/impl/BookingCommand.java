@@ -45,8 +45,8 @@ public class BookingCommand implements Command {
 
         byte capacity = Byte.parseByte(personAmount);
         DateTimeFormatter pattern = DateTimeFormatter.ofPattern(FORMAT_PATTERN);
-        LocalDate dateArrival = LocalDate .parse(arrivalDate, pattern);
-        LocalDate dateLeaving = LocalDate .parse(leavingDate, pattern);
+        LocalDate dateArrival = LocalDate.parse(arrivalDate, pattern);
+        LocalDate dateLeaving = LocalDate.parse(leavingDate, pattern);
         validateBookingData(capacity, dateArrival, dateLeaving);
         ApartmentType apartmentType = ApartmentType.valueOf(apartment.toUpperCase());
 

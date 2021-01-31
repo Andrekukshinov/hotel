@@ -8,9 +8,19 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * This class is designed to create RequestContext from HttpServletRequest, and also
+ * (when working with the context is done) to put updated data to HttpServletRequest
+ */
 public class RequestContextHelper {
     private static final String INVALIDATE_SESSION = "invalidateSession";
 
+    /**
+     * Creates RequestContext based on HttpServletRequest data
+     *
+     * @param req HttpServletRequest object that contains necessary data for application
+     * @return RequestContext
+     */
     public RequestContext create(HttpServletRequest req) {
         HttpSession session = req.getSession();
         Enumeration<String> parameterNames = req.getParameterNames();
@@ -24,13 +34,19 @@ public class RequestContextHelper {
                 (key) -> key,
                 req::getAttribute
         ));
-        Map<String, Object> sessionAttributesMap =  Collections.list(sessionAttributeNames).stream().collect(Collectors.toMap(
+        Map<String, Object> sessionAttributesMap = Collections.list(sessionAttributeNames).stream().collect(Collectors.toMap(
                 (key) -> key,
                 session::getAttribute
         ));
         return new RequestContext(parametersMap, attributesMap, sessionAttributesMap);
     }
 
+    /**
+     * Consumes RequestContext data and sets it to HttpServletRequest
+     *
+     * @param req            object to be updated
+     * @param requestContext data provider for HttpServletRequest object
+     */
     public void updateRequest(HttpServletRequest req, RequestContext requestContext) {
         Map<String, Object> requestAttributes = requestContext.getRequestAttributes();
         Map<String, Object> sessionAttributes = requestContext.getSessionAttributes();
@@ -45,7 +61,7 @@ public class RequestContextHelper {
     }
 
     private void fillingSession(Map<String, Object> sessionAttributes, Set<String> sessionAttrsKeys, HttpSession session) {
-        if(isSessionInvalid(sessionAttributes)) {
+        if (isSessionInvalid(sessionAttributes)) {
             session.invalidate();
         } else {
             sessionAttrsKeys.forEach(key -> {
@@ -54,6 +70,7 @@ public class RequestContextHelper {
             });
         }
     }
+
     private boolean isSessionInvalid(Map<String, Object> sessionAttributes) {
         return sessionAttributes.get(INVALIDATE_SESSION) != null;
     }

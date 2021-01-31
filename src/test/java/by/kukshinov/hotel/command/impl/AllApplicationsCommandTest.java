@@ -21,7 +21,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class AllApplicationsCommandTest {
@@ -90,7 +91,7 @@ public class AllApplicationsCommandTest {
 
 
     @Test(expectedExceptions = {ServiceException.class})//then
-    public void testExecuteShouldThrowServiceException () throws ServiceException {
+    public void testExecuteShouldThrowServiceException() throws ServiceException {
         //given
         when(applicationService.findAllApplicationsAmount()).thenThrow(ServiceException.class);
         AllApplicationsCommand command = new AllApplicationsCommand(applicationService, applicationUsernameService, validator);

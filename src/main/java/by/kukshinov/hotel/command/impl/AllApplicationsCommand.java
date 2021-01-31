@@ -29,6 +29,7 @@ public class AllApplicationsCommand implements Command {
         this.applicationUsernameService = applicationUsernameService;
         this.validator = validator;
     }
+
     @Override
     public CommandResult execute(RequestContext context) throws ServiceException {
         int userApplicationsAmount = applicationService.findAllApplicationsAmount();

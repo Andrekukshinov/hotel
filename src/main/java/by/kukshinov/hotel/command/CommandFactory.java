@@ -112,8 +112,7 @@ public class CommandFactory {
                 );
             case USER_REJECT:
                 return new UserRejectCommand(
-                        new ApplicationServiceImpl(new DaoHelperFactory()),
-                        new ApplicationRoomServiceImpl(new DaoHelperFactory())
+                        new ApplicationServiceImpl(new DaoHelperFactory())
                 );
             default:
                 throw new NoSuchCommandException(MESSAGE);

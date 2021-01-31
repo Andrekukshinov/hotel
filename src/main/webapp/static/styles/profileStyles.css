@@ -13,8 +13,13 @@
     text-align: center;
 }
 
-#customers tr:nth-child(even){background-color: #538bf3;}
-#customers tr:nth-child(odd){background-color: rgba(151, 197, 248, 0.3);}
+#customers tr:nth-child(even) {
+    background-color: #538bf3;
+}
+
+#customers tr:nth-child(odd) {
+    background-color: rgba(151, 197, 248, 0.3);
+}
 
 #customers th {
     padding-top: 12px;
@@ -29,15 +34,14 @@
     margin: 2% 10%;
 }
 
-.scroll{
-    overflow-x:auto;
+.scroll {
+    overflow-x: auto;
 }
 
 @media screen and (max-width: 780px) {
     .table-wrapper {
         width: 80%;
     }
-
 
 
     #customers {

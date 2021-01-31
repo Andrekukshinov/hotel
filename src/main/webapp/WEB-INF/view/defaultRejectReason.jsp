@@ -22,11 +22,11 @@
 <div id="to-be-found">
     <jsp:include page="templates/leftMenu.jsp"/>
     <div id="room-form" class="booking-div shorter">
-        <h2 class="align-center"><fmt:message key="application.reject"/> </h2>
+        <h2 class="align-center"><fmt:message key="application.reject"/></h2>
         <p class="reject-reason"><fmt:message key="application.reject.reason"/></p>
         <form action="${pageContext.request.contextPath}/controller" method="get">
             <input type="hidden" name="command" value="profileHistory">
-        <button class="go-back-margin" type="submit"><fmt:message key="admin.user.application.go.back"/> </button>
+            <button class="go-back-margin" type="submit"><fmt:message key="admin.user.application.go.back"/></button>
         </form>
     </div>
 </div>

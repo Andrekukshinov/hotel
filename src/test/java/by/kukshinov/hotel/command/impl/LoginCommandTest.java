@@ -6,9 +6,7 @@ import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.model.User;
 import by.kukshinov.hotel.model.enums.Role;
-import by.kukshinov.hotel.service.api.ApplicationService;
 import by.kukshinov.hotel.service.api.UserService;
-import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -69,7 +67,7 @@ public class LoginCommandTest {
 
 
     @Test(expectedExceptions = {ServiceException.class})//then
-    public void testExecuteShouldThrowServiceException() throws ServiceException {
+    public void testExecuteShouldThrowServiceExceptionWhenDaoExceptionIsThrown() throws ServiceException {
         //given
         RequestContext context = new RequestContext(new HashMap<>(), new HashMap<>(), new HashMap<>());
         LoginCommand loginCommand = new LoginCommand(service);
@@ -80,7 +78,7 @@ public class LoginCommandTest {
     }
 
     @Test
-    public void testExecuteShouldPutToContextErrorMessage() throws ServiceException {
+    public void testExecuteShouldPutToContextErrorMessageWhenUserIsNotFound() throws ServiceException {
         //given
         RequestContext context = new RequestContext(new HashMap<>(), new HashMap<>(), new HashMap<>());
         LoginCommand loginCommand = new LoginCommand(service);

@@ -57,7 +57,8 @@
                 </c:forEach>
             </table>
         </div>
-        <ex:pagination href="${pageContext.request.contextPath}/controller?command=admin_users&page=" currentPage="${page}" lastPage="${lastPage}"/>
+        <ex:pagination href="${pageContext.request.contextPath}/controller?command=admin_users&page="
+                       currentPage="${page}" lastPage="${lastPage}"/>
 
     </div>
 </div>

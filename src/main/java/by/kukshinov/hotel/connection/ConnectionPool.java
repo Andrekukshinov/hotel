@@ -87,7 +87,7 @@ public class ConnectionPool {
     }
 
     private void closeQueueConnections(Queue<ProxyConnection> availableConnections) {
-        for (ProxyConnection connection: availableConnections) {
+        for (ProxyConnection connection : availableConnections) {
             try {
                 connection.killConnection();
             } catch (SQLException e) {

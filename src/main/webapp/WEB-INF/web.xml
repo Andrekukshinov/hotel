@@ -75,7 +75,7 @@
         <filter-name>authentication</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-<!---->
+    <!---->
     <filter>
         <filter-name>authorization</filter-name>
         <filter-class>by.kukshinov.hotel.filter.AuthorizationFilter</filter-class>
@@ -84,6 +84,6 @@
         <filter-name>authorization</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-<!---->
+    <!---->
 
 </web-app>

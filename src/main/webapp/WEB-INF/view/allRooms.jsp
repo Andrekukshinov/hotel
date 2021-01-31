@@ -84,7 +84,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <span class="close">&times;</span>
-                            <h2> <fmt:message key="bill.user.room.description"/>   ${room.number}</h2>
+                            <h2><fmt:message key="bill.user.room.description"/> ${room.number}</h2>
                         </div>
                         <div class="modal-body">
                             <p>
@@ -93,7 +93,7 @@
                         </div>
                         <div class="modal-footer">
                             <p>
-                                <ul class="no-style-ul">
+                            <ul class="no-style-ul">
                                 <li class="first-option">
                                     <form class="admin-users-form">
                                         <button type="button" class="users-submit reject">

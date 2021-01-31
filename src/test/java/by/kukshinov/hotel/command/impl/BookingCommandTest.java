@@ -4,7 +4,6 @@ import by.kukshinov.hotel.command.Command;
 import by.kukshinov.hotel.context.RequestContext;
 import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.CommandResult;
-import by.kukshinov.hotel.model.enums.ApartmentType;
 import by.kukshinov.hotel.service.api.ApplicationService;
 import by.kukshinov.hotel.service.impl.ApplicationServiceImpl;
 import org.mockito.Mockito;
@@ -13,7 +12,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -81,7 +79,7 @@ public class BookingCommandTest {
     }
 
     @Test
-    public void testExecuteShouldReturnRedirectToProfileHistoryWhenValidData() throws ServiceException, ParseException {
+    public void testExecuteShouldReturnRedirectToProfileHistoryWhenValidData() throws ServiceException {
         //given
         doNothing().when(service).save(any());
         Command command = new BookingCommand(service);
@@ -102,7 +100,8 @@ public class BookingCommandTest {
         command.execute(context);
     }
 
-    @Test(expectedExceptions = ServiceException.class, expectedExceptionsMessageRegExp = PATTERN, dataProvider = "validationDataProvider")//then
+    @Test(expectedExceptions = ServiceException.class, expectedExceptionsMessageRegExp = PATTERN, dataProvider = "validationDataProvider")
+//then
     public void testExecuteShouldThrowServiceExceptionWhenArrivalDateFromPast(String capacity, String arrivalDate, String leavingDate)
             throws ServiceException {
         //given

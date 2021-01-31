@@ -3,13 +3,13 @@ package by.kukshinov.hotel.service.impl;
 import by.kukshinov.hotel.dao.DaoHelper;
 import by.kukshinov.hotel.dao.DaoHelperFactory;
 import by.kukshinov.hotel.dao.api.ApplicationDao;
-import by.kukshinov.hotel.dao.api.RoomDao;
 import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.Application;
 import by.kukshinov.hotel.model.Room;
 import by.kukshinov.hotel.model.enums.ApplicationStatus;
 import by.kukshinov.hotel.service.api.ApplicationService;
+import org.valid4j.Validation;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -18,7 +18,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class ApplicationServiceImpl implements ApplicationService {
+    private static final String TOO_LATE_TO_APPROVE = "Too late to approve";
 
+    private static final String WRONG_APPLICATION = "wrong application!";
 
     private final DaoHelperFactory helperFactory;
 
@@ -30,25 +32,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     public void save(Application application) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             ApplicationDao applicationDao = daoHelper.createApplicationDao();
-            applicationDao.save(application);
-        } catch (DaoException e) {
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
-
-    @Override
-    public void approveApplication(Application application, Room room) throws ServiceException {
-        try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
-            ApplicationDao applicationDao = daoHelper.createApplicationDao();
-
-            BigDecimal totalPrice = getTotalPrice(application, room);
-            Long roomId = room.getId();
-
-            application.setStatus(ApplicationStatus.APPROVED);
-            application.setRoomId(roomId);
-            application.setTotalPrice(totalPrice);
-
             applicationDao.save(application);
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
@@ -135,30 +118,67 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public Optional<Application> findInOrderApplicationById(Long id) throws ServiceException {
+    public Application findInOrderApplicationById(Long id) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             ApplicationDao applicationDao = daoHelper.createApplicationDao();
-            return applicationDao.findQueuedById(id);
+            Optional<Application> optionalApplication = applicationDao.findById(id);
+            Application application = optionalApplication.orElseThrow(() -> new ServiceException(WRONG_APPLICATION));
+
+            boolean isInOrder = application.getStatus().equals(ApplicationStatus.IN_ORDER);
+            Validation.validate(isInOrder, new ServiceException(WRONG_APPLICATION));
+
+            return application;
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
     }
 
     @Override
-    public Optional<Application> findInOrderUserApplicationById(Long appId, Long userId) throws ServiceException {
+    public Application findFutureArrivalInOrderApplicationById(Long id) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             ApplicationDao applicationDao = daoHelper.createApplicationDao();
-            return applicationDao.findUserQueuedById(appId, userId);
+            Optional<Application> optionalApplication = applicationDao.findById(id);
+            Application application = optionalApplication.orElseThrow(() -> new ServiceException(WRONG_APPLICATION));
+
+            boolean isFutureArrival = application.getArrivalDate().isAfter(LocalDate.now());
+            boolean isInOrder = application.getStatus().equals(ApplicationStatus.IN_ORDER);
+            Validation.validate(isFutureArrival && isInOrder, new ServiceException(WRONG_APPLICATION));
+
+            return application;
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
     }
 
     @Override
-    public Optional<Application> findApprovedUserApplicationById(Long id, Long userId) throws ServiceException {
+    public Application findInOrderUserApplicationById(Long appId, Long userId) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             ApplicationDao applicationDao = daoHelper.createApplicationDao();
-            return applicationDao.findUserApprovedAppById(id, userId);
+            Optional<Application> optionalApplication = applicationDao.findById(appId);
+            Application application = optionalApplication.orElseThrow(() -> new ServiceException(WRONG_APPLICATION));
+
+            boolean isInOrder = application.getStatus().equals(ApplicationStatus.IN_ORDER);
+            boolean isUserApplication = userId.equals(application.getUserId());
+            Validation.validate(isInOrder && isUserApplication, new ServiceException(WRONG_APPLICATION));
+
+            return application;
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Application findApprovedUserApplicationById(Long id, Long userId) throws ServiceException {
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
+            ApplicationDao applicationDao = daoHelper.createApplicationDao();
+            Optional<Application> optionalApplication = applicationDao.findById(id);
+            Application application = optionalApplication.orElseThrow(() -> new ServiceException(WRONG_APPLICATION));
+
+            boolean isApproved = application.getStatus().equals(ApplicationStatus.APPROVED);
+            boolean isUserApplication = userId.equals(application.getUserId());
+            Validation.validate(isApproved && isUserApplication, new ServiceException(WRONG_APPLICATION));
+
+            return application;
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
@@ -180,9 +200,34 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    public void approveApplication(Application application, Room room) throws ServiceException {
+        LocalDate arrivalDate = application.getArrivalDate();
+        LocalDate leavingDate = application.getLeavingDate();
+        LocalDate now = LocalDate.now();
+        if (!now.isBefore(arrivalDate) || leavingDate.isBefore(arrivalDate)) {
+            throw new ServiceException(TOO_LATE_TO_APPROVE);
+        }
+
+        BigDecimal totalPrice = getTotalPrice(application, room);
+        Long roomId = room.getId();
+        application.setRoomId(roomId);
+        application.setTotalPrice(totalPrice);
+
+        updateApplicationStatus(application, ApplicationStatus.APPROVED);
+    }
+
+    @Override
     public void userRejectApprovedApplication(Application application) throws ServiceException {
+        LocalDate arrivalDate = application.getArrivalDate();
+        LocalDate leavingDate = application.getLeavingDate();
+        LocalDate now = LocalDate.now();
+        if (!now.isBefore(arrivalDate) || leavingDate.isBefore(arrivalDate)) {
+            throw new ServiceException(TOO_LATE_TO_APPROVE);
+        }
+
         application.setRoomId(null);
         application.setTotalPrice(null);
+
         updateApplicationStatus(application, ApplicationStatus.USER_REJECTED);
     }
 

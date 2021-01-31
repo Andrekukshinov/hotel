@@ -7,7 +7,6 @@ import by.kukshinov.hotel.model.Application;
 import by.kukshinov.hotel.model.ApplicationRoom;
 import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.service.api.ApplicationRoomService;
-import by.kukshinov.hotel.service.api.ApplicationService;
 
 import java.time.LocalDate;
 
@@ -31,22 +30,17 @@ public class UserBillCommand implements Command {
         Long userAuthId = (Long) context.getSessionAttribute(USER_ID);
 
         long applicationId = Long.parseLong(applicationIdString);
-        ApplicationRoom applicationDTO = applicationRoomService.findApplicationRoom(applicationId);
+        ApplicationRoom applicationDTO = applicationRoomService.findUserBillByApplicationId(applicationId, userAuthId);
 
         Application application = applicationDTO.getApplication();
-
-        long userId = application.getUserId();
 
         LocalDate arrivalDate = application.getArrivalDate();
         LocalDate now = LocalDate.now();
         boolean isBeforeArrival = now.isBefore(arrivalDate);
 
-        if(userAuthId.equals(userId)) {
-            context.setRequestAttribute(APPLICATION, applicationDTO);
-            context.setRequestAttribute(IS_REJECTABLE, isBeforeArrival);
-            return CommandResult.forward(BILL);
-        } else {
-            throw new ServiceException(FORBIDDEN);
-        }
+        context.setRequestAttribute(APPLICATION, applicationDTO);
+        context.setRequestAttribute(IS_REJECTABLE, isBeforeArrival);
+        return CommandResult.forward(BILL);
+
     }
 }

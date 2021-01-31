@@ -1,6 +1,5 @@
 package by.kukshinov.hotel.util;
 
-import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.Room;
 
 import java.math.BigDecimal;

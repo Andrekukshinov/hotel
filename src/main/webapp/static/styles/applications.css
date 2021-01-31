@@ -13,8 +13,13 @@
     text-align: center;
 }
 
-#applications tr:nth-child(even){background-color: #538bf3;}
-#applications tr:nth-child(odd){background-color: rgba(151, 197, 248, 0.3);}
+#applications tr:nth-child(even) {
+    background-color: #538bf3;
+}
+
+#applications tr:nth-child(odd) {
+    background-color: rgba(151, 197, 248, 0.3);
+}
 
 #applications th {
     padding-top: 12px;

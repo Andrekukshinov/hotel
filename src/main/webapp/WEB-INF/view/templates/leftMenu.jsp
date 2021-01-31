@@ -7,8 +7,9 @@
 <ul class="left-menu-ui">
     <c:choose>
         <c:when test="${sessionScope.role == 'ADMIN'}">
-            <li >
-                <a class="left-menu-link" href="${pageContext.request.contextPath}/controller?command=admin_create_room">
+            <li>
+                <a class="left-menu-link"
+                   href="${pageContext.request.contextPath}/controller?command=admin_create_room">
                     <fmt:message key="left.admin.room.add"/>
                 </a>
             </li>

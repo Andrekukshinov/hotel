@@ -19,6 +19,13 @@
   </properties>
 
   <dependencies>
+    <!-- https://mvnrepository.com/artifact/org.valid4j/valid4j -->
+    <dependency>
+      <groupId>org.valid4j</groupId>
+      <artifactId>valid4j</artifactId>
+      <version>0.5.0</version>
+    </dependency>
+
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>

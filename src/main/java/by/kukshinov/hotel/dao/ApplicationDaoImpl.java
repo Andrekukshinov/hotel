@@ -9,7 +9,6 @@ import by.kukshinov.hotel.model.Application;
 
 import java.sql.Connection;
 import java.util.List;
-import java.util.Optional;
 
 public class ApplicationDaoImpl extends AbstractDao<Application> implements ApplicationDao {
     private static final String USER_APPS_AMOUNT_CONDITION = " LEFT JOIN room R ON application.room_id = R.id WHERE user_id=? AND application_state != 'CANCELLED'";
@@ -20,18 +19,12 @@ public class ApplicationDaoImpl extends AbstractDao<Application> implements Appl
 
     private static final String GET_ALL_USER_APPLICATIONS = "SELECT * FROM Application WHERE user_id=? AND application_state != 'CANCELLED' ORDER BY arrival_date DESC LIMIT ?, ?";
     private static final String GET_ALL_USER_BILLS = "SELECT * FROM Application WHERE user_id=? AND application_state = 'APPROVED' ORDER BY arrival_date DESC LIMIT ?, ?";
-    private static final String GET_APPROVED_USER_APPLICATION_BY_ID = "SELECT * FROM Application WHERE id=? AND user_id=? AND application_state = 'APPROVED'";
-    private static final String GET_APPROVED_APPLICATION_BY_ID = "SELECT * FROM Application WHERE id=? AND application_state = 'APPROVED'";
 
     private static final String GET_QUEUED_APPLICATIONS_FOR_TABLE = "SELECT * FROM Application WHERE application_state = 'IN_ORDER' ORDER BY arrival_date DESC LIMIT ?, ?";
     private static final String GET_APPLICATIONS_RANGE = "SELECT * FROM Application WHERE application_state != 'CANCELLED' ORDER BY arrival_date DESC LIMIT ?, ?";
-    private static final String GET_QUEUED_APPLICATION_BY_ID = "SELECT * FROM Application WHERE id=? AND application_state = 'IN_ORDER'";
-
-    private static final String GET_USER_QUEUED_APPLICATION_BY_ID = "SELECT * FROM Application WHERE id=? AND application_state = 'IN_ORDER' AND user_id=? ";
-    private static final String ID = "id";
 
     protected ApplicationDaoImpl(Connection connection) {
-        super(new<Application> RequestBuilder(), BOOKING_TABLE, connection, new ApplicationObjectMapper(), new ApplicationFieldsExtractor());
+        super(new <Application>RequestBuilder(), BOOKING_TABLE, connection, new ApplicationObjectMapper(), new ApplicationFieldsExtractor());
     }
 
     @Override
@@ -68,28 +61,8 @@ public class ApplicationDaoImpl extends AbstractDao<Application> implements Appl
     }
 
     @Override
-    public     List<Application> findRangeApplications(int startFrom, int finishWith) throws DaoException {
+    public List<Application> findRangeApplications(int startFrom, int finishWith) throws DaoException {
         return executeQuery(GET_APPLICATIONS_RANGE, startFrom, finishWith);
-    }
-
-    @Override
-    public Optional<Application> findQueuedById(Long id) throws DaoException {
-        return executeForSingleItem(GET_QUEUED_APPLICATION_BY_ID, id);
-    }
-
-    @Override
-    public Optional<Application> findUserQueuedById(Long appId, Long userId) throws DaoException {
-        return executeForSingleItem(GET_USER_QUEUED_APPLICATION_BY_ID, appId, userId);
-    }
-
-    @Override
-    public Optional<Application> findUserApprovedAppById(Long appId, Long userId) throws DaoException {
-        return executeForSingleItem(GET_APPROVED_USER_APPLICATION_BY_ID, appId, userId);
-    }
-
-    @Override
-    public Optional<Application> findApprovedAppById(Long appId)  throws DaoException {
-        return executeForSingleItem(GET_APPROVED_APPLICATION_BY_ID, appId);
     }
 
 }

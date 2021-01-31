@@ -7,12 +7,9 @@ import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.model.Room;
 import by.kukshinov.hotel.service.api.RoomService;
 
-import java.util.Optional;
-
 public class ChangeRoomActivityCommand implements Command {
     private static final String ALL_ROOMS = "/hotel/controller?command=admin_rooms";
     private static final String ID = "id";
-    private static final String WRONG_ROOM = "No such room exists!";
 
     private final RoomService roomService;
 
@@ -26,8 +23,7 @@ public class ChangeRoomActivityCommand implements Command {
         String stringId = context.getRequestParameter(ID);
 
         long id = Long.parseLong(stringId);
-        Optional<Room> roomOptional = roomService.findById(id);
-        Room room = roomOptional.orElseThrow(() -> new ServiceException(WRONG_ROOM));
+        Room room = roomService.findById(id);
 
         roomService.switchRoomActivity(room);
 

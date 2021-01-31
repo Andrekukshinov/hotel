@@ -1,11 +1,9 @@
 package by.kukshinov.hotel.builder;
 
-import by.kukshinov.hotel.model.Entity;
-
 import java.util.Map;
 import java.util.Set;
 
-public class RequestBuilder{
+public class RequestBuilder {
 
     private static final String INSERT_INTO = "INSERT INTO ";
     private static final String OPEN_BRACKET = " (";

@@ -11,11 +11,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.testng.Assert.*;
 
 public class UpdateRoomPageCommandTest {
     private static final String ROOM_JSP = "WEB-INF/view/updRoom.jsp";
@@ -37,7 +35,7 @@ public class UpdateRoomPageCommandTest {
 
     @Test
     public void testExecuteShouldReturnForwardToUpdateRoomPage() throws ServiceException {
-        when(service.findDisabledById(any())).thenReturn(Optional.of(ROOM));
+        when(service.findDisabledById(any())).thenReturn(ROOM);
         CommandResult expected = CommandResult.forward(ROOM_JSP);
         UpdateRoomPageCommand command = new UpdateRoomPageCommand(service);
 
@@ -48,12 +46,4 @@ public class UpdateRoomPageCommandTest {
         Assert.assertEquals(actual, expected);
     }
 
-    @Test(expectedExceptions = ServiceException.class)
-    public void testExecuteShouldThrowExceptionWhenRoomIsNotFound() throws ServiceException {
-        when(service.findDisabledById(any())).thenReturn(Optional.empty());
-        UpdateRoomPageCommand command = new UpdateRoomPageCommand(service);
-
-        command.execute(context);
-
-    }
 }

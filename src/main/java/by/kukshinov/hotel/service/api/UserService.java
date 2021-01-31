@@ -11,7 +11,7 @@ public interface UserService {
 
     Optional<User> findByCredentials(String login, String pass) throws ServiceException;
 
-    Optional<User> findById(Long id) throws ServiceException;
+    User findCustomerById(Long id) throws ServiceException;
 
     void updateUser(User user) throws ServiceException;
 

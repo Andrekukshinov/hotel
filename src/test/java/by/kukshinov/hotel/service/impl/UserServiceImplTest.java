@@ -74,13 +74,13 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void testFindByIdShouldReturnUser() throws DaoException, ServiceException {
+    public void testFindCustomerByIdShouldReturnCustomer() throws DaoException, ServiceException {
         //given
         UserService userService = new UserServiceImpl(helperFactory);
-        Optional<User> expected = Optional.of(FIRST);
-        when(dao.findById(USER_ID)).thenReturn(expected);
+        User expected = FIRST;
+        when(dao.findById(USER_ID)).thenReturn(Optional.of(expected));
         //when
-        Optional<User> actual = userService.findById(USER_ID);
+        User actual = userService.findCustomerById(USER_ID);
         //then
         Assert.assertEquals(actual, expected);
     }
@@ -122,7 +122,7 @@ public class UserServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)//then
-    public void testUpdateUserShouldThrowServiceException() throws DaoException, ServiceException {
+    public void testUpdateUserShouldThrowServiceExceptionWhenDaoExceptionIsThrown() throws DaoException, ServiceException {
         //given
         UserService userService = new UserServiceImpl(helperFactory);
         doThrow(new DaoException(EMPTY)).when(dao).save(any());
@@ -131,7 +131,7 @@ public class UserServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)//then
-    public void testChangeUserStatusShouldThrowServiceException() throws DaoException, ServiceException {
+    public void testChangeUserStatusShouldThrowServiceExceptionWhenDaoExceptionIsThrown() throws DaoException, ServiceException {
         //given
         UserService userService = new UserServiceImpl(helperFactory);
         doThrow(new DaoException(EMPTY)).when(dao).save(any());
@@ -140,7 +140,7 @@ public class UserServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)//then
-    public void testFindByCredentialsShouldThrowException() throws DaoException, ServiceException {
+    public void testFindByCredentialsShouldThrowServiceExceptionWhenDaoExceptionIsThrown() throws DaoException, ServiceException {
         //given
         UserService userService = new UserServiceImpl(helperFactory);
         when(dao.findByCredentials(anyString(), anyString())).thenThrow(DaoException.class);
@@ -150,12 +150,12 @@ public class UserServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)//then
-    public void testFindByIdShouldShouldThrowException() throws DaoException, ServiceException {
+    public void testFindCustomerByIdShouldShouldThrowServiceExceptionWhenDaoExceptionIsThrown() throws DaoException, ServiceException {
         //given
         UserService userService = new UserServiceImpl(helperFactory);
         when(dao.findById(USER_ID)).thenThrow(DaoException.class);
         //when
-        userService.findById(USER_ID);
+        userService.findCustomerById(USER_ID);
 
     }
 
@@ -168,5 +168,25 @@ public class UserServiceImplTest {
         userService.getRangeUsers(START_FROM, FINISH_WITH);
     }
 
+    @Test(expectedExceptions = ServiceException.class)//then
+    public void testFindCustomerByIdShouldShouldThrowServiceExceptionWhenAdminIsFound() throws DaoException, ServiceException {
+        //given
+        UserService userService = new UserServiceImpl(helperFactory);
+        User expected = new User(USER_ID, LOGIN, false, Role.ADMIN);;
+        when(dao.findById(USER_ID)).thenReturn(Optional.of(expected));
+        //when
+        userService.findCustomerById(USER_ID);
+
+    }
+
+    @Test(expectedExceptions = ServiceException.class)//then
+    public void testFindCustomerByIdShouldShouldThrowServiceExceptionWhenUserIsNotFound() throws DaoException, ServiceException {
+        //given
+        UserService userService = new UserServiceImpl(helperFactory);
+        when(dao.findById(USER_ID)).thenReturn(Optional.empty());
+        //when
+        userService.findCustomerById(USER_ID);
+
+    }
 
 }

@@ -2,13 +2,10 @@ package by.kukshinov.hotel.command.impl;
 
 import by.kukshinov.hotel.context.RequestContext;
 import by.kukshinov.hotel.model.CommandResult;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
-
-import static org.testng.Assert.*;
 
 public class LogoutCommandTest {
     private static final String DOMAIN_PAGE = "/hotel";
@@ -22,7 +19,7 @@ public class LogoutCommandTest {
 
         CommandResult actual = command.execute(context);
 
-        Boolean isInvalid =  (Boolean) context.getSessionAttribute(INVALIDATE_SESSION);
+        Boolean isInvalid = (Boolean) context.getSessionAttribute(INVALIDATE_SESSION);
         Assert.assertTrue(isInvalid);
         Assert.assertEquals(actual, expected);
     }

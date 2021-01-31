@@ -17,9 +17,8 @@ import org.testng.annotations.Test;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 public class ApproveApplicationCommandTest {
@@ -31,14 +30,9 @@ public class ApproveApplicationCommandTest {
     private static final Long ROOM_ID = 1L;
     private static final String CAPACITY_STRING = "1";
     private static final BigDecimal PRICE = new BigDecimal("505");
-    private static final String WRONG_APPLICATION = "Wrong application!";
-    private static final String WRONG_ROOM = "Wrong room";
-    private static final String TOO_LATE_TO_APPROVE = "Too late to approve";
 
 
-
-
-    private static final Application FIRST_APPLICATION = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.BUSINESS, LocalDate.now().plusDays(1), LocalDate.now().plusDays(1), ApplicationStatus.APPROVED, PRICE, ROOM_ID, USER_ID);
+    private static final Application APPROVED = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.BUSINESS, LocalDate.now().plusDays(1), LocalDate.now().plusDays(1), ApplicationStatus.APPROVED, PRICE, ROOM_ID, USER_ID);
     private static final Room AVAILABLE_ROOM = new Room(ROOM_ID, 303, ApartmentType.BUSINESS, new Byte(CAPACITY_STRING), true, PRICE);
 
     private static final String ONE = "1";
@@ -59,8 +53,8 @@ public class ApproveApplicationCommandTest {
     public void testExecuteShouldReturnRedirectToAllApplicationsCmdWhenDataIsValidAndArrivalDateFromFuture() throws ServiceException {
         context.setRequestParameter(APPLICATION_ID, ONE);
         context.setRequestParameter(ROOM_ID_NAME, ONE);
-        when(applicationService.findInOrderApplicationById(anyLong())).thenReturn(Optional.of(FIRST_APPLICATION));
-        when(roomService.findAvailableById(anyLong())).thenReturn(Optional.of(AVAILABLE_ROOM));
+        when(applicationService.findInOrderApplicationById(anyLong())).thenReturn(APPROVED);
+        when(roomService.findAvailableById(anyLong())).thenReturn(AVAILABLE_ROOM);
         ApproveApplicationCommand approveApplicationCommand = new ApproveApplicationCommand(applicationService, roomService);
         String url = "/hotel/controller?command=admin_active_applications";
         CommandResult expectedResult = CommandResult.redirect(url);
@@ -70,37 +64,24 @@ public class ApproveApplicationCommandTest {
         Assert.assertEquals(actualResult, expectedResult);
     }
 
-    @Test(expectedExceptions = ServiceException.class, expectedExceptionsMessageRegExp = WRONG_APPLICATION)
-    public void testExecuteShouldThrowServiceExceptionWhenApplicationIsNotFound() throws ServiceException {
+    @Test(expectedExceptions = ServiceException.class)
+    public void testExecuteShouldThrowServiceExceptionWhenApplicationIsWrong() throws ServiceException {
         context.setRequestParameter(APPLICATION_ID, ONE);
         context.setRequestParameter(ROOM_ID_NAME, ONE);
-        when(applicationService.findInOrderApplicationById(anyLong())).thenReturn(Optional.empty());
-        when(roomService.findAvailableById(anyLong())).thenReturn(Optional.of(AVAILABLE_ROOM));
+        when(applicationService.findInOrderApplicationById(anyLong())).thenThrow(new ServiceException());
+        when(roomService.findAvailableById(anyLong())).thenReturn(AVAILABLE_ROOM);
         ApproveApplicationCommand approveApplicationCommand = new ApproveApplicationCommand(applicationService, roomService);
 
-       approveApplicationCommand.execute(context);
+        approveApplicationCommand.execute(context);
 
     }
 
-    @Test(expectedExceptions = ServiceException.class, expectedExceptionsMessageRegExp = WRONG_ROOM)
-    public void testExecuteShouldThrowServiceExceptionWhenRoomIsNotFound() throws ServiceException {
+    @Test(expectedExceptions = ServiceException.class)
+    public void testExecuteShouldThrowServiceExceptionWhenRoomIsWrong() throws ServiceException {
         context.setRequestParameter(APPLICATION_ID, ONE);
         context.setRequestParameter(ROOM_ID_NAME, ONE);
-        when(applicationService.findInOrderApplicationById(anyLong())).thenReturn(Optional.of(FIRST_APPLICATION));
-        when(roomService.findAvailableById(anyLong())).thenReturn(Optional.empty());
-        ApproveApplicationCommand approveApplicationCommand = new ApproveApplicationCommand(applicationService, roomService);
-
-       approveApplicationCommand.execute(context);
-
-    }
-
-    @Test(expectedExceptions = ServiceException.class, expectedExceptionsMessageRegExp = TOO_LATE_TO_APPROVE)
-    public void testExecuteShouldThrowExceptionWhenDataIsValidAndArrivalDateHasPassed() throws ServiceException {
-        context.setRequestParameter(APPLICATION_ID, ONE);
-        context.setRequestParameter(ROOM_ID_NAME, ONE);
-        Application pastApplication = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.BUSINESS, LocalDate.now().minusDays(1), LocalDate.now().minusDays(1), ApplicationStatus.APPROVED, PRICE, ROOM_ID, USER_ID);
-        when(applicationService.findInOrderApplicationById(anyLong())).thenReturn(Optional.of(pastApplication));
-        when(roomService.findAvailableById(anyLong())).thenReturn(Optional.of(AVAILABLE_ROOM));
+        when(applicationService.findInOrderApplicationById(anyLong())).thenReturn(APPROVED);
+        when(roomService.findAvailableById(anyLong())).thenThrow(new ServiceException());
         ApproveApplicationCommand approveApplicationCommand = new ApproveApplicationCommand(applicationService, roomService);
 
         approveApplicationCommand.execute(context);

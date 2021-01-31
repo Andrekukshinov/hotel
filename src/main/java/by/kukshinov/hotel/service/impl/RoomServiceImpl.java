@@ -7,18 +7,23 @@ import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.Room;
 import by.kukshinov.hotel.service.api.RoomService;
+import org.valid4j.Validation;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 public class RoomServiceImpl implements RoomService {
+    private static final String TOO_LATE_TO_APPROVE = "Too late to approve";
+    private static final String WRONG_ROOM = "Wrong room";
+
+
     private final DaoHelperFactory helperFactory;
+
 
     public RoomServiceImpl(DaoHelperFactory helperFactory) {
         this.helperFactory = helperFactory;
     }
-
 
 
     @Override
@@ -72,7 +77,6 @@ public class RoomServiceImpl implements RoomService {
         }
     }
 
-
     @Override
     public List<Room> findRangeAvailableRooms(LocalDate arrivalDate, LocalDate leavingDate, int startFrom, int finishWith) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
@@ -84,30 +88,39 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Optional<Room> findById(Long id) throws ServiceException {
+    public Room findById(Long id) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             RoomDao roomDao = daoHelper.createRoomDao();
-            return roomDao.findById(id);
+            Optional<Room> optionalRoom = roomDao.findById(id);
+            return optionalRoom.orElseThrow(() -> new ServiceException(WRONG_ROOM));
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
     }
 
     @Override
-    public Optional<Room> findAvailableById(Long id) throws ServiceException {
+    public Room findAvailableById(Long id) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             RoomDao roomDao = daoHelper.createRoomDao();
-            return roomDao.findAvailableById(id);
+            Optional<Room> roomOptional = roomDao.findById(id);
+
+            Room room = roomOptional.orElseThrow(() -> new ServiceException(WRONG_ROOM));
+            Validation.validate(room.getIsAvailable(), new ServiceException(WRONG_ROOM));
+
+            return room;
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
     }
 
     @Override
-    public Optional<Room> findDisabledById(Long id) throws ServiceException {
+    public Room findDisabledById(Long id) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             RoomDao roomDao = daoHelper.createRoomDao();
-            return roomDao.findDisabledById(id);
+            Optional<Room> roomOptional = roomDao.findById(id);
+            Room room = roomOptional.orElseThrow(() -> new ServiceException(WRONG_ROOM));
+            Validation.validate(!room.getIsAvailable(), new ServiceException(WRONG_ROOM));
+            return room;
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }

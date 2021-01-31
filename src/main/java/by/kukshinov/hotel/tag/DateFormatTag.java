@@ -37,12 +37,12 @@ public class DateFormatTag extends TagSupport implements Tag {
     @Override
     public int doStartTag() throws JspException {
         String formattedDate = null;
-        if(locale.isEmpty()) {
+        if (locale.isEmpty()) {
             locale = RU;
         }
         if (EN.equalsIgnoreCase(locale)) {
             formattedDate = date.format(ENGLISH_DATE_FORMAT);
-        } else if(RU.equalsIgnoreCase(locale) || BY.equalsIgnoreCase(locale)) {
+        } else if (RU.equalsIgnoreCase(locale) || BY.equalsIgnoreCase(locale)) {
             formattedDate = date.format(RU_BY_DATE_FORMAT);
         }
         JspWriter out = pageContext.getOut();

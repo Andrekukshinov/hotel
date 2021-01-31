@@ -14,7 +14,6 @@ import org.testng.annotations.Test;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -60,7 +59,7 @@ public class UpdateUserCommandTest {
         Command command = new UpdateUserCommand(service);
         CommandResult expected = CommandResult.redirect(ALL_USERS);
         User value = new User(1L, "l", false, Role.ADMIN);
-        when(service.findById(anyLong())).thenReturn(Optional.of(value));
+        when(service.findCustomerById(anyLong())).thenReturn(value);
         //when
         CommandResult actual = command.execute(context);
         //then
@@ -68,9 +67,9 @@ public class UpdateUserCommandTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)//then
-    public void testExecuteShouldReturnThrowServiceException() throws ServiceException {
+    public void testExecuteShouldReturnThrowServiceExceptionWhenDaoExceptionIsThrown() throws ServiceException {
         //given
-        doThrow(ServiceException.class).when(service).updateUser(any());
+        doThrow(ServiceException.class).when(service).switchUserStatus(any());
         Command command = new UpdateUserCommand(service);
         //when
         command.execute(context);

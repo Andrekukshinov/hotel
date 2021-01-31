@@ -93,7 +93,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <span class="close">&times;</span>
-                                    <h2>  <fmt:message key="history.user.modal.title"/></h2>
+                                    <h2><fmt:message key="history.user.modal.title"/></h2>
                                 </div>
                                 <div class="modal-body">
                                     <p><fmt:message key="history.user.modal.massage"/></p>

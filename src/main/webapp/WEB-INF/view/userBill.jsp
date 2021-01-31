@@ -33,11 +33,11 @@
                     <c:when test="${isRejectable || role =='ADMIN'}">
                         <div>
                             <fmt:message key="admin.room.capacity"/>
-                            ${application.room.capacity}
+                                ${application.room.capacity}
                         </div>
                         <div>
                             <fmt:message key="admin.room.Number"/>
-                            ${application.room.number}
+                                ${application.room.number}
                         </div>
                         <div>
                             <fmt:message key="admin.room.type"/>
@@ -57,7 +57,8 @@
                 <ul class=" no-style-ul">
                     <c:if test="${role =='ADMIN'}">
                         <li><fmt:message key="admin.user.login"/> ${login}</li>
-                        <li><fmt:message key="admin.room.status"/> <fmt:message key="admin.user.application.status.${application.application.status}"/></li>
+                        <li><fmt:message key="admin.room.status"/> <fmt:message
+                                key="admin.user.application.status.${application.application.status}"/></li>
                     </c:if>
                     <li><fmt:message key="admin.room.capacity"/> ${application.application.personAmount}</li>
                     <li><fmt:message key="admin.room.type"/> <fmt:message
@@ -79,10 +80,6 @@
                         <input type="hidden" value="${application.room.id}" name="roomId">
                         <button type="submit" class="history-button"><fmt:message key="bill.deny"/></button>
                     </form>
-
-                    <c:if test="${tooLate != null}">
-                        <p class="error"><fmt:message key="error.reject.date.${tooLate}"/></p>
-                    </c:if>
                 </div>
             </c:if>
         </div>

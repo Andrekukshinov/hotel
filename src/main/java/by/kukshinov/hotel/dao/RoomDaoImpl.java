@@ -10,30 +10,26 @@ import by.kukshinov.hotel.model.Room;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
     private static final String TABLE_NAME = "Room";
     private static final String GET_AVAILABLE_ROOMS_PAGINATION =
-                        " SELECT * FROM Room" +
-                        " WHERE id NOT IN ( " +
-                            " SELECT DISTINCT room_id FROM Application " +
-                            " WHERE room_id IS NOT NULL " +
-                                " AND (? <= Application.leaving_date " +
-                                " AND ? >= Application.arrival_date)" +
-                        " ) AND is_available = true" +
-                        " LIMIT ?,?";
-    private static final String GET_AVAILABLE_ROOM_BY_ID = "SELECT * FROM Room WHERE id=? AND is_available = true  ";
-    private static final String GET_DISABLED_ROOM_BY_ID = "SELECT * FROM Room WHERE id=? AND is_available = false  ";
-    private static final String ID = "id";
+            " SELECT * FROM Room" +
+                    " WHERE id NOT IN ( " +
+                    " SELECT DISTINCT room_id FROM Application " +
+                    " WHERE room_id IS NOT NULL " +
+                    " AND (? <= Application.leaving_date " +
+                    " AND ? >= Application.arrival_date)" +
+                    " ) AND is_available = true" +
+                    " LIMIT ?,?";
     private static final String NO_CONDITION = "";
     private static final String STATUS_AVAILABLE =
             " WHERE id NOT IN ( " +
-                " SELECT DISTINCT room_id FROM Application " +
-                " WHERE room_id IS NOT NULL " +
-                " AND (? <= Application.leaving_date " +
-                " AND ? >= Application.arrival_date)) "+
-            " AND is_available = true";
+                    " SELECT DISTINCT room_id FROM Application " +
+                    " WHERE room_id IS NOT NULL " +
+                    " AND (? <= Application.leaving_date " +
+                    " AND ? >= Application.arrival_date)) " +
+                    " AND is_available = true";
     private static final String ROOM_LIMIT = "SELECT * FROM room LIMIT ?,?";
 
     protected RoomDaoImpl(Connection connection) {
@@ -58,17 +54,6 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
     @Override
     public List<Room> findRangeRooms(int startFrom, int finishWith) throws DaoException {
         return executeQuery(ROOM_LIMIT, startFrom, finishWith);
-    }
-
-
-    @Override
-    public Optional<Room> findAvailableById(Long id) throws DaoException {
-        return executeForSingleItem(GET_AVAILABLE_ROOM_BY_ID, id);
-    }
-
-    @Override
-    public Optional<Room> findDisabledById(Long id) throws DaoException {
-        return executeForSingleItem(GET_DISABLED_ROOM_BY_ID, id);
     }
 
 }

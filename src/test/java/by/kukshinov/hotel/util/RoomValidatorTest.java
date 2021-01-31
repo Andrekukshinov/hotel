@@ -8,8 +8,6 @@ import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
 
-import static org.testng.Assert.*;
-
 public class RoomValidatorTest {
     private static final long ID_VALUE = 1L;
     private static final int NUMBER_VALUE = 202;
@@ -19,7 +17,7 @@ public class RoomValidatorTest {
 
     @DataProvider
     public Object[][] roomDataProvider() {
-        return new Object[][] {
+        return new Object[][]{
                 {new Room(ID_VALUE, NUMBER_VALUE, ApartmentType.BUSINESS, new Byte("4"), true, new BigDecimal("0"))},
                 {new Room(ID_VALUE, NUMBER_VALUE, ApartmentType.BUSINESS, new Byte("4"), true, new BigDecimal("-1"))},
                 {new Room(ID_VALUE, 0, ApartmentType.BUSINESS, new Byte("4"), true, new BigDecimal("1"))},
@@ -39,12 +37,12 @@ public class RoomValidatorTest {
         Assert.assertTrue(isValid);
     }
 
-     @Test(dataProvider = "roomDataProvider")
-     public void testValidateRoomShouldReturnFalseWhenRoomDataIsInvalid(Room room) {
-         RoomValidator validator = new RoomValidator();
+    @Test(dataProvider = "roomDataProvider")
+    public void testValidateRoomShouldReturnFalseWhenRoomDataIsInvalid(Room room) {
+        RoomValidator validator = new RoomValidator();
 
-         boolean isValid = validator.validateRoom(room);
+        boolean isValid = validator.validateRoom(room);
 
-         Assert.assertFalse(isValid);
-     }
+        Assert.assertFalse(isValid);
+    }
 }

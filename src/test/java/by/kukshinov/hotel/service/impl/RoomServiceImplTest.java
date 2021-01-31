@@ -20,8 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class RoomServiceImplTest {
     private static final long ROOM_ID = 1L;
@@ -35,7 +34,7 @@ public class RoomServiceImplTest {
     private static final List<Room> ROOMS = Arrays.asList(FIRST, SECOND, THIRD, FOURTH, FIFTH);
     private static final int SIZE = ROOMS.size();
     private static final int NUMBER = 1;
-    private static final LocalDate CURRENT_DATE = LocalDate.now();
+    private static final LocalDate TOMORROW = LocalDate.now().plusDays(1);
 
     private DaoHelperFactory helperFactory;
     private RoomDao roomDao;
@@ -80,28 +79,72 @@ public class RoomServiceImplTest {
         Assert.assertEquals(actual, ROOMS);
     }
 
-
     @Test
     public void testFindRangeAvailableRoomsShouldReturnListOfRooms() throws DaoException, ServiceException {
         RoomService service = new RoomServiceImpl(helperFactory);
-        when(roomDao.findAvailableRooms(CURRENT_DATE, CURRENT_DATE, NUMBER, NUMBER)).thenReturn(ROOMS);
+        when(roomDao.findAvailableRooms(TOMORROW, TOMORROW, NUMBER, NUMBER)).thenReturn(ROOMS);
 
-        List<Room> actual = service.findRangeAvailableRooms(CURRENT_DATE, CURRENT_DATE, NUMBER, NUMBER);
+        List<Room> actual = service.findRangeAvailableRooms(TOMORROW, TOMORROW, NUMBER, NUMBER);
 
         Assert.assertEquals(actual, ROOMS);
     }
 
-
     @Test
-    public void testFindByIdShouldReturnRoom() throws DaoException, ServiceException {
+    public void testFindByIdShouldReturnRoomWhenRoomIsFound() throws DaoException, ServiceException {
         //given
         RoomService userService = new RoomServiceImpl(helperFactory);
         Optional<Room> expected = Optional.of(FIRST);
         when(roomDao.findById(ROOM_ID)).thenReturn(expected);
         //when
-        Optional<Room> actual = userService.findById(ROOM_ID);
+        Room actual = userService.findById(ROOM_ID);
         //then
-        Assert.assertEquals(actual, expected);
+        Assert.assertEquals(actual, FIRST);
+    }
+
+    @Test
+    public void testSwitchRoomActivityShouldUpdateRoomActivity() throws DaoException, ServiceException {
+        //given
+        RoomService userService = new RoomServiceImpl(helperFactory);
+        Room start = new Room(ROOM_ID, 303, ApartmentType.BUSINESS, new Byte("4"), true, new BigDecimal("505"));
+        Room expected = new Room(ROOM_ID, 303, ApartmentType.BUSINESS, new Byte("4"), false, new BigDecimal("505"));
+        doNothing().when(roomDao).save(any());
+        //when
+        userService.switchRoomActivity(start);
+        //then
+        Assert.assertEquals(start, expected);
+    }
+
+    @Test
+    public void testFindAvailableByIdShouldReturnRoomWhenValidRoomIsFound() throws DaoException, ServiceException {
+        //given
+        RoomService userService = new RoomServiceImpl(helperFactory);
+        Optional<Room> expected = Optional.of(FIRST);
+        when(roomDao.findById(ROOM_ID)).thenReturn(expected);
+        //when
+        Room actual = userService.findAvailableById(ROOM_ID);
+        //then
+        Assert.assertEquals(actual, FIRST);
+    }
+
+    @Test
+    public void testFindDisabledByIdShouldReturnRoomWhenValidRoomIsFound() throws DaoException, ServiceException {
+        //given
+        RoomService userService = new RoomServiceImpl(helperFactory);
+        Optional<Room> expected = Optional.of(FOURTH);
+        when(roomDao.findById(ROOM_ID)).thenReturn(expected);
+        //when
+        Room actual = userService.findDisabledById(ROOM_ID);
+        //then
+        Assert.assertEquals(actual, FOURTH);
+    }
+
+    @Test(expectedExceptions = ServiceException.class)//then
+    public void testFindByIdShouldThrowServiceExceptionWhenRoomIsNotFound() throws ServiceException, DaoException {
+        //given
+        RoomService userService = new RoomServiceImpl(helperFactory);
+        when(roomDao.findById(ROOM_ID)).thenReturn(Optional.empty());
+        //when
+        userService.findById(ROOM_ID);
     }
 
     @Test(expectedExceptions = ServiceException.class)//then
@@ -114,12 +157,49 @@ public class RoomServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)//then
-    public void testUpdateRoomShouldThrowServiceException() throws DaoException, ServiceException {
+    public void testFindAvailableByIdShouldThrowServiceExceptionWhenRoomIsInvalid() throws ServiceException, DaoException {
         //given
         RoomService userService = new RoomServiceImpl(helperFactory);
-        doThrow(DaoException.class).when(roomDao).save(any());
+        when(roomDao.findById(ROOM_ID)).thenReturn(Optional.of(FOURTH));
         //when
-        userService.saveRoom(FIRST);
+        userService.findAvailableById(ROOM_ID);
+    }
+
+    @Test(expectedExceptions = ServiceException.class)//then
+    public void testFindDisabledByIdShouldThrowServiceExceptionWhenRoomIsInvalid() throws ServiceException, DaoException {
+        //given
+        RoomService userService = new RoomServiceImpl(helperFactory);
+        when(roomDao.findById(ROOM_ID)).thenReturn(Optional.of(FIFTH));
+        //when
+        userService.findDisabledById(ROOM_ID);
+    }
+
+    @Test(expectedExceptions = ServiceException.class)//then
+    public void testFindAvailableByIdShouldThrowServiceExceptionWhenRoomIsNotFound() throws ServiceException, DaoException {
+        //given
+        RoomService userService = new RoomServiceImpl(helperFactory);
+        when(roomDao.findById(ROOM_ID)).thenReturn(Optional.empty());
+        //when
+        userService.findAvailableById(ROOM_ID);
+    }
+
+    @Test(expectedExceptions = ServiceException.class)//then
+    public void testFindDisabledByIdShouldThrowServiceExceptionWhenRoomIsNotFound() throws ServiceException, DaoException {
+        //given
+        RoomService userService = new RoomServiceImpl(helperFactory);
+        when(roomDao.findById(ROOM_ID)).thenReturn(Optional.empty());
+        //when
+        userService.findDisabledById(ROOM_ID);
+    }
+
+    @Test
+    public void testFindRangeAvailableRoomsShouldThrowException() throws DaoException, ServiceException {
+        RoomService service = new RoomServiceImpl(helperFactory);
+        when(roomDao.findAvailableRooms(TOMORROW, TOMORROW, NUMBER, NUMBER)).thenReturn(ROOMS);
+
+        List<Room> actual = service.findRangeAvailableRooms(TOMORROW, TOMORROW, NUMBER, NUMBER);
+
+        Assert.assertEquals(actual, ROOMS);
     }
 
 }

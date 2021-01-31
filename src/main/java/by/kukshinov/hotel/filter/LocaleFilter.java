@@ -11,13 +11,14 @@ public class LocaleFilter implements Filter {
     private static final String LANGUAGE = "lang";
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {}
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         String language = req.getParameter(LANGUAGE);
-        if(language != null) {
+        if (language != null) {
             HttpSession session = req.getSession();
             session.setAttribute(LANGUAGE, language);
         }
@@ -25,5 +26,6 @@ public class LocaleFilter implements Filter {
     }
 
     @Override
-    public void destroy() {}
+    public void destroy() {
+    }
 }

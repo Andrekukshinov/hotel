@@ -20,14 +20,11 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 public class AvailableRoomsCommandTest {
-    private static final String WRONG_APPLICATION = "Wrong application!";
-    private static final String TOO_LATE_TO_APPROVE = "Too late to approve";
     private static final String LAST_PAGE = "lastPage";
     private static final String APPLICATION_ID = "applicationId";
     private static final String PAGE = "page";
@@ -42,7 +39,7 @@ public class AvailableRoomsCommandTest {
     private static final String CAPACITY_STRING = "1";
 
     private static final Room AVAILABLE_ROOM = new Room(ROOM_ID, 303, ApartmentType.BUSINESS, new Byte(CAPACITY_STRING), true, PRICE);
-    private static final Application FIRST_APPLICATION = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.BUSINESS, LocalDate.now().plusDays(1), LocalDate.now().plusDays(1), ApplicationStatus.APPROVED, PRICE, ROOM_ID, USER_ID);
+    private static final Application IN_ORDER = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.BUSINESS, LocalDate.now().plusDays(1), LocalDate.now().plusDays(1), ApplicationStatus.IN_ORDER, PRICE, ROOM_ID, USER_ID);
     private static final List<Room> ROOMS = Arrays.asList(AVAILABLE_ROOM, AVAILABLE_ROOM, AVAILABLE_ROOM);
 
     private ApplicationService applicationService;
@@ -67,7 +64,7 @@ public class AvailableRoomsCommandTest {
     @Test
     public void testExecuteShouldPutDataToContextAndReturnForwardToAvailableRoomsPage() throws ServiceException {
         context.setRequestParameter(APPLICATION_ID, ONE);
-        when(applicationService.findInOrderApplicationById(anyLong())).thenReturn(Optional.of(FIRST_APPLICATION));
+        when(applicationService.findFutureArrivalInOrderApplicationById(anyLong())).thenReturn(IN_ORDER);
         when(roomService.getAvailableRoomAmount(any(), any())).thenReturn(ROOMS.size());
         when(roomService.findRangeAvailableRooms(any(), any(), anyInt(), anyInt())).thenReturn(ROOMS);
         AvailableRoomsCommand availableRoomsCommand = new AvailableRoomsCommand(applicationService, roomService, validator);
@@ -81,7 +78,7 @@ public class AvailableRoomsCommandTest {
         Integer actualPage = (Integer) context.getRequestAttribute(PAGE);
         Long actualAppId = (Long) context.getRequestAttribute(APPLICATION_ID);
         Application actualApp = (Application) context.getRequestAttribute(APPLICATION);
-        Assert.assertEquals(actualApp, FIRST_APPLICATION);
+        Assert.assertEquals(actualApp, IN_ORDER);
         Assert.assertEquals(actualLastPage, NUMBER);
         Assert.assertEquals(actualRooms, ROOMS);
         Assert.assertEquals(actualPage, NUMBER);
@@ -89,24 +86,12 @@ public class AvailableRoomsCommandTest {
         Assert.assertEquals(actualResult, expectedResult);
     }
 
-    @Test(expectedExceptions = ServiceException.class, expectedExceptionsMessageRegExp = TOO_LATE_TO_APPROVE)
-    public void testExecuteShouldThrowServiceExceptionWhenDataIsValidAndArrivalDateHasPassed() throws ServiceException {
+    @Test(expectedExceptions = ServiceException.class)
+    public void testExecuteShouldThrowServiceExceptionWhenApplicationIsWrong() throws ServiceException {
         context.setRequestParameter(APPLICATION_ID, ONE);
 
-        Application pastApplication = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.BUSINESS, LocalDate.now().minusDays(1), LocalDate.now().minusDays(1), ApplicationStatus.APPROVED, PRICE, ROOM_ID, USER_ID);
-        when(applicationService.findInOrderApplicationById(anyLong())).thenReturn(Optional.of(pastApplication));
-        when(roomService.findAvailableById(anyLong())).thenReturn(Optional.of(AVAILABLE_ROOM));
-        AvailableRoomsCommand availableRoomsCommand = new AvailableRoomsCommand(applicationService, roomService, validator);
-
-        availableRoomsCommand.execute(context);
-    }
-
-    @Test(expectedExceptions = ServiceException.class, expectedExceptionsMessageRegExp = WRONG_APPLICATION)
-    public void testExecuteShouldThrowServiceExceptionWhenApplicationIsNotFound() throws ServiceException {
-        context.setRequestParameter(APPLICATION_ID, ONE);
-
-        when(applicationService.findInOrderApplicationById(anyLong())).thenReturn(Optional.empty());
-        when(roomService.findAvailableById(anyLong())).thenReturn(Optional.of(AVAILABLE_ROOM));
+        when(applicationService.findFutureArrivalInOrderApplicationById(anyLong())).thenThrow(new ServiceException());
+        when(roomService.getAvailableRoomAmount(any(), any())).thenReturn(ROOMS.size());
         AvailableRoomsCommand availableRoomsCommand = new AvailableRoomsCommand(applicationService, roomService, validator);
 
         availableRoomsCommand.execute(context);

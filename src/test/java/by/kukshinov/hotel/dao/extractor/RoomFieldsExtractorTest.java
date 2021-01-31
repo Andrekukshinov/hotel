@@ -2,15 +2,12 @@ package by.kukshinov.hotel.dao.extractor;
 
 import by.kukshinov.hotel.model.Room;
 import by.kukshinov.hotel.model.enums.ApartmentType;
-import by.kukshinov.hotel.model.enums.ApplicationStatus;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.testng.Assert.*;
 
 public class RoomFieldsExtractorTest {
 
@@ -36,7 +33,7 @@ public class RoomFieldsExtractorTest {
         expected.put(PRICE, PRICE_VALUE);
         expected.put(CAPACITY, CAPACITY_VALUE);
         expected.put(ID, ID_VALUE);
-        expected.put(ROOM_NUMBER,  NUMBER_VALUE);
+        expected.put(ROOM_NUMBER, NUMBER_VALUE);
         RoomFieldsExtractor fieldsExtractor = new RoomFieldsExtractor();
 
         Map<String, Object> actual = fieldsExtractor.extract(ROOM);

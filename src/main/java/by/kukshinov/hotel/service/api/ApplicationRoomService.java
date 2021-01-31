@@ -4,6 +4,8 @@ import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.ApplicationRoom;
 
 public interface ApplicationRoomService {
-    ApplicationRoom findApplicationRoom(Long applicationId) throws ServiceException;
+    ApplicationRoom findByApplicationId(Long applicationId) throws ServiceException;
+
+    ApplicationRoom findUserBillByApplicationId(Long applicationId, Long UserId) throws ServiceException;
 
 }

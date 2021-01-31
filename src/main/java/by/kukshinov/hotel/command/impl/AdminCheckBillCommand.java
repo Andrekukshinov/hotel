@@ -8,16 +8,12 @@ import by.kukshinov.hotel.model.ApplicationRoom;
 import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.model.User;
 import by.kukshinov.hotel.service.api.ApplicationRoomService;
-import by.kukshinov.hotel.service.api.ApplicationService;
 import by.kukshinov.hotel.service.api.UserService;
-
-import java.util.Optional;
 
 public class AdminCheckBillCommand implements Command {
     private static final String APPLICATION = "application";
     private static final String BILL = "WEB-INF/view/userBill.jsp";
     private static final String APPLICATION_ID = "id";
-    private static final String WRONG_APPLICATION = "Wrong application!";
     private static final String LOGIN = "login";
     private static final String ROLE = "ROLE";
 
@@ -37,12 +33,11 @@ public class AdminCheckBillCommand implements Command {
         long applicationId = Long.parseLong(applicationIdString);
         Object role = context.getSessionAttribute(ROLE);
 
-        ApplicationRoom applicationDTO = applicationRoomService.findApplicationRoom(applicationId);
+        ApplicationRoom applicationDTO = applicationRoomService.findByApplicationId(applicationId);
         Application application = applicationDTO.getApplication();
 
         Long userId = application.getUserId();
-        Optional<User> optionalUser = userService.findById(userId);
-        User user = optionalUser.orElseThrow(() -> new ServiceException(WRONG_APPLICATION));
+        User user = userService.findCustomerById(userId);
         String login = user.getLogin();
 
 

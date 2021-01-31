@@ -12,7 +12,10 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -26,7 +29,6 @@ public class AllRoomsCommandTest {
     private static final Integer FIRST_PAGE = 1;
     private static final String ALL_ROOMS = "WEB-INF/view/allRooms.jsp";
     private static final Integer NUMBER = 1;
-
 
 
     private RoomService service;
@@ -68,7 +70,7 @@ public class AllRoomsCommandTest {
     }
 
     @Test(expectedExceptions = {ServiceException.class})//then
-    public void testExecuteShouldThrowServiceException () throws ServiceException {
+    public void testExecuteShouldThrowServiceException() throws ServiceException {
         //given
         when(service.findRangeEntities(anyInt(), anyInt())).thenThrow(ServiceException.class);
         AllRoomsCommand command = new AllRoomsCommand(service, pageValidator);

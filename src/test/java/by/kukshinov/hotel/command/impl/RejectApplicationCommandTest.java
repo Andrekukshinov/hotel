@@ -15,17 +15,16 @@ import org.testng.annotations.Test;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class RejectApplicationCommandTest {
     private static final String APPLICATIONS = "/hotel/controller?command=admin_active_applications";
     private static final String ID = "id";
     private static final String ONE = "1";
     private static final LocalDate TOMORROW = LocalDate.now().plusDays(1);
-    private static final Application APPLICATION = new Application(1L, (byte) 4, ApartmentType.BUSINESS, TOMORROW, TOMORROW, ApplicationStatus.DENIED, new BigDecimal("505"), 1L, 1L);
+    private static final Application IN_ORDER = new Application(1L, (byte) 4, ApartmentType.BUSINESS, TOMORROW, TOMORROW, ApplicationStatus.DENIED, new BigDecimal("505"), 1L, 1L);
 
     private RequestContext context;
     private ApplicationService service;
@@ -42,7 +41,8 @@ public class RejectApplicationCommandTest {
     @Test
     public void testExecuteShouldReturnRedirectToActiveApplicationsWhenAppIsFound() throws ServiceException {
         RejectApplicationCommand command = new RejectApplicationCommand(service);
-        when(service.findInOrderApplicationById(any())).thenReturn(Optional.of(APPLICATION));
+        when(service.findInOrderApplicationById(any())).thenReturn(IN_ORDER);
+        doNothing().when(service).adminDenyOrderedApplication(any());
         CommandResult expected = CommandResult.redirect(APPLICATIONS);
 
         CommandResult actual = command.execute(context);
@@ -51,9 +51,21 @@ public class RejectApplicationCommandTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void testExecuteThrowServiceExceptionWhenAppIsNotFound() throws ServiceException {
+    public void testExecuteThrowServiceExceptionWhenAppIsWrong() throws ServiceException {
         RejectApplicationCommand command = new RejectApplicationCommand(service);
-        when(service.findInOrderApplicationById(any())).thenReturn(Optional.empty());
+        when(service.findInOrderApplicationById(any())).thenThrow(new ServiceException());
+        doNothing().when(service).adminDenyOrderedApplication(any());
+
+
+        command.execute(context);
+    }
+
+    @Test(expectedExceptions = ServiceException.class)
+    public void testExecuteThrowServiceExceptionWhenDenyError() throws ServiceException {
+        RejectApplicationCommand command = new RejectApplicationCommand(service);
+        when(service.findInOrderApplicationById(any())).thenThrow(new ServiceException());
+        doThrow(ServiceException.class).when(service).adminDenyOrderedApplication(any());
+
 
         command.execute(context);
     }

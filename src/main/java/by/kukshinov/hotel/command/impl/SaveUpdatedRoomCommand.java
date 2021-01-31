@@ -10,7 +10,6 @@ import by.kukshinov.hotel.service.api.RoomService;
 import by.kukshinov.hotel.util.RoomValidator;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 public class SaveUpdatedRoomCommand implements Command {
     private static final String ALL_ROOMS = "/hotel/controller?command=admin_rooms";
@@ -18,7 +17,6 @@ public class SaveUpdatedRoomCommand implements Command {
     private static final String CAPACITY = "capacity";
     private static final String PRICE = "price";
     private static final String ROOM_TYPE = "roomType";
-    private static final String WRONG_ROOM = "No such room exists!";
     private static final String WRONG_DATA = "Wrong data!";
 
     private final RoomValidator validator;
@@ -41,14 +39,13 @@ public class SaveUpdatedRoomCommand implements Command {
         byte capacity = Byte.parseByte(capacityString);
 
         long id = Long.parseLong(stringId);
-        Optional<Room> roomOptional = roomService.findDisabledById(id);
-        Room room = roomOptional.orElseThrow(() -> new ServiceException(WRONG_ROOM));
+        Room room = roomService.findDisabledById(id);
 
         room.setRoomType(apartmentType);
         room.setPrice(price);
         room.setCapacity(capacity);
 
-        if(!validator.validateRoom(room)) {
+        if (!validator.validateRoom(room)) {
             throw new ServiceException(WRONG_DATA);
         }
 

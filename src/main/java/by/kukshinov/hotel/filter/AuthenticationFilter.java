@@ -34,12 +34,11 @@ public class AuthenticationFilter implements Filter {
 
         boolean isLoginPageRequest = LOGIN_COMMAND.equals(command);
         boolean isLogoutPageRequest = LOGOUT_COMMAND.equals(command);
-        if (isLoginPageRequest && login != null){
+        if (isLoginPageRequest && login != null) {
             resp.sendRedirect(COMMAND_LOGOUT);
         } else if (login != null || isLoginPageRequest || isLogoutPageRequest || isResourcesAccess(command, requestURL) || isDomainReq) {
             filterChain.doFilter(servletRequest, servletResponse);
-        }
-        else {
+        } else {
             resp.sendError(UNAUTHORIZED);
         }
     }

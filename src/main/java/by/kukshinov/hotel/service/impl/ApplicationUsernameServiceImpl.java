@@ -32,7 +32,7 @@ public class ApplicationUsernameServiceImpl implements ApplicationUsernameServic
             List<Application> applications = dao.findRangeApplications(startFrom, finishWith);
             List<ApplicationUsernameDto> result = new ArrayList<>();
 
-            for (Application application: applications) {
+            for (Application application : applications) {
                 Long userId = application.getUserId();
                 Optional<User> userOptional = userDao.findById(userId);
                 User user = userOptional.orElseThrow(() -> new DaoException(WRONG_APPLIATION));

@@ -3,6 +3,10 @@ package by.kukshinov.hotel.context;
 import java.util.Map;
 
 
+/**
+ * Special class that holds request data. This class is designed to prevent HttpServletRequest
+ * object from being passed from controller to deeper application layers
+ */
 public class RequestContext {
     private final Map<String, String> requestParameters;
     private final Map<String, Object> requestAttributes;
@@ -42,7 +46,6 @@ public class RequestContext {
     public void setSessionAttribute(String key, Object value) {
         sessionAttributes.put(key, value);
     }
-
 
 
     Map<String, String> getRequestParameters() {

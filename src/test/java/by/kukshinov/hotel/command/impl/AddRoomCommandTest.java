@@ -31,7 +31,6 @@ public class AddRoomCommandTest {
     private static final String PRICE_VALUE = "255";
 
 
-
     private RoomService service;
     private RequestContext context;
     private RoomValidator validator;
@@ -78,8 +77,8 @@ public class AddRoomCommandTest {
         command.execute(context);
     }
 
-    @Test( expectedExceptions = ServiceException.class, expectedExceptionsMessageRegExp = INVALID_ROOM)
-    public void testExecuteShouldThrowServiceExceptionWhenPriceIsNegative() throws ServiceException {
+    @Test(expectedExceptions = ServiceException.class, expectedExceptionsMessageRegExp = INVALID_ROOM)
+    public void testExecuteShouldThrowServiceExceptionWhenDataIsInvalid() throws ServiceException {
         //given
         Map<String, String> param = new HashMap<>();
         param.put(ROOM_NUMBER, NUMBER_VALUE);

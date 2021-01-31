@@ -1,15 +1,12 @@
 package by.kukshinov.hotel.dao.extractor;
 
 import by.kukshinov.hotel.model.User;
-import by.kukshinov.hotel.model.enums.ApartmentType;
 import by.kukshinov.hotel.model.enums.Role;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.testng.Assert.*;
 
 public class UserFieldExtractorTest {
 

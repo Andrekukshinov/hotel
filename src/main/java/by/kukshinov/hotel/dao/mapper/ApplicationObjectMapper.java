@@ -1,7 +1,6 @@
 package by.kukshinov.hotel.dao.mapper;
 
 import by.kukshinov.hotel.model.Application;
-import by.kukshinov.hotel.model.Room;
 import by.kukshinov.hotel.model.enums.ApartmentType;
 import by.kukshinov.hotel.model.enums.ApplicationStatus;
 
@@ -32,7 +31,7 @@ public class ApplicationObjectMapper implements ObjectMapper<Application> {
         byte person_amount = resultSet.getByte(PERSON_AMOUNT);
         LocalDate arrival_date = resultSet.getObject(ARRIVAL_DATE, LocalDate.class);
         LocalDate leaving_date = resultSet.getObject(LEAVING_DATE, LocalDate.class);
-        Long roomId = (Long)resultSet.getObject(ROOM_ID);
+        Long roomId = (Long) resultSet.getObject(ROOM_ID);
         BigDecimal totalPrice = resultSet.getBigDecimal(TOTAL_PRICE);
         ApartmentType apartmentType = ApartmentType.valueOf(apartment);
 

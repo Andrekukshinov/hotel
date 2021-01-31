@@ -15,18 +15,17 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
 
     private static final String GET_USER_BY_CREDENTIALS =
             "SELECT user.id, login, password, is_disabled, role " +
-            "FROM user LEFT JOIN Role R on R.id = User.role_id " +
-            "WHERE login=? " +
-            "AND password=SHA1(?)";
+                    "FROM user LEFT JOIN Role R on R.id = User.role_id " +
+                    "WHERE login=? " +
+                    "AND password=SHA1(?)";
     private static final String USER_TABLE = "user";
     private static final String FIND_BY_ID =
             "SELECT user.id, login, is_disabled, role " +
-            "FROM user LEFT JOIN Role R on R.id = User.role_id " +
-            "WHERE User.id=?";
-    private static final String ID = "id";
+                    "FROM user LEFT JOIN Role R on R.id = User.role_id " +
+                    "WHERE User.id=?";
     private static final String LEFT_JOIN_ROLE = " LEFT JOIN Role R on R.id = User.role_id ";
     private static final String SELECT_FROM_USER_WHERE_ROLE_ADMIN =
-                    "SELECT * " +
+            "SELECT * " +
                     "FROM user " +
                     "LEFT JOIN Role R on R.id = User.role_id " +
                     "WHERE R.role ='USER' " +

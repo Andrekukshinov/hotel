@@ -7,11 +7,8 @@ import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.model.Room;
 import by.kukshinov.hotel.service.api.RoomService;
 
-import java.util.Optional;
-
 public class UpdateRoomPageCommand implements Command {
     private static final String ID = "id";
-    private static final String WRONG_ROOM = "Wrong room!";
     private static final String ROOM = "room";
     private static final String ROOM_JSP = "WEB-INF/view/updRoom.jsp";
 
@@ -26,9 +23,7 @@ public class UpdateRoomPageCommand implements Command {
         String requestParameter = context.getRequestParameter(ID);
         Long id = Long.parseLong(requestParameter);
 
-        Optional<Room> roomOptional = roomService.findDisabledById(id);
-
-        Room room = roomOptional.orElseThrow(() -> new ServiceException(WRONG_ROOM));
+        Room room = roomService.findDisabledById(id);
 
         context.setRequestAttribute(ROOM, room);
         return CommandResult.forward(ROOM_JSP);

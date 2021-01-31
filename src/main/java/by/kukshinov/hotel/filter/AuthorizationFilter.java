@@ -36,7 +36,7 @@ public class AuthorizationFilter implements Filter {
                 filterChain.doFilter(servletRequest, servletResponse);
             }
         } else if (command != null) {
-            if(USER.equals(role) || (command.equals(HOME) || command.equals(LOGOUT) || command.equals(LOGIN))) {
+            if (USER.equals(role) || (command.equals(HOME) || command.equals(LOGOUT) || command.equals(LOGIN))) {
                 filterChain.doFilter(servletRequest, servletResponse);
             } else {
                 resp.sendError(FORBIDDEN);

@@ -7,13 +7,11 @@ import by.kukshinov.hotel.model.Application;
 import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.service.api.ApplicationService;
 
-import java.util.Optional;
-
 public class UserCancelCommand implements Command {
     private static final String USER_ID = "user_id";
     private static final String APPLICATION_ID = "id";
     private static final String PROFILE_HISTORY = "controller?command=profileHistory";
-    private static final String WRONG_APPLICATION = "wrong application!";
+
     private final ApplicationService service;
 
     public UserCancelCommand(ApplicationService service) {
@@ -26,8 +24,7 @@ public class UserCancelCommand implements Command {
         String applicationIdString = context.getRequestParameter(APPLICATION_ID);
 
         long applicationId = Long.parseLong(applicationIdString);
-        Optional<Application> applicationOptional = service.findInOrderUserApplicationById(applicationId, userId);
-        Application application = applicationOptional.orElseThrow(() -> new ServiceException(WRONG_APPLICATION));
+        Application application = service.findInOrderUserApplicationById(applicationId, userId);
 
         service.userCancelOrderedApplication(application);
         return CommandResult.redirect(PROFILE_HISTORY);

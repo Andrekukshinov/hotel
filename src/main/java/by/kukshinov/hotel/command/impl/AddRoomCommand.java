@@ -42,7 +42,7 @@ public class AddRoomCommand implements Command {
         Room room = new Room(null, number, apartmentType, capacity, true, price);
 
         if (!validator.validateRoom(room)) {
-           throw new ServiceException(INVALID_ROOM);
+            throw new ServiceException(INVALID_ROOM);
         }
         roomService.saveRoom(room);
         return CommandResult.redirect(ALL_ROOMS_PAGE);

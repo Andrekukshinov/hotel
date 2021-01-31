@@ -70,7 +70,8 @@
                 </c:otherwise>
             </c:choose>
         </table>
-        <ex:pagination href="${pageContext.request.contextPath}/controller?command=user_bills&page=" currentPage="${page}" lastPage="${lastPage}"/>
+        <ex:pagination href="${pageContext.request.contextPath}/controller?command=user_bills&page="
+                       currentPage="${page}" lastPage="${lastPage}"/>
     </div>
 </div>
 

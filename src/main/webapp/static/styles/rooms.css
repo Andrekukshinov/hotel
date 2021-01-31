@@ -19,8 +19,8 @@
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 /* Modal Content */
@@ -31,7 +31,7 @@
     padding: 0;
     border: 1px solid #888;
     width: 50%;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
@@ -40,13 +40,25 @@
 
 /* Add Animation */
 @-webkit-keyframes animatetop {
-    from {top:-300px; opacity:0}
-    to {top:0; opacity:1}
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
 }
 
 @keyframes animatetop {
-    from {top:-300px; opacity:0}
-    to {top:0; opacity:1}
+    from {
+        top: -300px;
+        opacity: 0
+    }
+    to {
+        top: 0;
+        opacity: 1
+    }
 }
 
 /* The Close Button */
@@ -70,7 +82,9 @@
     color: white;
 }
 
-.modal-body {padding: 2px 16px;}
+.modal-body {
+    padding: 2px 16px;
+}
 
 .modal-footer {
     padding: 2px;
@@ -130,9 +144,7 @@ button.users-submit {
 }
 
 
-
-
-.reject{
+.reject {
     margin-left: 30%;
 }
 
@@ -155,7 +167,7 @@ li.no-style-ul {
 }
 
 
-.first-option{
+.first-option {
     float: left;
     margin-left: 20%;
 }
@@ -170,7 +182,7 @@ li.no-style-ul {
     .history-item-button {
         grid-column: 1;
         grid-row: 3;
-        padding:3% 0;
+        padding: 3% 0;
     }
 
     .user-bill {
@@ -178,7 +190,7 @@ li.no-style-ul {
     }
 
     .grid-container {
-        grid-template-rows: auto auto auto auto ;
+        grid-template-rows: auto auto auto auto;
         grid-template-columns:  auto;
         width: 90%;
     }
@@ -204,18 +216,19 @@ li.no-style-ul {
     }
 
 
-    .reject{
+    .reject {
         margin-left: 3%;
     }
 }
 
 @media screen and (max-width: 495px) {
-    .first-option{
+    .first-option {
         margin-left: 10%;
     }
 }
+
 @media screen and (max-width: 370px) {
-    .first-option{
+    .first-option {
         margin-left: 2%;
     }
 }

@@ -1,7 +1,6 @@
 package by.kukshinov.hotel.dao.extractor;
 
 import by.kukshinov.hotel.model.User;
-import by.kukshinov.hotel.model.enums.Role;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

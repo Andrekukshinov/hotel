@@ -39,7 +39,7 @@ public class ApplicationFieldsExtractorTest {
         expected.put(APARTMENT_TYPE, ApartmentType.BUSINESS.toString());
         expected.put(ARRIVAL_DATE, NOW);
         expected.put(LEAVING_DATE, NOW);
-        expected.put(APPLICATION_STATE,  ApplicationStatus.APPROVED.toString());
+        expected.put(APPLICATION_STATE, ApplicationStatus.APPROVED.toString());
         expected.put(USER_ID, USER_ID_VALUE);
         expected.put(ROOM_ID, ROOM_ID_VALUE);
         expected.put(TOTAL_PRICE, PRICE);

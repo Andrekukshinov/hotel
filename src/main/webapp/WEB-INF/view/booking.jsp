@@ -21,30 +21,31 @@
 <jsp:include page="templates/header.jsp"/>
 <div id="to-be-found">
     <jsp:include page="templates/leftMenu.jsp"/>
-    <form method="post" id="booking-form" class="booking-div" action="${pageContext.request.contextPath}/controller?command=bookRoom">
+    <form method="post" id="booking-form" class="booking-div"
+          action="${pageContext.request.contextPath}/controller?command=bookRoom">
         <h2 class="align-center"><fmt:message key="booking.book.room"/></h2>
         <p class="align-center"><fmt:message key="booking.book.select.people"/></p>
 
-            <label class="floating-radio first-label">
-                <input required name=personAmount type="radio" value="1">
-                1
-            </label>
-            <label class="floating-radio">
-                <input required name=personAmount type="radio" value="2">
-                2
-            </label>
-            <label class="floating-radio">
-                <input required name=personAmount type="radio" value="3">
-                3
-            </label>
-            <label class="floating-radio">
-                <input required name=personAmount type="radio" value="4">
-                4
-            </label>
-            <label class="floating-radio last-label">
-                <input required name=personAmount type="radio" value="5">
-                5
-            </label>
+        <label class="floating-radio first-label">
+            <input required name=personAmount type="radio" value="1">
+            1
+        </label>
+        <label class="floating-radio">
+            <input required name=personAmount type="radio" value="2">
+            2
+        </label>
+        <label class="floating-radio">
+            <input required name=personAmount type="radio" value="3">
+            3
+        </label>
+        <label class="floating-radio">
+            <input required name=personAmount type="radio" value="4">
+            4
+        </label>
+        <label class="floating-radio last-label">
+            <input required name=personAmount type="radio" value="5">
+            5
+        </label>
         <div>
             <br>
             <br>

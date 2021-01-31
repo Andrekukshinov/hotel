@@ -12,10 +12,8 @@ import by.kukshinov.hotel.util.PageHelper;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 public class AvailableRoomsCommand implements Command {
-    private static final String TOO_LATE_TO_APPROVE = "Too late to approve";
     private static final String PAGE = "page";
     private static final int ITEMS_PER_PAGE = 4;
     private static final String ROOMS = "rooms";
@@ -23,9 +21,7 @@ public class AvailableRoomsCommand implements Command {
     private static final String APPLICATION_ID = "applicationId";
     private static final String APPLICATION = "application";
     private static final String LAST_PAGE = "lastPage";
-    private static final String WRONG_APPLICATION = "Wrong application!";
     private static final String NOW = "now";
-    private static final String TOO_LATE = "WEB-INF/view/tooLate.jsp";
 
     private final ApplicationService applicationService;
     private final RoomService roomService;
@@ -42,9 +38,8 @@ public class AvailableRoomsCommand implements Command {
         String applicationIdParam = context.getRequestParameter(APPLICATION_ID);
         String currentPage = context.getRequestParameter(PAGE);
         Long applicationId = Long.parseLong(applicationIdParam);
-        Optional<Application> optionalApplication = applicationService.findInOrderApplicationById(applicationId);
+        Application application = applicationService.findFutureArrivalInOrderApplicationById(applicationId);
 
-        Application application = optionalApplication.orElseThrow(() -> new ServiceException(WRONG_APPLICATION));
         LocalDate arrivalDate = application.getArrivalDate();
         LocalDate leavingDate = application.getLeavingDate();
 
@@ -53,19 +48,15 @@ public class AvailableRoomsCommand implements Command {
 
         List<Room> rooms = roomService.findRangeAvailableRooms(arrivalDate, leavingDate, (pageInt - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
         Integer lastPage = validator.getLastPage(availableRooms, ITEMS_PER_PAGE);
-        LocalDate now = LocalDate.now();
+
 
         context.setRequestAttribute(APPLICATION, application);
+        context.setRequestAttribute(LAST_PAGE, lastPage);
+        context.setRequestAttribute(ROOMS, rooms);
+        context.setRequestAttribute(PAGE, pageInt);
+        context.setRequestAttribute(NOW, LocalDate.now());
+        context.setRequestAttribute(APPLICATION_ID, applicationId);
+        return CommandResult.forward(AVAILABLE_ROOMS);
 
-        if (!now.isBefore(arrivalDate)) {
-            throw new ServiceException(TOO_LATE_TO_APPROVE);
-        } else {
-            context.setRequestAttribute(LAST_PAGE, lastPage);
-            context.setRequestAttribute(ROOMS, rooms);
-            context.setRequestAttribute(PAGE, pageInt);
-            context.setRequestAttribute(NOW, LocalDate.now());
-            context.setRequestAttribute(APPLICATION_ID, applicationId);
-            return CommandResult.forward(AVAILABLE_ROOMS);
-        }
     }
 }

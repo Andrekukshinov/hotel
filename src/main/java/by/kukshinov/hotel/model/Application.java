@@ -4,10 +4,9 @@ import by.kukshinov.hotel.model.enums.ApartmentType;
 import by.kukshinov.hotel.model.enums.ApplicationStatus;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.time.LocalDate;
 
-public class Application implements Entity{
+public class Application implements Entity {
     private Long id;
     private byte personAmount;
     private ApartmentType type;

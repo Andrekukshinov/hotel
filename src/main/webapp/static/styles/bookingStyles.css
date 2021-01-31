@@ -2,7 +2,7 @@
     padding-left: 2%;
 }
 
-.first-date{
+.first-date {
     margin-left: 1%;
 }
 
@@ -21,7 +21,7 @@
     background-color: #255a94;
     color: white;
     padding: 6px 8px 7px 8px;
-    margin-left:30%;
+    margin-left: 30%;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -41,22 +41,22 @@
     cursor: pointer;
     text-decoration: none;
 }
- .full-width{
-     width: content-box;
- }
+
+.full-width {
+    width: content-box;
+}
 
 .history-button:hover {
     background-color: #1f4975;
 }
 
-.user-approve-link{
+.user-approve-link {
     display: inline-block;
     margin-top: 0;
     text-decoration: none;
     font-size: x-large;
-    padding: 6px 8px 7px 8px ;
+    padding: 6px 8px 7px 8px;
 }
-
 
 
 .floating-radio {
@@ -69,7 +69,7 @@
     margin-top: 20%;
 }
 
-.last-label{
+.last-label {
     float: none;
 }
 
@@ -79,7 +79,7 @@
     margin-left: 17%;
     margin-top: 1%;
     background-color: #f2f2f2;
-    padding-bottom:0;
+    padding-bottom: 0;
 }
 
 .input-booking {
@@ -93,13 +93,13 @@
     padding: 7px 20px;
     border: none;
     border-radius: 4px;
-    background-color:rgba(102, 172, 224, 0.5);
+    background-color: rgba(102, 172, 224, 0.5);
     font-size: large;
     margin-left: 5%;
     font-family: "Times New Roman", serif;
 }
 
-.date-input-arr{
+.date-input-arr {
     width: 32%;
     padding: 4px 5px;
     border: none;
@@ -110,7 +110,7 @@
     font-family: "Times New Roman", serif;
 }
 
-.date-input-leave{
+.date-input-leave {
     width: 32%;
     padding: 4px 5px;
     border: none;
@@ -121,7 +121,7 @@
     font-family: "Times New Roman", serif;
 }
 
-.room-number{
+.room-number {
     width: 32%;
     padding: 4px 5px;
     border: none;
@@ -133,7 +133,7 @@
 }
 
 
-.room-price{
+.room-price {
     width: 32%;
     padding: 4px 5px;
     border: none;
@@ -147,7 +147,8 @@
 .small-letters {
     text-transform: lowercase;
 }
-.twenty-margin{
+
+.twenty-margin {
     padding-left: 30%;
 }
 
@@ -182,7 +183,7 @@
         width: 30%;
     }
 
-    .small-font{
+    .small-font {
         font-size: 10px;
     }
 
@@ -191,7 +192,7 @@
         padding-top: 0;
     }
 
-    .twenty-margin{
-        margin-left:10%
+    .twenty-margin {
+        margin-left: 10%
     }
 }

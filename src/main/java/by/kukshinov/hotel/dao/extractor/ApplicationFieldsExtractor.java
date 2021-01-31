@@ -1,13 +1,13 @@
 package by.kukshinov.hotel.dao.extractor;
 
-import by.kukshinov.hotel.model.enums.ApartmentType;
 import by.kukshinov.hotel.model.Application;
+import by.kukshinov.hotel.model.enums.ApartmentType;
 import by.kukshinov.hotel.model.enums.ApplicationStatus;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class ApplicationFieldsExtractor implements FieldsExtractor<Application> {
 

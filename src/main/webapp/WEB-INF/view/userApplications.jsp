@@ -63,7 +63,8 @@
                                       class="admin-users-form">
                                     <input type="hidden" value="admin_suggest_room" name="command">
                                     <input type="hidden" value="${applicationDto.id}" name="applicationId">
-                                    <button ${(now < applicationDto.arrivalDate)? "":"disabled"} class="verdict-app-button small-font" type="submit">
+                                    <button ${(now < applicationDto.arrivalDate)? "":"disabled"}
+                                            class="verdict-app-button small-font" type="submit">
                                         <fmt:message key="admin.user.application.suggest"/>
                                     </button>
                                 </form>

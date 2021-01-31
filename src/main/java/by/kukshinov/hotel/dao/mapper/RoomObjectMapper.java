@@ -1,7 +1,7 @@
 package by.kukshinov.hotel.dao.mapper;
 
-import by.kukshinov.hotel.model.enums.ApartmentType;
 import by.kukshinov.hotel.model.Room;
+import by.kukshinov.hotel.model.enums.ApartmentType;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;

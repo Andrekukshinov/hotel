@@ -1,11 +1,11 @@
 package by.kukshinov.hotel.command.impl;
 
 import by.kukshinov.hotel.command.Command;
+import by.kukshinov.hotel.context.RequestContext;
 import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.CommandResult;
-import by.kukshinov.hotel.model.enums.Role;
 import by.kukshinov.hotel.model.User;
-import by.kukshinov.hotel.context.RequestContext;
+import by.kukshinov.hotel.model.enums.Role;
 import by.kukshinov.hotel.service.api.UserService;
 
 import java.util.Optional;
@@ -34,7 +34,7 @@ public class LoginCommand implements Command {
         Optional<User> userOptional = userService.findByCredentials(login, password);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            if(!user.getIsDisabled()) {
+            if (!user.getIsDisabled()) {
                 setAuthorizationData(context, user);
                 return CommandResult.redirect(HOME_PAGE);
             } else {

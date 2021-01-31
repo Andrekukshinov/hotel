@@ -5,10 +5,7 @@ import by.kukshinov.hotel.context.RequestContext;
 import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.model.User;
-import by.kukshinov.hotel.model.enums.Role;
 import by.kukshinov.hotel.service.api.UserService;
-
-import java.util.Optional;
 
 public class UpdateUserCommand implements Command {
     private static final String ID = "userId";
@@ -24,17 +21,11 @@ public class UpdateUserCommand implements Command {
     @Override
     public CommandResult execute(RequestContext context) throws ServiceException {
         String stringId = context.getRequestParameter(ID);
-        Long sessionUserId = (Long) context.getSessionAttribute(USER_ID);
-
         long id = Long.parseLong(stringId);
 
-        Optional<User> optionalUser = userService.findById(id);
+        User user = userService.findCustomerById(id);
+        userService.switchUserStatus(user);
 
-        User user = optionalUser.orElseThrow(() -> new ServiceException(WRONG_USER));
-        Role userRole = user.getRole();
-        if (!user.getId().equals(sessionUserId) && !Role.ADMIN.equals(userRole)) {
-            userService.switchUserStatus(user);
-        }
         return CommandResult.redirect(ALL_USERS);
     }
 }

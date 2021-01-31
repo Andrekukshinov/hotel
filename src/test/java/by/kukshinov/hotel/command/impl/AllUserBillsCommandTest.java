@@ -54,8 +54,6 @@ public class AllUserBillsCommandTest {
     private RequestContext context;
 
 
-
-
     @BeforeMethod
     public void mockServicesAndRequestContext() {
         context = new RequestContext(new HashMap<>(), new HashMap<>(), new HashMap<>());
@@ -93,7 +91,7 @@ public class AllUserBillsCommandTest {
 
 
     @Test(expectedExceptions = {ServiceException.class})//then
-    public void testExecuteShouldThrowServiceException () throws ServiceException {
+    public void testExecuteShouldThrowServiceException() throws ServiceException {
         //given
         when(applicationService.findRangeUserBills(anyLong(), anyInt(), anyInt())).thenThrow(ServiceException.class);
         AllUserBillsCommand command = new AllUserBillsCommand(applicationService, validator);

@@ -39,12 +39,15 @@
                     <td class="small-font">
                         <ul class="no-style-ul">
                             <li><fmt:message key="admin.room.capacity"/> ${applicationDto.application.personAmount}</li>
-                            <li><fmt:message key="admin.room.type"/> <fmt:message key="admin.room.type.${applicationDto.application.type}"/></li>
+                            <li><fmt:message key="admin.room.type"/> <fmt:message
+                                    key="admin.room.type.${applicationDto.application.type}"/></li>
                             <li><fmt:message key="booking.book.date.arrival"/>
-                                <ex:date-format date="${applicationDto.application.arrivalDate}" locale="${sessionScope.lang}"/>
+                                <ex:date-format date="${applicationDto.application.arrivalDate}"
+                                                locale="${sessionScope.lang}"/>
                             </li>
                             <li><fmt:message key="booking.book.date.leave"/>
-                                <ex:date-format date="${applicationDto.application.leavingDate}" locale="${sessionScope.lang}"/>
+                                <ex:date-format date="${applicationDto.application.leavingDate}"
+                                                locale="${sessionScope.lang}"/>
                             </li>
                         </ul>
                     </td>
@@ -66,7 +69,8 @@
             </c:forEach>
 
         </table>
-        <ex:pagination href="${pageContext.request.contextPath}/controller?command=admin_all_applications&page=" currentPage="${page}" lastPage="${lastPage}"/>
+        <ex:pagination href="${pageContext.request.contextPath}/controller?command=admin_all_applications&page="
+                       currentPage="${page}" lastPage="${lastPage}"/>
     </div>
 </div>
 

@@ -85,7 +85,7 @@ public class AllInOrderApplicationsCommandTest {
     }
 
     @Test(expectedExceptions = {ServiceException.class})//then
-    public void testExecuteShouldThrowServiceException () throws ServiceException {
+    public void testExecuteShouldThrowServiceException() throws ServiceException {
         //given
         when(applicationService.findInOrderApplicationsAmount()).thenThrow(ServiceException.class);
         AllInOrderApplicationsCommand command = new AllInOrderApplicationsCommand(applicationService, validator);

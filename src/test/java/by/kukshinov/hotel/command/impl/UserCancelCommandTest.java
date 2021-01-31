@@ -4,18 +4,19 @@ import by.kukshinov.hotel.context.RequestContext;
 import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.Application;
 import by.kukshinov.hotel.model.CommandResult;
+import by.kukshinov.hotel.model.enums.ApartmentType;
+import by.kukshinov.hotel.model.enums.ApplicationStatus;
 import by.kukshinov.hotel.service.api.ApplicationService;
 import org.mockito.Mockito;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import static org.testng.Assert.*;
 
 public class UserCancelCommandTest {
     private static final String PROFILE_HISTORY = "controller?command=profileHistory";
@@ -24,6 +25,9 @@ public class UserCancelCommandTest {
     private static final String APPLICATION_ID = "id";
     private ApplicationService service;
     private RequestContext context;
+
+
+    private static final Application ORDERED = new Application(1L, new Byte("4"), ApartmentType.SKY_WALKER, LocalDate.now(), LocalDate.now(), ApplicationStatus.IN_ORDER, null, null, 1L);
 
     @BeforeMethod
     public void setUpServiceAndContext() {
@@ -36,7 +40,7 @@ public class UserCancelCommandTest {
 
     @Test
     public void testExecuteShouldReturnRedirectToHistoryPageWhenDataIsValid() throws ServiceException {
-        when(service.findInOrderUserApplicationById(anyLong(), anyLong())).thenReturn(Optional.of(new Application()));
+        when(service.findInOrderUserApplicationById(anyLong(), anyLong())).thenReturn(ORDERED);
         UserCancelCommand command = new UserCancelCommand(service);
         CommandResult expected = CommandResult.redirect(PROFILE_HISTORY);
 
@@ -46,8 +50,8 @@ public class UserCancelCommandTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void testExecuteShouldThrowServiceExceptionWhenApplicationIsNotFound() throws ServiceException {
-        when(service.findInOrderUserApplicationById(anyLong(), anyLong())).thenReturn(Optional.empty());
+    public void testExecuteShouldThrowServiceExceptionWhenApplicationIsWrong() throws ServiceException {
+        when(service.findInOrderUserApplicationById(anyLong(), anyLong())).thenThrow(new ServiceException());
         UserCancelCommand command = new UserCancelCommand(service);
 
         command.execute(context);
