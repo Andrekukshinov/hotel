@@ -1,2 +1,8 @@
 # Project exclude paths
 /target/
+.gitignore
+.idea
+hotel.iml
+project.zip
+Вопросы на приеме проекта.v.2.1.pdf
+23.docx
