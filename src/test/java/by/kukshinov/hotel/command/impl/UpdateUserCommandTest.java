@@ -30,6 +30,7 @@ public class UpdateUserCommandTest {
     private static final String IS_DISABLED_VALUE = "false";
     private static final String ROLE_VALUE = "USER";
     private static final String SESSION_USER_ID = "user_id";
+    private static final long ONE_LONG = 1L;
 
     private UserService service;
     private RequestContext context;
@@ -41,7 +42,7 @@ public class UpdateUserCommandTest {
         Map<String, String> param = new HashMap<>();
         Map<String, Object> sessionAttributes = new HashMap<>();
 
-        sessionAttributes.put(SESSION_USER_ID, 1L);
+        sessionAttributes.put(SESSION_USER_ID, ONE_LONG);
 
         param.put(ID, ID_VALUE);
         param.put(LOGIN, LOGIN_VALUE);
@@ -58,7 +59,7 @@ public class UpdateUserCommandTest {
         doNothing().when(service).switchUserStatus(any());
         Command command = new UpdateUserCommand(service);
         CommandResult expected = CommandResult.redirect(ALL_USERS);
-        User value = new User(1L, "l", false, Role.ADMIN);
+        User value = new User(ONE_LONG, UpdateUserCommandTest.LOGIN_VALUE, false, Role.ADMIN);
         when(service.findCustomerById(anyLong())).thenReturn(value);
         //when
         CommandResult actual = command.execute(context);

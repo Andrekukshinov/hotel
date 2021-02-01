@@ -111,6 +111,4 @@ public abstract class AbstractDao<T extends Entity> implements Dao<T> {
             return Optional.empty();
         }
     }
-
-
 }

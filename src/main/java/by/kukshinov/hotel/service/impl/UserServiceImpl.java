@@ -24,10 +24,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByCredentials(String login, String pass) throws ServiceException {
+    public Optional<User> findByCredentials(String login, String password) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             UserDao userDao = daoHelper.createUserDao();
-            return userDao.findByCredentials(login, pass);
+            return userDao.findByCredentials(login, password);
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
@@ -36,16 +36,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findCustomerById(Long id) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
-            UserDao userDao = daoHelper.createUserDao();
-            Optional<User> optionalUser = userDao.findById(id);
-
-            User user = optionalUser.orElseThrow(() -> new ServiceException(WRONG_USER));
+            User user = getUser(id, daoHelper);
             Validation.validate(!Role.ADMIN.equals(user.getRole()), new ServiceException(WRONG_USER));
 
             return user;
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
+    }
+
+    private User getUser(Long id, DaoHelper daoHelper) throws DaoException, ServiceException {
+        UserDao userDao = daoHelper.createUserDao();
+        Optional<User> optionalUser = userDao.findById(id);
+
+        User user = optionalUser.orElseThrow(() -> new ServiceException(WRONG_USER));
+        return user;
     }
 
     @Override
@@ -59,9 +64,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void switchUserStatus(User user) throws ServiceException {
+    public void switchUserStatus(Long userId) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             UserDao dao = daoHelper.createUserDao();
+            User user = getUser(userId, daoHelper);
             boolean isDisabled = user.getIsDisabled();
             user.setIsDisabled(!isDisabled);
             dao.save(user);
@@ -71,7 +77,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int getUsersAmount() throws ServiceException {
+    public int getCustomersAmount() throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             UserDao dao = daoHelper.createUserDao();
             return dao.getAllUsersAmount();
@@ -81,7 +87,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getRangeUsers(int startFrom, int finishWith) throws ServiceException {
+    public List<User> getRangeCustomers(int startFrom, int finishWith) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             UserDao dao = daoHelper.createUserDao();
             return dao.findRangeUsers(startFrom, finishWith);

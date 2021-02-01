@@ -53,7 +53,6 @@
 
                 </ul>
             </div>
-            <%----%>
             <c:forEach var="room" items="${rooms}" varStatus="index">
                 <div class="item">
                     <div><fmt:message key="admin.room.capacity"/> ${room.capacity}</div>

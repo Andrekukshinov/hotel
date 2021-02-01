@@ -3,7 +3,6 @@ package by.kukshinov.hotel.command.impl;
 import by.kukshinov.hotel.command.Command;
 import by.kukshinov.hotel.context.RequestContext;
 import by.kukshinov.hotel.exceptions.ServiceException;
-import by.kukshinov.hotel.model.Application;
 import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.model.Room;
 import by.kukshinov.hotel.service.api.ApplicationService;
@@ -32,9 +31,8 @@ public class ApproveApplicationCommand implements Command {
         long roomId = Long.parseLong(roomIdString);
 
         Room room = roomService.findAvailableById(roomId);
-        Application application = applicationService.findInOrderApplicationById(applicationId);
 
-        applicationService.approveApplication(application, room);
+        applicationService.approveApplication(applicationId, room);
         return CommandResult.redirect(ALL_APPLICATIONS);
     }
 }

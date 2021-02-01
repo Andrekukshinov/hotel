@@ -19,7 +19,6 @@ public class PaginationTag extends TagSupport implements Tag {
     private static final int FIRST_PAGE = 1;
     private static final String DIV_PAGINATION_CHILDREN = "<div class=\"pagination-children\">";
     private static final String PAGES_SKIP = "...";
-    private static final int SECOND_PAGE = 2;
     private static final int THIRD_PAGE = 3;
 
     private String href;

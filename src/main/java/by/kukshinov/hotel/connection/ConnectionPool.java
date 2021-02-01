@@ -83,10 +83,10 @@ public class ConnectionPool {
 
     public void killConnections() {
         connectionsInUse.forEach(this::releaseConnection);
-        closeQueueConnections(availableConnections);
+        closeAllConnections(availableConnections);
     }
 
-    private void closeQueueConnections(Queue<ProxyConnection> availableConnections) {
+    private void closeAllConnections(Queue<ProxyConnection> availableConnections) {
         for (ProxyConnection connection : availableConnections) {
             try {
                 connection.killConnection();

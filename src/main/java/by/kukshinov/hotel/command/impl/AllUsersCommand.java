@@ -28,10 +28,10 @@ public class AllUsersCommand implements Command {
 
     @Override
     public CommandResult execute(RequestContext context) throws ServiceException {
-        int usersAmount = userService.getUsersAmount();
+        int usersAmount = userService.getCustomersAmount();
         String currentPage = context.getRequestParameter(PAGE);
         int pageInt = validator.getValidPage(currentPage, usersAmount, ITEMS_PER_PAGE);
-        List<User> users = userService.getRangeUsers((pageInt - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
+        List<User> users = userService.getRangeCustomers((pageInt - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
         int lastPage = validator.getLastPage(usersAmount, ITEMS_PER_PAGE);
         context.setRequestAttribute(LAST_PAGE, lastPage);
         context.setRequestAttribute(USERS, users);

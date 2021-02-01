@@ -12,13 +12,19 @@ import java.util.Map;
 public class RequestBuilderTest {
     private static final String SAVE_APPLICATION = "INSERT INTO Application (id, capacity, arrival_date) VALUES(?, ?, ?)";
     private static final String UPDATE_APPLICATION = "UPDATE Application SET capacity=?, arrival_date=? WHERE id=?";
+    private static final String ID = "id";
+    private static final String CAPACITY = "capacity";
+    private static final String ARRIVAL_DATE = "arrival_date";
+    private static final int ONE = 1;
+    private static final LocalDate NOW = LocalDate.now();
+    private static final String APPLICATION = "Application";
 
     @Test
     public void testBuildQueryShouldBuildSaveQuery() {
         Map<String, Object> fields = new LinkedHashMap<>();
-        fields.put("id", 1);
-        fields.put("capacity", 1);
-        fields.put("arrival_date", LocalDate.now());
+        fields.put(ID, ONE);
+        fields.put(CAPACITY, ONE);
+        fields.put(ARRIVAL_DATE, NOW);
         RequestBuilder requestBuilder = new RequestBuilder();
         Application app = new Application();
         app.setId(null);
@@ -32,14 +38,14 @@ public class RequestBuilderTest {
     @Test
     public void testBuildQueryShouldBuildUpdateQuery() {
         Map<String, Object> fields = new LinkedHashMap<>();
-        fields.put("capacity", 1);
-        fields.put("arrival_date", LocalDate.now());
-        fields.put("id", 17);
+        fields.put(CAPACITY, ONE);
+        fields.put(ARRIVAL_DATE, NOW);
+        fields.put(ID, 17);
         RequestBuilder requestBuilder = new RequestBuilder();
         Application app = new Application();
         app.setId(17L);
 
-        String query = requestBuilder.getUpdateQuery("Application", fields);
+        String query = requestBuilder.getUpdateQuery(APPLICATION, fields);
 
         Assert.assertEquals(query, UPDATE_APPLICATION);
 

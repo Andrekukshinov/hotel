@@ -29,7 +29,6 @@ public class AdminCheckBillCommandTest {
     private static final long ROOM_ID = 1L;
     private static final String CAPACITY_STRING = "1";
     private static final BigDecimal PRICE = new BigDecimal("505");
-    private static final String WRONG_APPLICATION = "Wrong application!";
 
     private static final Application FIRST_APPLICATION = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.BUSINESS, LocalDate.now(), LocalDate.now(), ApplicationStatus.APPROVED, PRICE, ROOM_ID, USER_ID);
     private static final Room AVAILABLE_ROOM = new Room(ROOM_ID, 303, ApartmentType.BUSINESS, new Byte(CAPACITY_STRING), true, PRICE);
@@ -82,15 +81,4 @@ public class AdminCheckBillCommandTest {
 
         command.execute(context);
     }
-//
-//    @Test(expectedExceptions = ServiceException.class, expectedExceptionsMessageRegExp = WRONG_APPLICATION)
-//    public void testExecuteShouldThrowServiceExceptionWhenUserNotFound() throws ServiceException {
-//        context.setRequestParameter(APPLICATION_ID, ID_VALUE);
-//        AdminCheckBillCommand command = new AdminCheckBillCommand(userService, applicationRoomService);
-//        ApplicationRoom expectedAppRoom = new ApplicationRoom(FIRST_APPLICATION, AVAILABLE_ROOM);
-//        when(applicationRoomService.findApplicationRoom(ID)).thenReturn(expectedAppRoom);
-//        when(userService.findCustomerById(USER_ID)).thenReturn(Optional.empty());
-//
-//        command.execute(context);
-//    }
 }

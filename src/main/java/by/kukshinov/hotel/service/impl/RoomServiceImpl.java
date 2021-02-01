@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class RoomServiceImpl implements RoomService {
-    private static final String TOO_LATE_TO_APPROVE = "Too late to approve";
     private static final String WRONG_ROOM = "Wrong room";
 
 
@@ -27,19 +26,24 @@ public class RoomServiceImpl implements RoomService {
 
 
     @Override
-    public void switchRoomActivity(Room room) throws ServiceException {
-        Boolean isAvailable = room.getIsAvailable();
-        room.setIsAvailable(!isAvailable);
-        saveAndUpdate(room);
+    public void switchRoomActivity(Long roomId) throws ServiceException {
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
+            Room room = findById(roomId, daoHelper);
+            Boolean isAvailable = room.getIsAvailable();
+            room.setIsAvailable(!isAvailable);
+            saveAndUpdate(room, daoHelper);
+        }
     }
 
     @Override
     public void saveRoom(Room room) throws ServiceException {
-        saveAndUpdate(room);
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
+            saveAndUpdate(room, daoHelper);
+        }
     }
 
-    private void saveAndUpdate(Room room) throws ServiceException {
-        try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
+    private void saveAndUpdate(Room room, DaoHelper daoHelper) throws ServiceException {
+        try {
             RoomDao roomDao = daoHelper.createRoomDao();
             roomDao.save(room);
         } catch (DaoException e) {
@@ -68,7 +72,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Integer getAvailableRoomAmount(LocalDate arrivalDate, LocalDate leavingDate) throws ServiceException {
+    public int getAvailableRoomAmount(LocalDate arrivalDate, LocalDate leavingDate) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             RoomDao roomDao = daoHelper.createRoomDao();
             return roomDao.getAvailableRoomAmountForPeriod(arrivalDate, leavingDate);
@@ -88,8 +92,26 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room findById(Long id) throws ServiceException {
+    public Room findAvailableById(Long id) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
+            Room room = findById(id, daoHelper);
+            Validation.validate(room.getIsAvailable(), new ServiceException(WRONG_ROOM));
+            return room;
+        }
+    }
+
+
+    @Override
+    public Room findDisabledById(Long id) throws ServiceException {
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
+            Room room = findById(id, daoHelper);
+            Validation.validate(!room.getIsAvailable(), new ServiceException(WRONG_ROOM));
+            return room;
+        }
+    }
+
+    private Room findById(Long id, DaoHelper daoHelper) throws ServiceException {
+        try {
             RoomDao roomDao = daoHelper.createRoomDao();
             Optional<Room> optionalRoom = roomDao.findById(id);
             return optionalRoom.orElseThrow(() -> new ServiceException(WRONG_ROOM));
@@ -98,33 +120,4 @@ public class RoomServiceImpl implements RoomService {
         }
     }
 
-    @Override
-    public Room findAvailableById(Long id) throws ServiceException {
-        try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
-            Room room = getRoomById(id, daoHelper);
-            Validation.validate(room.getIsAvailable(), new ServiceException(WRONG_ROOM));
-            return room;
-        } catch (DaoException e) {
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
-
-    @Override
-    public Room findDisabledById(Long id) throws ServiceException {
-        try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
-            Room room = getRoomById(id, daoHelper);
-            Validation.validate(!room.getIsAvailable(), new ServiceException(WRONG_ROOM));
-            return room;
-        } catch (DaoException e) {
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
-    private Room getRoomById(Long id, DaoHelper daoHelper) throws DaoException, ServiceException {
-        RoomDao roomDao = daoHelper.createRoomDao();
-        Optional<Room> roomOptional = roomDao.findById(id);
-
-        return roomOptional.orElseThrow(() -> new ServiceException(WRONG_ROOM));
-    }
 }

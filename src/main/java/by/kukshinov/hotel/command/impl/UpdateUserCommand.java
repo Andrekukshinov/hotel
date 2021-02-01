@@ -4,7 +4,6 @@ import by.kukshinov.hotel.command.Command;
 import by.kukshinov.hotel.context.RequestContext;
 import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.CommandResult;
-import by.kukshinov.hotel.model.User;
 import by.kukshinov.hotel.service.api.UserService;
 
 public class UpdateUserCommand implements Command {
@@ -23,8 +22,7 @@ public class UpdateUserCommand implements Command {
         String stringId = context.getRequestParameter(ID);
         long id = Long.parseLong(stringId);
 
-        User user = userService.findCustomerById(id);
-        userService.switchUserStatus(user);
+        userService.switchUserStatus(id);
 
         return CommandResult.redirect(ALL_USERS);
     }

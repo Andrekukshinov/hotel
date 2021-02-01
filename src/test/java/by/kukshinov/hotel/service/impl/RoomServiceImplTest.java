@@ -90,26 +90,15 @@ public class RoomServiceImplTest {
     }
 
     @Test
-    public void testFindByIdShouldReturnRoomWhenRoomIsFound() throws DaoException, ServiceException {
-        //given
-        RoomService userService = new RoomServiceImpl(helperFactory);
-        Optional<Room> expected = Optional.of(FIRST);
-        when(roomDao.findById(ROOM_ID)).thenReturn(expected);
-        //when
-        Room actual = userService.findById(ROOM_ID);
-        //then
-        Assert.assertEquals(actual, FIRST);
-    }
-
-    @Test
     public void testSwitchRoomActivityShouldUpdateRoomActivity() throws DaoException, ServiceException {
         //given
         RoomService userService = new RoomServiceImpl(helperFactory);
         Room start = new Room(ROOM_ID, 303, ApartmentType.BUSINESS, new Byte("4"), true, new BigDecimal("505"));
         Room expected = new Room(ROOM_ID, 303, ApartmentType.BUSINESS, new Byte("4"), false, new BigDecimal("505"));
         doNothing().when(roomDao).save(any());
+        when(roomDao.findById(anyLong())).thenReturn(Optional.of(start));
         //when
-        userService.switchRoomActivity(start);
+        userService.switchRoomActivity(ROOM_ID);
         //then
         Assert.assertEquals(start, expected);
     }
@@ -126,25 +115,14 @@ public class RoomServiceImplTest {
         Assert.assertEquals(actual, FIRST);
     }
 
-    @Test
-    public void testFindDisabledByIdShouldReturnRoomWhenValidRoomIsFound() throws DaoException, ServiceException {
-        //given
-        RoomService userService = new RoomServiceImpl(helperFactory);
-        Optional<Room> expected = Optional.of(FOURTH);
-        when(roomDao.findById(ROOM_ID)).thenReturn(expected);
-        //when
-        Room actual = userService.findDisabledById(ROOM_ID);
-        //then
-        Assert.assertEquals(actual, FOURTH);
-    }
-
     @Test(expectedExceptions = ServiceException.class)//then
     public void testFindByIdShouldThrowServiceExceptionWhenRoomIsNotFound() throws ServiceException, DaoException {
         //given
         RoomService userService = new RoomServiceImpl(helperFactory);
-        when(roomDao.findById(ROOM_ID)).thenReturn(Optional.empty());
+        doNothing().when(roomDao).save(any());
+        when(roomDao.findById(anyLong())).thenReturn(Optional.empty());
         //when
-        userService.findById(ROOM_ID);
+        userService.switchRoomActivity(ROOM_ID);
     }
 
     @Test(expectedExceptions = ServiceException.class)//then
@@ -201,5 +179,4 @@ public class RoomServiceImplTest {
 
         Assert.assertEquals(actual, ROOMS);
     }
-
 }

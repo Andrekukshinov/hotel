@@ -45,6 +45,7 @@ public class ApplicationServiceImplTest {
     private static final List<Application> ALL_APPLICATIONS = Arrays.asList(FIRST, SECOND, THIRD, FOURTH, FIFTH, SIXTH);
     private static final List<Application> APPROVED = Arrays.asList(FIRST, SECOND, THIRD, FOURTH);
     private static final List<Application> IN_ORDER_APPLICATIONS = Arrays.asList(SIXTH, FIFTH);
+    private static final long ANOTHER_USER_ID = 2L;
 
 
     private DaoHelperFactory helperFactory;
@@ -98,54 +99,6 @@ public class ApplicationServiceImplTest {
 
 
     @Test
-    public void testFindApprovedUserApplicationByIdShouldReturnUserApprovedApplication() throws ServiceException, DaoException {
-        //given
-        ApplicationService service = new ApplicationServiceImpl(helperFactory);
-        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(THIRD));
-
-        //when
-        Application actual = service.findApprovedUserApplicationById(ID, USER_ID);
-
-        //then
-        Assert.assertEquals(actual, THIRD);
-    }
-
-    @Test
-    public void testFindInOrderApplicationByIdShouldReturnInOrderApplication() throws ServiceException, DaoException {
-        //given
-        ApplicationService service = new ApplicationServiceImpl(helperFactory);
-        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(FIFTH));
-        //when
-        Application actual = service.findInOrderApplicationById(ID);
-        //then
-        Assert.assertEquals(actual, FIFTH);
-    }
-
-
-    @Test
-    public void testFindFutureArrivalInOrderApplicationByIdShouldReturnInOrderApplication() throws ServiceException, DaoException {
-        //given
-        ApplicationService service = new ApplicationServiceImpl(helperFactory);
-        Application expected = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.SKY_WALKER, LocalDate.now().plusDays(1), LocalDate.now().plusDays(1), ApplicationStatus.IN_ORDER, null, null, USER_ID);
-        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(expected));
-        //when
-        Application actual = service.findFutureArrivalInOrderApplicationById(ID);
-        //then
-        Assert.assertEquals(actual, expected);
-    }
-
-    @Test
-    public void testFindUserInOrderApplicationByIdShouldReturnInOrderApplication() throws ServiceException, DaoException {
-        //given
-        ApplicationService service = new ApplicationServiceImpl(helperFactory);
-        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(FIFTH));
-        //when
-        Application actual = service.findInOrderUserApplicationById(ID, USER_ID);
-        //then
-        Assert.assertEquals(actual, FIFTH);
-    }
-
-    @Test
     public void testFindInOrderApplicationsAmountShouldReturnInOrderApplicationsAmount() throws ServiceException, DaoException {
         //given
         ApplicationService service = new ApplicationServiceImpl(helperFactory);
@@ -193,6 +146,19 @@ public class ApplicationServiceImplTest {
         Assert.assertEquals(actual, expected);
     }
 
+
+    @Test
+    public void testFindFutureArrivalInOrderApplicationByIdShouldReturnInOrderApplication() throws ServiceException, DaoException {
+        //given
+        ApplicationService service = new ApplicationServiceImpl(helperFactory);
+        Application expected = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.SKY_WALKER, LocalDate.now().plusDays(1), LocalDate.now().plusDays(1), ApplicationStatus.IN_ORDER, null, null, USER_ID);
+        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(expected));
+        //when
+        Application actual = service.findFutureArrivalInOrderApplicationById(ID);
+        //then
+        Assert.assertEquals(actual, expected);
+    }
+
     @Test
     public void testAdminDenyOrderedApplicationShouldDenyOrderedApplication() throws ServiceException, DaoException {
         //given
@@ -200,21 +166,10 @@ public class ApplicationServiceImplTest {
         Application expected = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.LUX, LocalDate.now(), LocalDate.now(), ApplicationStatus.DENIED, null, null, USER_ID);
         ApplicationService service = new ApplicationServiceImpl(helperFactory);
         doNothing().when(applicationDao).save(any());
-        //when
-        service.adminDenyOrderedApplication(start);
-        //then
-        Assert.assertEquals(start, expected);
-    }
+        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(start));
 
-    @Test
-    public void testUserRejectApprovedApplicationShouldDenyApprovedApplication() throws ServiceException, DaoException {
-        //given
-        Application start = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.LUX, LocalDate.now().plusDays(1), LocalDate.now().plusDays(1), ApplicationStatus.APPROVED, PRICE, ROOM_ID, USER_ID);
-        Application expected = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.LUX, LocalDate.now().plusDays(1), LocalDate.now().plusDays(1), ApplicationStatus.USER_REJECTED, null, null, USER_ID);
-        ApplicationService service = new ApplicationServiceImpl(helperFactory);
-        doNothing().when(applicationDao).save(any());
         //when
-        service.userRejectApprovedApplication(start);
+        service.adminDenyOrderedApplication(ID);
         //then
         Assert.assertEquals(start, expected);
     }
@@ -227,12 +182,28 @@ public class ApplicationServiceImplTest {
         ApplicationService service = new ApplicationServiceImpl(helperFactory);
 
         doNothing().when(applicationDao).save(any());
+        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(start));
 
         //when
-        service.approveApplication(start, AVAILABLE_ROOM);
+        service.approveApplication(ID, AVAILABLE_ROOM);
         //then
         Assert.assertEquals(start, expected);
     }
+
+    @Test
+    public void testUserRejectApprovedApplicationShouldDenyApprovedApplication() throws ServiceException, DaoException {
+        //given
+        Application start = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.LUX, LocalDate.now().plusDays(1), LocalDate.now().plusDays(1), ApplicationStatus.APPROVED, PRICE, ROOM_ID, USER_ID);
+        Application expected = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.LUX, LocalDate.now().plusDays(1), LocalDate.now().plusDays(1), ApplicationStatus.USER_REJECTED, null, null, USER_ID);
+        ApplicationService service = new ApplicationServiceImpl(helperFactory);
+        doNothing().when(applicationDao).save(any());
+        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(start));
+        //when
+        service.userRejectApprovedApplication(ID, USER_ID);
+        //then
+        Assert.assertEquals(start, expected);
+    }
+
 
     @Test
     public void testUserCancelOrderedApplicationShouldCancelOrderedApplication() throws ServiceException, DaoException {
@@ -241,8 +212,9 @@ public class ApplicationServiceImplTest {
         Application expected = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.LUX, LocalDate.now(), LocalDate.now(), ApplicationStatus.CANCELLED, null, null, USER_ID);
         ApplicationService service = new ApplicationServiceImpl(helperFactory);
         doNothing().when(applicationDao).save(any());
+        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(start));
         //when
-        service.userCancelOrderedApplication(start);
+        service.userCancelOrderedApplication(ID, USER_ID);
         //then
         Assert.assertEquals(start, expected);
     }
@@ -256,64 +228,8 @@ public class ApplicationServiceImplTest {
         service.save(FIRST);
     }
 
-    @Test(expectedExceptions = ServiceException.class)
-    public void testFindApprovedUserApplicationByIdShouldThrowServiceExceptionWhenStatusIsNotApproved() throws ServiceException, DaoException {
-        //given
-        ApplicationService service = new ApplicationServiceImpl(helperFactory);
-        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(FIFTH));
-        //when
-        service.findApprovedUserApplicationById(ID, USER_ID);
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
-    public void testFindApprovedUserApplicationByIdShouldThrowServiceExceptionWhenApplicationIsNotOfThisUser() throws ServiceException, DaoException {
-        //given
-        ApplicationService service = new ApplicationServiceImpl(helperFactory);
-        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(DIFFERENT_USER_APP));
-        //when
-        service.findApprovedUserApplicationById(ID, USER_ID);
-    }
-
     @Test(expectedExceptions = ServiceException.class)//then
-    public void testFindUserInOrderApplicationByIdShouldThrowServiceExceptionWhenApplicationIsNotOfThisUser() throws ServiceException, DaoException {
-        //given
-        ApplicationService service = new ApplicationServiceImpl(helperFactory);
-        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(DIFFERENT_USER_APP));
-        //when
-       service.findInOrderUserApplicationById(ID, USER_ID);
-    }
-
-    @Test(expectedExceptions = ServiceException.class)//then
-    public void testFindUserInOrderApplicationByIdShouldThrowServiceExceptionWhenStatusIsNotInOrder() throws ServiceException, DaoException {
-        //given
-        ApplicationService service = new ApplicationServiceImpl(helperFactory);
-        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(FIRST));
-        //when
-       service.findInOrderUserApplicationById(ID, USER_ID);
-    }
-
-    @Test(expectedExceptions = ServiceException.class)//then
-    public void testFindInOrderApplicationByIdShouldReturnWhenStatusIsNotInOrder() throws ServiceException, DaoException {
-        //given
-        ApplicationService service = new ApplicationServiceImpl(helperFactory);
-        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(FIRST));
-        //when
-        service.findInOrderApplicationById(ID);
-
-    }
-
-    @Test(expectedExceptions = ServiceException.class)//then
-    public void testFindInOrderApplicationByIdShouldReturnWhenApplicationIsNotFound() throws ServiceException, DaoException {
-        //given
-        ApplicationService service = new ApplicationServiceImpl(helperFactory);
-        when(applicationDao.findById(anyLong())).thenReturn(Optional.empty());
-        //when
-        service.findInOrderApplicationById(ID);
-
-    }
-
-    @Test(expectedExceptions = ServiceException.class)//then
-    public void testFindFutureArrivalInOrderApplicationByIdShouldReturnWhenStatusIsNotInOrder() throws ServiceException, DaoException {
+    public void testFindFutureArrivalInOrderApplicationByIdShouldThrowServiceExceptionWhenStatusIsNotInOrder() throws ServiceException, DaoException {
         //given
         ApplicationService service = new ApplicationServiceImpl(helperFactory);
         when(applicationDao.findById(anyLong())).thenReturn(Optional.of(FIRST));
@@ -323,52 +239,47 @@ public class ApplicationServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)//then
-    public void testFindFutureArrivalInOrderApplicationByIdShouldReturnWhenApplicationIsNotFound() throws ServiceException, DaoException {
+    public void testAdminDenyOrderedApplicationShouldThrowServiceExceptionWhenStatusIsNotInOrder() throws ServiceException, DaoException {
         //given
-        ApplicationService service = new ApplicationServiceImpl(helperFactory);
-        when(applicationDao.findById(anyLong())).thenReturn(Optional.empty());
-        //when
-        service.findFutureArrivalInOrderApplicationById(ID);
-
-    }
-
-    @Test(expectedExceptions = ServiceException.class)//then
-    public void testFindFutureArrivalInOrderApplicationByIdShouldReturnWhenArrivalDateHasPassed() throws ServiceException, DaoException {
-        //given
-        ApplicationService service = new ApplicationServiceImpl(helperFactory);
-        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(FIFTH));
-        //when
-        service.findFutureArrivalInOrderApplicationById(ID);
-
-    }
-
-    @Test(expectedExceptions = ServiceException.class)//then
-    public void testFindUserInOrderApplicationByIdShouldThrowServiceExceptionWhenApplicationIsNotFound() throws ServiceException, DaoException {
-        //given
-        ApplicationService service = new ApplicationServiceImpl(helperFactory);
-        when(applicationDao.findById(anyLong())).thenReturn(Optional.empty());
-        //when
-        service.findInOrderUserApplicationById(ID, USER_ID);
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
-    public void testFindApprovedUserApplicationByIdShouldThrowServiceExceptionWhenApplicationIsNotFound() throws ServiceException, DaoException {
-        //given
-        ApplicationService service = new ApplicationServiceImpl(helperFactory);
-        when(applicationDao.findById(anyLong())).thenReturn(Optional.empty());
-        //when
-        service.findApprovedUserApplicationById(ID, USER_ID);
-    }
-
-    @Test(expectedExceptions = ServiceException.class)//then
-    public void testApproveApplicationShouldThrowServiceExceptionWhenLeavingDateIsBeforeArrivalDate() throws ServiceException, DaoException {
-        //given
-        Application start = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.LUX, LocalDate.now().plusDays(1), LocalDate.now().minusDays(1), ApplicationStatus.IN_ORDER, null, null, USER_ID);
+        Application start = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.LUX, LocalDate.now(), LocalDate.now(), ApplicationStatus.CANCELLED, null, null, USER_ID);
         ApplicationService service = new ApplicationServiceImpl(helperFactory);
         doNothing().when(applicationDao).save(any());
+        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(start));
 
         //when
-        service.approveApplication(start, AVAILABLE_ROOM);
+        service.adminDenyOrderedApplication(ID);
+    }
+
+    @Test(expectedExceptions = ServiceException.class)//then
+    public void testAdminDenyOrderedApplicationShouldThrowServiceExceptionWhenApplicationIsNotFound() throws ServiceException, DaoException {
+        //given
+        ApplicationService service = new ApplicationServiceImpl(helperFactory);
+        doNothing().when(applicationDao).save(any());
+        when(applicationDao.findById(anyLong())).thenReturn(Optional.empty());
+
+        //when
+        service.adminDenyOrderedApplication(ID);
+    }
+
+
+
+    @Test(expectedExceptions = ServiceException.class)//then
+    public void testFindFutureArrivalInOrderApplicationByIdShouldThrowServiceExceptionWhenApplicationIsNotFound() throws ServiceException, DaoException {
+        //given
+        ApplicationService service = new ApplicationServiceImpl(helperFactory);
+        when(applicationDao.findById(anyLong())).thenReturn(Optional.empty());
+        //when
+        service.findFutureArrivalInOrderApplicationById(ID);
+
+    }
+
+    @Test(expectedExceptions = ServiceException.class)//then
+    public void testFindFutureArrivalInOrderApplicationByIdShouldThrowServiceExceptionWhenArrivalDateHasPassed() throws ServiceException, DaoException {
+        //given
+        ApplicationService service = new ApplicationServiceImpl(helperFactory);
+        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(FIFTH));
+        //when
+        service.findFutureArrivalInOrderApplicationById(ID);
 
     }
 
@@ -377,10 +288,36 @@ public class ApplicationServiceImplTest {
         //given
         Application start = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.LUX, LocalDate.now().minusDays(1), LocalDate.now().plusDays(1), ApplicationStatus.IN_ORDER, null, null, USER_ID);
         ApplicationService service = new ApplicationServiceImpl(helperFactory);
+        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(start));
         doNothing().when(applicationDao).save(any());
 
         //when
-        service.approveApplication(start, AVAILABLE_ROOM);
+        service.approveApplication(ID, AVAILABLE_ROOM);
+
+    }
+
+    @Test(expectedExceptions = ServiceException.class)//then
+    public void testApproveApplicationShouldThrowServiceExceptionWhenApplicationIsNotInOrder() throws ServiceException, DaoException {
+        //given
+        Application start = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.LUX, LocalDate.now().minusDays(1), LocalDate.now().plusDays(1), ApplicationStatus.APPROVED, null, null, USER_ID);
+        ApplicationService service = new ApplicationServiceImpl(helperFactory);
+        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(start));
+        doNothing().when(applicationDao).save(any());
+
+        //when
+        service.approveApplication(ID, AVAILABLE_ROOM);
+
+    }
+
+    @Test(expectedExceptions = ServiceException.class)//then
+    public void testApproveApplicationShouldThrowServiceExceptionWhenApplicationIsNotFound() throws ServiceException, DaoException {
+        //given
+        ApplicationService service = new ApplicationServiceImpl(helperFactory);
+        doNothing().when(applicationDao).save(any());
+        when(applicationDao.findById(anyLong())).thenReturn(Optional.empty());
+
+        //when
+        service.approveApplication(ID, AVAILABLE_ROOM);
 
     }
 
@@ -390,48 +327,62 @@ public class ApplicationServiceImplTest {
         Application start = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.LUX, LocalDate.now(), LocalDate.now().plusDays(1), ApplicationStatus.APPROVED, PRICE, ROOM_ID, USER_ID);
         ApplicationService service = new ApplicationServiceImpl(helperFactory);
         doNothing().when(applicationDao).save(any());
+        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(start));
         //when
-        service.userRejectApprovedApplication(start);
+        service.userRejectApprovedApplication(ID, USER_ID);
 
+    }
+
+
+    @Test(expectedExceptions = ServiceException.class)//then
+    public void testUserCancelOrderedApplicationShouldThrowServiceExceptionWhenApplicationIsNotFound() throws ServiceException, DaoException {
+        //given
+        ApplicationService service = new ApplicationServiceImpl(helperFactory);
+        doNothing().when(applicationDao).save(any());
+        when(applicationDao.findById(anyLong())).thenReturn(Optional.empty());
+        //when
+        service.userCancelOrderedApplication(ID, USER_ID);
     }
 
     @Test(expectedExceptions = ServiceException.class)//then
-    public void testApproveApplicationShouldThrowServiceExceptionWhenArrivalDateIsBeforeToday() throws ServiceException, DaoException {
+    public void testUserCancelOrderedApplicationShouldThrowServiceExceptionWhenApplicationIsNotInOrder() throws ServiceException, DaoException {
         //given
-        Application start = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.LUX, LocalDate.now(), LocalDate.now(), ApplicationStatus.IN_ORDER, null, null, USER_ID);
         ApplicationService service = new ApplicationServiceImpl(helperFactory);
-
+        Application start = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.LUX, LocalDate.now(), LocalDate.now().plusDays(1), ApplicationStatus.APPROVED, PRICE, ROOM_ID, USER_ID);
         doNothing().when(applicationDao).save(any());
-
+        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(start));
         //when
-        service.approveApplication(start, AVAILABLE_ROOM);
-        //then
+        service.userCancelOrderedApplication(ID, USER_ID);
+    }
 
+    @Test(expectedExceptions = ServiceException.class)
+    public void testUserRejectApprovedApplicationShouldThrowServiceExceptionWhenApplicationIsNotFound() throws ServiceException, DaoException {
+        //given
+        ApplicationService service = new ApplicationServiceImpl(helperFactory);
+        when(applicationDao.findById(anyLong())).thenReturn(Optional.empty());
+        //when
+        service.userRejectApprovedApplication(ID, USER_ID);
     }
 
     @Test(expectedExceptions = ServiceException.class)//then
-    public void testUserRejectApprovedApplicationShouldThrowServiceExceptionWhenLeavingDateIsBeforeArrival() throws ServiceException, DaoException {
+    public void testUserRejectApprovedApplicationShouldThrowServiceExceptionWhenStateIsNotApproved() throws ServiceException, DaoException {
         //given
-        Application start = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.LUX, LocalDate.now().plusDays(2), LocalDate.now().plusDays(1), ApplicationStatus.APPROVED, PRICE, ROOM_ID, USER_ID);
+        Application start = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.LUX, LocalDate.now().plusDays(2), LocalDate.now().plusDays(1), ApplicationStatus.IN_ORDER, PRICE, ROOM_ID, USER_ID);
         ApplicationService service = new ApplicationServiceImpl(helperFactory);
         doNothing().when(applicationDao).save(any());
+        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(start));
         //when
-        service.userRejectApprovedApplication(start);
-
+        service.userRejectApprovedApplication(ID, USER_ID);
     }
 
     @Test(expectedExceptions = ServiceException.class)//then
-    public void testApproveApplicationShouldThrowServiceExceptionWhenLeavingDateIsBeforeArrival() throws ServiceException, DaoException {
+    public void testUserRejectApprovedApplicationShouldThrowServiceExceptionWhenApplicationIsNotUserApplication() throws ServiceException, DaoException {
         //given
-        Application start = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.LUX, LocalDate.now().plusDays(2), LocalDate.now(), ApplicationStatus.IN_ORDER, null, null, USER_ID);
+        Application start = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.LUX, LocalDate.now().plusDays(2), LocalDate.now().plusDays(1), ApplicationStatus.IN_ORDER, PRICE, ROOM_ID, USER_ID);
         ApplicationService service = new ApplicationServiceImpl(helperFactory);
-
         doNothing().when(applicationDao).save(any());
-
+        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(start));
         //when
-        service.approveApplication(start, AVAILABLE_ROOM);
-        //then
-
+        service.userRejectApprovedApplication(ID, ANOTHER_USER_ID);
     }
-
 }

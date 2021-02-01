@@ -55,7 +55,7 @@ public class AllUsersCommandTest {
     @Test(expectedExceptions = {ServiceException.class})//then
     public void testExecuteShouldThrowServiceException() throws ServiceException {
         //given
-        when(service.getRangeUsers(anyInt(), anyInt())).thenThrow(ServiceException.class);
+        when(service.getRangeCustomers(anyInt(), anyInt())).thenThrow(ServiceException.class);
         PageHelper pageValidator = Mockito.mock(PageHelper.class);
         Command command = new AllUsersCommand(service, pageValidator);
         //when
@@ -66,7 +66,7 @@ public class AllUsersCommandTest {
     public void testExecuteShouldReturnForwardToAllUsersAndSetUsersToContext() throws ServiceException {
         //given
         List<User> expectedUsers = Collections.singletonList(USER);
-        when(service.getRangeUsers(anyInt(), anyInt())).thenReturn(expectedUsers);
+        when(service.getRangeCustomers(anyInt(), anyInt())).thenReturn(expectedUsers);
         Command command = new AllUsersCommand(service, pageValidator);
         CommandResult expected = CommandResult.forward(ALL_USERS);
         //when

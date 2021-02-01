@@ -68,7 +68,8 @@ public class CommandFactory {
             case ADMIN_APPROVE_APPLICATION:
                 return new ApproveApplicationCommand(
                         new ApplicationServiceImpl(new DaoHelperFactory()),
-                        new RoomServiceImpl(new DaoHelperFactory()));
+                        new RoomServiceImpl(new DaoHelperFactory())
+                );
             case BOOKING:
                 return new ForwardCommand(BOOKING_PAGE);
             case BOOK_ROOM:

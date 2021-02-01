@@ -29,16 +29,16 @@ public class SaveUpdatedRoomCommand implements Command {
 
     @Override
     public CommandResult execute(RequestContext context) throws ServiceException {
-        String capacityString = context.getRequestParameter(CAPACITY);
         String stringId = context.getRequestParameter(ID);
+        String capacityString = context.getRequestParameter(CAPACITY);
         String priceString = context.getRequestParameter(PRICE);
         String apartmentTypeString = context.getRequestParameter(ROOM_TYPE);
 
         ApartmentType apartmentType = ApartmentType.valueOf(apartmentTypeString);
         BigDecimal price = new BigDecimal(priceString);
+        long id = Long.parseLong(stringId);
         byte capacity = Byte.parseByte(capacityString);
 
-        long id = Long.parseLong(stringId);
         Room room = roomService.findDisabledById(id);
 
         room.setRoomType(apartmentType);

@@ -95,7 +95,6 @@ public class AllApplicationsCommandTest {
         //given
         when(applicationService.findAllApplicationsAmount()).thenThrow(ServiceException.class);
         AllApplicationsCommand command = new AllApplicationsCommand(applicationService, applicationUsernameService, validator);
-
         //when
         command.execute(context);
     }

@@ -53,7 +53,6 @@ public class ApproveApplicationCommandTest {
     public void testExecuteShouldReturnRedirectToAllApplicationsCmdWhenDataIsValidAndArrivalDateFromFuture() throws ServiceException {
         context.setRequestParameter(APPLICATION_ID, ONE);
         context.setRequestParameter(ROOM_ID_NAME, ONE);
-        when(applicationService.findInOrderApplicationById(anyLong())).thenReturn(APPROVED);
         when(roomService.findAvailableById(anyLong())).thenReturn(AVAILABLE_ROOM);
         ApproveApplicationCommand approveApplicationCommand = new ApproveApplicationCommand(applicationService, roomService);
         String url = "/hotel/controller?command=admin_active_applications";
@@ -65,22 +64,9 @@ public class ApproveApplicationCommandTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void testExecuteShouldThrowServiceExceptionWhenApplicationIsWrong() throws ServiceException {
-        context.setRequestParameter(APPLICATION_ID, ONE);
-        context.setRequestParameter(ROOM_ID_NAME, ONE);
-        when(applicationService.findInOrderApplicationById(anyLong())).thenThrow(new ServiceException());
-        when(roomService.findAvailableById(anyLong())).thenReturn(AVAILABLE_ROOM);
-        ApproveApplicationCommand approveApplicationCommand = new ApproveApplicationCommand(applicationService, roomService);
-
-        approveApplicationCommand.execute(context);
-
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
     public void testExecuteShouldThrowServiceExceptionWhenRoomIsWrong() throws ServiceException {
         context.setRequestParameter(APPLICATION_ID, ONE);
         context.setRequestParameter(ROOM_ID_NAME, ONE);
-        when(applicationService.findInOrderApplicationById(anyLong())).thenReturn(APPROVED);
         when(roomService.findAvailableById(anyLong())).thenThrow(new ServiceException());
         ApproveApplicationCommand approveApplicationCommand = new ApproveApplicationCommand(applicationService, roomService);
 

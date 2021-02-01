@@ -4,7 +4,6 @@ import by.kukshinov.hotel.command.Command;
 import by.kukshinov.hotel.context.RequestContext;
 import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.CommandResult;
-import by.kukshinov.hotel.model.Room;
 import by.kukshinov.hotel.service.api.RoomService;
 
 public class ChangeRoomActivityCommand implements Command {
@@ -23,9 +22,8 @@ public class ChangeRoomActivityCommand implements Command {
         String stringId = context.getRequestParameter(ID);
 
         long id = Long.parseLong(stringId);
-        Room room = roomService.findById(id);
 
-        roomService.switchRoomActivity(room);
+        roomService.switchRoomActivity(id);
 
         return CommandResult.redirect(ALL_ROOMS);
     }

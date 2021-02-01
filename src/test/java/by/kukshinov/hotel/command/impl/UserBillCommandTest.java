@@ -60,14 +60,4 @@ public class UserBillCommandTest {
         Assert.assertEquals(actualAppDto, APPLICATION_ROOM);
         Assert.assertTrue(actuallyIsRejecetable);
     }
-//
-//    @Test(expectedExceptions = ServiceException.class)
-//    public void testExecuteShouldTrowServiceExceptionWhenUserIdDiffersFromSessionUserId() throws ServiceException {
-//        context.setRequestParameter(APPLICATION_ID, Long.toString(ONE));
-//        context.setSessionAttribute(USER_ID, WRONG_ID);
-//        when(applicationRoomService.findUserBillByApplicationId(any(), any())).thenReturn(APPLICATION_ROOM);
-//        UserBillCommand command = new UserBillCommand(applicationRoomService);
-//
-//        command.execute(context);
-//    }
 }

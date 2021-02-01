@@ -3,7 +3,6 @@ package by.kukshinov.hotel.command.impl;
 import by.kukshinov.hotel.command.Command;
 import by.kukshinov.hotel.context.RequestContext;
 import by.kukshinov.hotel.exceptions.ServiceException;
-import by.kukshinov.hotel.model.Application;
 import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.service.api.ApplicationService;
 
@@ -25,9 +24,8 @@ public class UserRejectCommand implements Command {
         String applicationIdString = context.getRequestParameter(APPLICATION_ID);
 
         long applicationId = Long.parseLong(applicationIdString);
-        Application application = service.findApprovedUserApplicationById(applicationId, userId);
 
-        service.userRejectApprovedApplication(application);
+        service.userRejectApprovedApplication(applicationId, userId);
         return CommandResult.redirect(PROFILE_HISTORY);
     }
 }

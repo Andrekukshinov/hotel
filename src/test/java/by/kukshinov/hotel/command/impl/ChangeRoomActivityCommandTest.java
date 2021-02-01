@@ -3,8 +3,6 @@ package by.kukshinov.hotel.command.impl;
 import by.kukshinov.hotel.context.RequestContext;
 import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.CommandResult;
-import by.kukshinov.hotel.model.Room;
-import by.kukshinov.hotel.model.enums.ApartmentType;
 import by.kukshinov.hotel.service.api.RoomService;
 import org.mockito.Mockito;
 import org.testng.Assert;
@@ -13,9 +11,6 @@ import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
-
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
 
 public class ChangeRoomActivityCommandTest {
     private static final String ID = "id";
@@ -41,8 +36,6 @@ public class ChangeRoomActivityCommandTest {
     public void testExecuteShouldUpdateRoomAndReturnRedirectToAllPages() throws ServiceException {
         context.setRequestParameter(ID, ONE);
         context.setRequestParameter(IS_AVAILABLE, FALSE);
-        Room expectedRoom = new Room(ROOM_ID, 303, ApartmentType.BUSINESS, new Byte(CAPACITY_STRING), false, PRICE);
-        when(roomService.findById(anyLong())).thenReturn(expectedRoom);
         String url = "/hotel/controller?command=admin_rooms";
         CommandResult expectedResult = CommandResult.redirect(url);
         ChangeRoomActivityCommand command = new ChangeRoomActivityCommand(roomService);

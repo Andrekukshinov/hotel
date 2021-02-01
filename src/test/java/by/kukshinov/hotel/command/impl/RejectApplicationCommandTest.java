@@ -17,7 +17,8 @@ import java.time.LocalDate;
 import java.util.HashMap;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 
 public class RejectApplicationCommandTest {
     private static final String APPLICATIONS = "/hotel/controller?command=admin_active_applications";
@@ -41,7 +42,6 @@ public class RejectApplicationCommandTest {
     @Test
     public void testExecuteShouldReturnRedirectToActiveApplicationsWhenAppIsFound() throws ServiceException {
         RejectApplicationCommand command = new RejectApplicationCommand(service);
-        when(service.findInOrderApplicationById(any())).thenReturn(IN_ORDER);
         doNothing().when(service).adminDenyOrderedApplication(any());
         CommandResult expected = CommandResult.redirect(APPLICATIONS);
 
@@ -51,19 +51,8 @@ public class RejectApplicationCommandTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void testExecuteThrowServiceExceptionWhenAppIsWrong() throws ServiceException {
-        RejectApplicationCommand command = new RejectApplicationCommand(service);
-        when(service.findInOrderApplicationById(any())).thenThrow(new ServiceException());
-        doNothing().when(service).adminDenyOrderedApplication(any());
-
-
-        command.execute(context);
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
     public void testExecuteThrowServiceExceptionWhenDenyError() throws ServiceException {
         RejectApplicationCommand command = new RejectApplicationCommand(service);
-        when(service.findInOrderApplicationById(any())).thenThrow(new ServiceException());
         doThrow(ServiceException.class).when(service).adminDenyOrderedApplication(any());
 
 

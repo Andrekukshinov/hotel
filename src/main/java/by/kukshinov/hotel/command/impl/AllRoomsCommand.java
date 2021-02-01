@@ -16,6 +16,7 @@ public class AllRoomsCommand implements Command {
     private static final String ROOMS = "rooms";
     private static final String ALL_ROOMS = "WEB-INF/view/allRooms.jsp";
     private static final String LAST_PAGE = "lastPage";
+
     private final RoomService service;
     private final PageHelper validator;
 

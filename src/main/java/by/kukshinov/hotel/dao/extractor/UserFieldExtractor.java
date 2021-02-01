@@ -27,14 +27,4 @@ public class UserFieldExtractor implements FieldsExtractor<User> {
 
         return result;
     }
-
-//    private int parseBooleanToInt(boolean isDisabled) {
-//        int falseInt;
-//        if (isDisabled) {
-//            falseInt = 0;
-//        } else {
-//            falseInt = 1;
-//        }
-//        return falseInt;
-//    }
 }

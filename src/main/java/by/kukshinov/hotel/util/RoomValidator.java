@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 
 public class RoomValidator {
     private static final int MAX_NUMBER_VALUE = 2_000_000;
+    private static final int MAX_CAPACITY = 5;
 
     public boolean validateRoom(Room room) {
         if (BigDecimal.ONE.compareTo(room.getPrice()) > 0) {
@@ -16,7 +17,7 @@ public class RoomValidator {
             return false;
         }
         byte capacity = room.getCapacity();
-        if (capacity <= 0 || capacity > 5) {
+        if (capacity <= 0 || capacity > MAX_CAPACITY) {
             return false;
         }
         return true;

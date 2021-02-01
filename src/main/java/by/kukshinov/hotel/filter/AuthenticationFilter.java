@@ -16,7 +16,7 @@ public class AuthenticationFilter implements Filter {
     private static final String COMMAND_LOGOUT = "/hotel/controller?command=logout";
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
 
     }
 

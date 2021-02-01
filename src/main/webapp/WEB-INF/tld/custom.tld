@@ -6,7 +6,7 @@
     <tag>
         <name>money-format</name>
         <tag-class>by.kukshinov.hotel.tag.CurrencyTag</tag-class>
-        <body-content>scriptless</body-content>
+        <body-content>empty</body-content>
         <attribute>
             <name>money</name>
             <required>true</required>
@@ -17,7 +17,7 @@
     <tag>
         <name>date-format</name>
         <tag-class>by.kukshinov.hotel.tag.DateFormatTag</tag-class>
-        <body-content>scriptless</body-content>
+        <body-content>empty</body-content>
         <attribute>
             <name>date</name>
             <type>java.time.LocalDate</type>
@@ -35,7 +35,7 @@
     <tag>
         <name>pagination</name>
         <tag-class>by.kukshinov.hotel.tag.PaginationTag</tag-class>
-        <body-content>scriptless</body-content>
+        <body-content>empty</body-content>
         <attribute>
             <name>href</name>
             <required>true</required>
