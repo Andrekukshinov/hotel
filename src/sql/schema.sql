@@ -15,6 +15,8 @@ CREATE TABLE IF NOT EXISTS User
     FOREIGN KEY (role_id) REFERENCES Role (id)
 );
 
+CREATE INDEX authIndex on User(login, password);
+
 CREATE TABLE IF NOT EXISTS Room
 (
     id             BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
