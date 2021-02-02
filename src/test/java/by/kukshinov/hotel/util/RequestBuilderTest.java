@@ -1,4 +1,4 @@
-package by.kukshinov.hotel.builder;
+package by.kukshinov.hotel.util;
 
 
 import by.kukshinov.hotel.model.Application;

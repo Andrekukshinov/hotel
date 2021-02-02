@@ -9,8 +9,7 @@ import by.kukshinov.hotel.service.api.UserService;
 public class UpdateUserCommand implements Command {
     private static final String ID = "userId";
     private static final String ALL_USERS = "/hotel/controller?command=admin_users";
-    private static final String WRONG_USER = "Wrong user";
-    private static final String USER_ID = "user_id";
+
     private final UserService userService;
 
     public UpdateUserCommand(UserService userService) {

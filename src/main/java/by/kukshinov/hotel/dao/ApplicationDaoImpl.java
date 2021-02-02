@@ -1,11 +1,11 @@
 package by.kukshinov.hotel.dao;
 
-import by.kukshinov.hotel.builder.RequestBuilder;
 import by.kukshinov.hotel.dao.api.ApplicationDao;
 import by.kukshinov.hotel.dao.extractor.ApplicationFieldsExtractor;
 import by.kukshinov.hotel.dao.mapper.ApplicationObjectMapper;
 import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.model.Application;
+import by.kukshinov.hotel.util.RequestBuilder;
 
 import java.sql.Connection;
 import java.util.List;
@@ -33,12 +33,12 @@ public class ApplicationDaoImpl extends AbstractDao<Application> implements Appl
     }
 
     @Override
-    public int findUserApplicationsAmount(long userId) throws DaoException {
+    public int findUserApplicationsAmount(Long userId) throws DaoException {
         return getAmountEntities(USER_APPS_AMOUNT_CONDITION, userId);
     }
 
     @Override
-    public int findUserBillsAmount(long userId) throws DaoException {
+    public int findUserBillsAmount(Long userId) throws DaoException {
         return getAmountEntities(USER_BILLS_AMOUNT_CONDITION, userId);
     }
 

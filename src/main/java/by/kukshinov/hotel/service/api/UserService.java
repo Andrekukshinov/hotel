@@ -6,13 +6,13 @@ import by.kukshinov.hotel.model.User;
 import java.util.List;
 import java.util.Optional;
 /**
- * Interface for serving user entities from different data sources
+ * Interface for serving user entities according to the business logics of application
  */
 public interface UserService {
     /**
-     * This is the method for getting a part of users whose status is not admin from the data source
+     * This is the method for getting a part of users whose status is not admin
      * @param startFrom index to start looking for
-     * @param finishWith index of the last app to be found (or the last from data source)
+     * @param finishWith index of the last app to be found
      * @return List users (without admins)
      * @throws ServiceException when business logics errors occur
      */

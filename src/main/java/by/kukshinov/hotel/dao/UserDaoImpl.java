@@ -1,11 +1,11 @@
 package by.kukshinov.hotel.dao;
 
-import by.kukshinov.hotel.builder.RequestBuilder;
 import by.kukshinov.hotel.dao.api.UserDao;
 import by.kukshinov.hotel.dao.extractor.UserFieldExtractor;
 import by.kukshinov.hotel.dao.mapper.UserObjectMapper;
 import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.model.User;
+import by.kukshinov.hotel.util.RequestBuilder;
 
 import java.sql.Connection;
 import java.util.List;
@@ -47,8 +47,8 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
     }
 
     @Override
-    public Optional<User> findByCredentials(String login, String pass) throws DaoException {
-        return executeForSingleItem(GET_USER_BY_CREDENTIALS, login, pass);
+    public Optional<User> findByCredentials(String login, String password) throws DaoException {
+        return executeForSingleItem(GET_USER_BY_CREDENTIALS, login, password);
     }
 
     @Override

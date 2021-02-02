@@ -43,7 +43,7 @@ public class AvailableRoomsCommand implements Command {
         LocalDate arrivalDate = application.getArrivalDate();
         LocalDate leavingDate = application.getLeavingDate();
 
-        Integer availableRooms = roomService.getAvailableRoomAmount(arrivalDate, leavingDate);
+        int availableRooms = roomService.getAvailableRoomAmount(arrivalDate, leavingDate);
         Integer pageInt = validator.getValidPage(currentPage, availableRooms, ITEMS_PER_PAGE);
 
         List<Room> rooms = roomService.findRangeAvailableRooms(arrivalDate, leavingDate, (pageInt - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);

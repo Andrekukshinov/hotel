@@ -3,6 +3,7 @@ package by.kukshinov.hotel.service.impl;
 import by.kukshinov.hotel.dao.DaoHelper;
 import by.kukshinov.hotel.dao.DaoHelperFactory;
 import by.kukshinov.hotel.dao.api.ApplicationDao;
+import by.kukshinov.hotel.dao.api.RoomDao;
 import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.Application;
@@ -172,21 +173,30 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public void approveApplication(Long applicationId, Room room) throws ServiceException {
+    public void approveApplication(Long applicationId, Long roomId) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
-            Validation.validate(room.getIsAvailable(), new ServiceException(WRONG_ROOM));
+            Room room = getRoom(roomId, daoHelper);
 
             Application application = getApplicationById(applicationId, daoHelper);
             isDateValid(application.getArrivalDate(), application.getLeavingDate());
             isInOrder(application.getStatus());
 
             BigDecimal totalPrice = getTotalPrice(application, room);
-            Long roomId = room.getId();
             application.setRoomId(roomId);
             application.setTotalPrice(totalPrice);
 
             updateApplicationStatus(application, ApplicationStatus.APPROVED, daoHelper);
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
         }
+    }
+
+    private Room getRoom(Long roomId, DaoHelper daoHelper) throws DaoException, ServiceException {
+        RoomDao roomDao = daoHelper.createRoomDao();
+        Optional<Room> optionalRoom = roomDao.findById(roomId);
+        Room room = optionalRoom.orElseThrow(() -> new ServiceException(WRONG_ROOM));
+        Validation.validate(room.getIsAvailable(), new ServiceException(WRONG_ROOM));
+        return room;
     }
 
     @Override

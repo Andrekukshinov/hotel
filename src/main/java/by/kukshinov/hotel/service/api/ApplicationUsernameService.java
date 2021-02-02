@@ -6,7 +6,7 @@ import by.kukshinov.hotel.model.ApplicationUsernameDto;
 import java.util.List;
 
 /**
- * Interface for serving applicationUsernameService (DTO) objects from different data sources
+ * Interface for serving applicationUsernameService (DTO) objects  according to the business logics of application
  */
 public interface ApplicationUsernameService {
     /**

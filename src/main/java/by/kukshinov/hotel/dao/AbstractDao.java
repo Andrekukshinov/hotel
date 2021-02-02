@@ -1,11 +1,11 @@
 package by.kukshinov.hotel.dao;
 
-import by.kukshinov.hotel.builder.RequestBuilder;
 import by.kukshinov.hotel.dao.api.Dao;
 import by.kukshinov.hotel.dao.extractor.FieldsExtractor;
 import by.kukshinov.hotel.dao.mapper.ObjectMapper;
 import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.model.Entity;
+import by.kukshinov.hotel.util.RequestBuilder;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

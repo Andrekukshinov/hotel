@@ -33,20 +33,20 @@
                     <c:when test="${isRejectable || role =='ADMIN'}">
                         <div>
                             <fmt:message key="admin.room.capacity"/>
-                                ${application.room.capacity}
+                                ${application.capacity}
                         </div>
                         <div>
                             <fmt:message key="admin.room.Number"/>
-                                ${application.room.number}
+                                ${application.number}
                         </div>
                         <div>
                             <fmt:message key="admin.room.type"/>
-                            <fmt:message key="admin.room.type.${application.room.roomType}"/>
+                            <fmt:message key="admin.room.type.${application.roomType}"/>
                         </div>
                     </c:when>
                     <c:otherwise>
                         <div>
-                            <fmt:message key="history.user.past.application"/> ${application.room.number}
+                            <fmt:message key="history.user.past.application"/> ${application.number}
                         </div>
                     </c:otherwise>
                 </c:choose>
@@ -58,26 +58,26 @@
                     <c:if test="${role =='ADMIN'}">
                         <li><fmt:message key="admin.user.login"/> ${login}</li>
                         <li><fmt:message key="admin.room.status"/> <fmt:message
-                                key="admin.user.application.status.${application.application.status}"/></li>
+                                key="admin.user.application.status.${application.applicationStatus}"/></li>
                     </c:if>
-                    <li><fmt:message key="admin.room.capacity"/> ${application.application.personAmount}</li>
+                    <li><fmt:message key="admin.room.capacity"/> ${application.personAmount}</li>
                     <li><fmt:message key="admin.room.type"/> <fmt:message
-                            key="admin.room.type.${application.application.type}"/></li>
+                            key="admin.room.type.${application.type}"/></li>
                     <li><fmt:message key="booking.book.date.arrival"/>
-                        <ex:date-format date="${application.application.arrivalDate}" locale="${sessionScope.lang}"/>
+                        <ex:date-format date="${application.arrivalDate}" locale="${sessionScope.lang}"/>
                     </li>
                     <li><fmt:message key="booking.book.date.leave"/>
-                        <ex:date-format date="${application.application.leavingDate}" locale="${sessionScope.lang}"/>
+                        <ex:date-format date="${application.leavingDate}" locale="${sessionScope.lang}"/>
                     </li>
                 </ul>
-                <fmt:message key="bill.total.price"/><ex:money-format money="${application.application.totalPrice}"/>
+                <fmt:message key="bill.total.price"/><ex:money-format money="${application.totalPrice}"/>
             </div>
             <c:if test="${role !='ADMIN' && isRejectable}">
                 <div class="history-item-button bill-application-font">
                     <form class="admin-users-form  margin-bill-form" method="post"
                           action="${pageContext.request.contextPath}/controller?command=user_reject_application">
-                        <input type="hidden" value="${application.application.id}" name="applicationId">
-                        <input type="hidden" value="${application.room.id}" name="roomId">
+                        <input type="hidden" value="${application.applicationId}" name="applicationId">
+                        <input type="hidden" value="${application.roomId}" name="roomId">
                         <button type="submit" class="history-button"><fmt:message key="bill.deny"/></button>
                     </form>
                 </div>

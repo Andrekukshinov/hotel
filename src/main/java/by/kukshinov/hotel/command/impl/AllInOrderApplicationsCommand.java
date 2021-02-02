@@ -34,7 +34,8 @@ public class AllInOrderApplicationsCommand implements Command {
         int orderedApplicationsAmount = applicationService.findInOrderApplicationsAmount();
         String currentPage = context.getRequestParameter(PAGE);
         int pageInt = validator.getValidPage(currentPage, orderedApplicationsAmount, ITEMS_PER_PAGE);
-        List<Application> applications = applicationService.findRangeOrderedEntities((pageInt - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
+        int startFrom = (pageInt - 1) * ITEMS_PER_PAGE;
+        List<Application> applications = applicationService.findRangeOrderedEntities(startFrom, ITEMS_PER_PAGE);
         int lastPage = validator.getLastPage(orderedApplicationsAmount, ITEMS_PER_PAGE);
         LocalDate now = LocalDate.now();
 

@@ -3,7 +3,6 @@ package by.kukshinov.hotel.command.impl;
 import by.kukshinov.hotel.command.Command;
 import by.kukshinov.hotel.context.RequestContext;
 import by.kukshinov.hotel.exceptions.ServiceException;
-import by.kukshinov.hotel.model.Application;
 import by.kukshinov.hotel.model.ApplicationRoom;
 import by.kukshinov.hotel.model.CommandResult;
 import by.kukshinov.hotel.service.api.ApplicationRoomService;
@@ -13,7 +12,6 @@ import java.time.LocalDate;
 public class UserBillCommand implements Command {
     private static final String APPLICATION = "application";
     private static final String USER_ID = "user_id";
-    private static final String FORBIDDEN = "FORBIDDEN";
     private static final String BILL = "WEB-INF/view/userBill.jsp";
     private static final String APPLICATION_ID = "id";
     private static final String IS_REJECTABLE = "isRejectable";
@@ -32,9 +30,8 @@ public class UserBillCommand implements Command {
         long applicationId = Long.parseLong(applicationIdString);
         ApplicationRoom applicationDTO = applicationRoomService.findUserBillByApplicationId(applicationId, userAuthId);
 
-        Application application = applicationDTO.getApplication();
 
-        LocalDate arrivalDate = application.getArrivalDate();
+        LocalDate arrivalDate = applicationDTO.getArrivalDate();
         LocalDate now = LocalDate.now();
         boolean isBeforeArrival = now.isBefore(arrivalDate);
 

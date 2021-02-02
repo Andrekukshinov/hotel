@@ -1,11 +1,11 @@
 package by.kukshinov.hotel.dao;
 
-import by.kukshinov.hotel.builder.RequestBuilder;
 import by.kukshinov.hotel.dao.api.RoomDao;
 import by.kukshinov.hotel.dao.extractor.RoomFieldsExtractor;
 import by.kukshinov.hotel.dao.mapper.RoomObjectMapper;
 import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.model.Room;
+import by.kukshinov.hotel.util.RequestBuilder;
 
 import java.sql.Connection;
 import java.time.LocalDate;

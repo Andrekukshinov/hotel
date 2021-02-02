@@ -1,8 +1,11 @@
-package by.kukshinov.hotel.builder;
+package by.kukshinov.hotel.util;
 
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Utility class for building save and update query (MySql)
+ */
 public class RequestBuilder {
 
     private static final String INSERT_INTO = "INSERT INTO ";
@@ -18,6 +21,12 @@ public class RequestBuilder {
     private static final String EQUALS_QUESTION = "=?";
 
 
+    /**
+     * Method that builds save query based on table name and object parameters received
+     * @param tableName map where key is a name of the table for updating, and value is an actual value to be saved
+     * @param fields fields of the database
+     * @return save query
+     */
     public String getSaveQuery(String tableName, Map<String, Object> fields) {
         Set<String> fieldNames = fields.keySet();
         StringBuilder query = new StringBuilder(INSERT_INTO);
@@ -46,6 +55,12 @@ public class RequestBuilder {
         return counter;
     }
 
+    /**
+     * Method that builds update query based on table name and object parameters received
+     * @param tableName map where key is a name of the table for updating, and value is an actual value to be updated by
+     * @param fields fields of the database
+     * @return updating query
+     */
     public String getUpdateQuery(String tableName, Map<String, Object> fields) {
         Set<String> fieldNames = fields.keySet();
         StringBuilder query = new StringBuilder(UPDATE);

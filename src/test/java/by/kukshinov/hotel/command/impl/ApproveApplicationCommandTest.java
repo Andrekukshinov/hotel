@@ -19,7 +19,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doThrow;
 
 public class ApproveApplicationCommandTest {
     private static final String APPLICATION_ID = "applicationId";
@@ -53,8 +53,7 @@ public class ApproveApplicationCommandTest {
     public void testExecuteShouldReturnRedirectToAllApplicationsCmdWhenDataIsValidAndArrivalDateFromFuture() throws ServiceException {
         context.setRequestParameter(APPLICATION_ID, ONE);
         context.setRequestParameter(ROOM_ID_NAME, ONE);
-        when(roomService.findAvailableById(anyLong())).thenReturn(AVAILABLE_ROOM);
-        ApproveApplicationCommand approveApplicationCommand = new ApproveApplicationCommand(applicationService, roomService);
+        ApproveApplicationCommand approveApplicationCommand = new ApproveApplicationCommand(applicationService);
         String url = "/hotel/controller?command=admin_active_applications";
         CommandResult expectedResult = CommandResult.redirect(url);
 
@@ -64,11 +63,11 @@ public class ApproveApplicationCommandTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void testExecuteShouldThrowServiceExceptionWhenRoomIsWrong() throws ServiceException {
+    public void testExecuteShouldThrowServiceExceptionWhenServiceThrowsException() throws ServiceException {
         context.setRequestParameter(APPLICATION_ID, ONE);
         context.setRequestParameter(ROOM_ID_NAME, ONE);
-        when(roomService.findAvailableById(anyLong())).thenThrow(new ServiceException());
-        ApproveApplicationCommand approveApplicationCommand = new ApproveApplicationCommand(applicationService, roomService);
+        doThrow(new ServiceException()).when(applicationService).approveApplication(anyLong(), anyLong());
+        ApproveApplicationCommand approveApplicationCommand = new ApproveApplicationCommand(applicationService);
 
         approveApplicationCommand.execute(context);
 

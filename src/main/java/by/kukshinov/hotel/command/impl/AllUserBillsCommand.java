@@ -35,7 +35,8 @@ public class AllUserBillsCommand implements Command {
         int userApplicationsAmount = applicationService.findUserBillsAmount(userId);
         String currentPage = context.getRequestParameter(PAGE);
         int page = validator.getValidPage(currentPage, userApplicationsAmount, ITEMS_PER_PAGE);
-        List<Application> allUserBills = applicationService.findRangeUserBills(userId, (page - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE);
+        int startFrom = (page - 1) * ITEMS_PER_PAGE;
+        List<Application> allUserBills = applicationService.findRangeUserBills(userId, startFrom, ITEMS_PER_PAGE);
         int lastPage = validator.getLastPage(userApplicationsAmount, ITEMS_PER_PAGE);
         context.setRequestAttribute(LAST_PAGE, lastPage);
         context.setRequestAttribute(APPLICATIONS, allUserBills);

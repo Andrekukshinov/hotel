@@ -3,6 +3,7 @@ package by.kukshinov.hotel.service.impl;
 import by.kukshinov.hotel.dao.DaoHelper;
 import by.kukshinov.hotel.dao.DaoHelperFactory;
 import by.kukshinov.hotel.dao.api.ApplicationDao;
+import by.kukshinov.hotel.dao.api.RoomDao;
 import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.exceptions.ServiceException;
 import by.kukshinov.hotel.model.Application;
@@ -31,6 +32,8 @@ public class ApplicationServiceImplTest {
     private static final long ROOM_ID = 1L;
     private static final String CAPACITY_STRING = "1";
     private static final BigDecimal PRICE = new BigDecimal("505");
+    private static final String WRONG_ROOM = "wrong room!";
+
 
     private static final Room AVAILABLE_ROOM = new Room(ROOM_ID, 303, ApartmentType.BUSINESS, new Byte(CAPACITY_STRING), true, PRICE);
 
@@ -40,7 +43,6 @@ public class ApplicationServiceImplTest {
     private static final Application FOURTH = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.LUX, LocalDate.now(), LocalDate.now(), ApplicationStatus.APPROVED, PRICE, ROOM_ID, USER_ID);
     private static final Application FIFTH = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.SKY_WALKER, LocalDate.now(), LocalDate.now(), ApplicationStatus.IN_ORDER, null, null, USER_ID);
     private static final Application SIXTH = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.SKY_WALKER, LocalDate.now(), LocalDate.now(), ApplicationStatus.IN_ORDER, null, null, USER_ID);
-    private static final Application DIFFERENT_USER_APP = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.SKY_WALKER, LocalDate.now(), LocalDate.now(), ApplicationStatus.IN_ORDER, null, null, 15L);
 
     private static final List<Application> ALL_APPLICATIONS = Arrays.asList(FIRST, SECOND, THIRD, FOURTH, FIFTH, SIXTH);
     private static final List<Application> APPROVED = Arrays.asList(FIRST, SECOND, THIRD, FOURTH);
@@ -50,6 +52,7 @@ public class ApplicationServiceImplTest {
 
     private DaoHelperFactory helperFactory;
     private ApplicationDao applicationDao;
+    private RoomDao roomDao;
     private DaoHelper daoHelper;
 
 
@@ -58,8 +61,10 @@ public class ApplicationServiceImplTest {
         helperFactory = Mockito.mock(DaoHelperFactory.class);
         daoHelper = Mockito.mock(DaoHelper.class);
         applicationDao = Mockito.mock(ApplicationDao.class);
+        roomDao = Mockito.mock(RoomDao.class);
 
         when(daoHelper.createApplicationDao()).thenReturn(applicationDao);
+        when(daoHelper.createRoomDao()).thenReturn(roomDao);
         when(helperFactory.createDaoHelper()).thenReturn(daoHelper);
     }
 
@@ -183,9 +188,10 @@ public class ApplicationServiceImplTest {
 
         doNothing().when(applicationDao).save(any());
         when(applicationDao.findById(anyLong())).thenReturn(Optional.of(start));
+        when(roomDao.findById(anyLong())).thenReturn(Optional.of(AVAILABLE_ROOM));
 
         //when
-        service.approveApplication(ID, AVAILABLE_ROOM);
+        service.approveApplication(ID, ROOM_ID);
         //then
         Assert.assertEquals(start, expected);
     }
@@ -290,9 +296,40 @@ public class ApplicationServiceImplTest {
         ApplicationService service = new ApplicationServiceImpl(helperFactory);
         when(applicationDao.findById(anyLong())).thenReturn(Optional.of(start));
         doNothing().when(applicationDao).save(any());
+        when(roomDao.findById(anyLong())).thenReturn(Optional.of(AVAILABLE_ROOM));
 
         //when
-        service.approveApplication(ID, AVAILABLE_ROOM);
+        service.approveApplication(ID, ROOM_ID);
+
+    }
+
+    @Test(expectedExceptions = ServiceException.class, expectedExceptionsMessageRegExp = WRONG_ROOM)//then
+    public void testApproveApplicationShouldThrowServiceExceptionWhenRoomIsNotFound() throws ServiceException, DaoException {
+        //given
+        Application start = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.LUX, LocalDate.now().plusDays(1), LocalDate.now().plusDays(1), ApplicationStatus.IN_ORDER, null, null, USER_ID);
+        ApplicationService service = new ApplicationServiceImpl(helperFactory);
+        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(start));
+        doNothing().when(applicationDao).save(any());
+        when(roomDao.findById(anyLong())).thenReturn(Optional.empty());
+
+        //when
+        service.approveApplication(ID, ROOM_ID);
+
+    }
+
+    @Test(expectedExceptions = ServiceException.class, expectedExceptionsMessageRegExp = WRONG_ROOM)//then
+    public void testApproveApplicationShouldThrowServiceExceptionWhenRoomIsNotAvailable() throws ServiceException, DaoException {
+        //given
+        Application start = new Application(ID, new Byte(CAPACITY_STRING), ApartmentType.LUX, LocalDate.now().plusDays(1), LocalDate.now().plusDays(1), ApplicationStatus.IN_ORDER, null, null, USER_ID);
+        Room wrongRoom = new Room(ROOM_ID, 303, ApartmentType.BUSINESS, new Byte(CAPACITY_STRING), false, PRICE);
+
+        ApplicationService service = new ApplicationServiceImpl(helperFactory);
+        when(applicationDao.findById(anyLong())).thenReturn(Optional.of(start));
+        doNothing().when(applicationDao).save(any());
+        when(roomDao.findById(anyLong())).thenReturn(Optional.of(wrongRoom));
+
+        //when
+        service.approveApplication(ID, ROOM_ID);
 
     }
 
@@ -303,9 +340,10 @@ public class ApplicationServiceImplTest {
         ApplicationService service = new ApplicationServiceImpl(helperFactory);
         when(applicationDao.findById(anyLong())).thenReturn(Optional.of(start));
         doNothing().when(applicationDao).save(any());
+        when(roomDao.findById(anyLong())).thenReturn(Optional.of(AVAILABLE_ROOM));
 
         //when
-        service.approveApplication(ID, AVAILABLE_ROOM);
+        service.approveApplication(ID, ROOM_ID);
 
     }
 
@@ -315,9 +353,10 @@ public class ApplicationServiceImplTest {
         ApplicationService service = new ApplicationServiceImpl(helperFactory);
         doNothing().when(applicationDao).save(any());
         when(applicationDao.findById(anyLong())).thenReturn(Optional.empty());
+        when(roomDao.findById(anyLong())).thenReturn(Optional.of(AVAILABLE_ROOM));
 
         //when
-        service.approveApplication(ID, AVAILABLE_ROOM);
+        service.approveApplication(ID, ROOM_ID);
 
     }
 

@@ -5,12 +5,12 @@ import by.kukshinov.hotel.model.ApplicationRoom;
 
 
 /**
- * Interface for serving applicationRoom (DTO) objects from different data sources
+ * Interface for serving applicationRoom (DTO) objects according to the business logics of application
  */
 public interface ApplicationRoomService {
 
     /**
-     * Method for returning applicationRoom DTO object from data source
+     * Method for getting applicationRoom DTO object
      * @param applicationId to look for the applicationRoom object by applicationId
      * @return ApplicationRoom dto object
      * @throws ServiceException when business logics errors occur
@@ -18,7 +18,7 @@ public interface ApplicationRoomService {
     ApplicationRoom findByApplicationId(Long applicationId) throws ServiceException;
 
     /**
-     * Method for returning applicationRoom DTO object of specified user from data source
+     * Method for getting applicationRoom DTO object of specified user
      * @param applicationId to look for the applicationRoom object
      * @param UserId for checking if found applicationRoom belongs to user
      * @return applicationRoom object of the user

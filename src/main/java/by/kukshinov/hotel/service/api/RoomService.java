@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * Interface for serving room entities from different data sources
+ * Interface for serving room entities according to the business logics of application
  */
 public interface RoomService {
 
@@ -28,7 +28,7 @@ public interface RoomService {
     int getRoomAmount() throws ServiceException;
 
     /**
-     * Method for getting a part of rooms from the data source
+     * Method for getting a part of rooms
      * @param startFrom index to start looking for with
      * @param finishWith index of the last room to be found
      * @return List of rooms
@@ -37,7 +37,7 @@ public interface RoomService {
     List<Room> findRangeEntities(int startFrom, int finishWith) throws ServiceException;
 
     /**
-     * Method for getting a part of available rooms for the certain period of time from the data source
+     * Method for getting a part of available rooms for the certain period of time
      * @param arrivalDate date when room must be available from (inclusive)
      * @param leavingDate date when room must be available until (inclusive)
      * @param startFrom index to start looking for with
@@ -64,7 +64,7 @@ public interface RoomService {
     Room findDisabledById(Long id) throws ServiceException;
 
     /**
-     * Method for saving room entity to the specified data source
+     * Method for saving room entity
      * @param room to be saved
      * @throws ServiceException when business logics errors occur
      */

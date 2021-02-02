@@ -20,6 +20,7 @@ public class LoginCommand implements Command {
     private static final String ROLE = "role";
     private static final String USER_ID = "user_id";
     private static final String DISABLED_PAGE = "WEB-INF/errors/disabled.jsp";
+
     private final UserService userService;
 
     public LoginCommand(UserService loginService) {

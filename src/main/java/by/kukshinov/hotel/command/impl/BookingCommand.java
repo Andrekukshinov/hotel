@@ -25,14 +25,11 @@ public class BookingCommand implements Command {
     private static final String WRONG_LEAVING_DATE = "Wrong leaving date!";
     private static final String WRONG_CAPACITY = "Wrong capacity!";
 
-
     private final ApplicationService service;
-
 
     public BookingCommand(ApplicationService service) {
         this.service = service;
     }
-
 
     @Override
     public CommandResult execute(RequestContext context) throws ServiceException {
