@@ -7,7 +7,7 @@
     <ul class="topnav">
         <li><img class="logo" src="${pageContext.request.contextPath}/static/imgs/logo.bmp" width="46" height="40"
                  alt=""></li>
-        <li class="center"><a href="#">HOTEL BOOKIN'.OV</a></li>
+        <li class="center"><a>HOTEL BOOKIN'.OV</a></li>
         <c:choose>
             <c:when test="${sessionScope.login != null}">
                 <li class="right">
