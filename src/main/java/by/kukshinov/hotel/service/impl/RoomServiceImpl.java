@@ -29,6 +29,7 @@ public class RoomServiceImpl implements RoomService {
     public void switchRoomActivity(Long roomId) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             Room room = findById(roomId, daoHelper);
+            Validation.validate(!room.getIsAvailable(), new ServiceException(WRONG_ROOM));
             Boolean isAvailable = room.getIsAvailable();
             room.setIsAvailable(!isAvailable);
             saveAndUpdate(room, daoHelper);

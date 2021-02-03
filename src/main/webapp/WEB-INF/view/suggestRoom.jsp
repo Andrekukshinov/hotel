@@ -66,7 +66,6 @@
                           class="margin-top"
                           action="${pageContext.request.contextPath}/controller?command=admin_approve_application">
                         <input type="hidden" value="${application.id}" name="applicationId">
-                        <input type="hidden" value="APPROVED" name="applicationStatus">
                         <input type="hidden" value="${room.id}" name="roomId">
                         <button type="submit" ${(now < application.arrivalDate)? "":"disabled"}
                                 class="edit-description users-submit">

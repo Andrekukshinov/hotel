@@ -40,7 +40,7 @@ public interface UserService {
      * @param user to be updated
      * @throws ServiceException when business logics errors occur
      */
-    void updateUser(User user) throws ServiceException;
+    void updateCustomer(User user) throws ServiceException;
 
     /**
      * Method for changing user status on opposite one

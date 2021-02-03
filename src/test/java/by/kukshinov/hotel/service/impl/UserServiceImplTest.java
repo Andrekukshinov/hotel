@@ -128,7 +128,7 @@ public class UserServiceImplTest {
         UserService userService = new UserServiceImpl(helperFactory);
         doThrow(new DaoException(EMPTY)).when(dao).save(any());
         //when
-        userService.updateUser(FIFTH);
+        userService.updateCustomer(FIFTH);
     }
 
     @Test(expectedExceptions = ServiceException.class)//then

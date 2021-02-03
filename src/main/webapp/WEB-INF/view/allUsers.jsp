@@ -45,12 +45,10 @@
                             <form method="post"
                                   action="${pageContext.request.contextPath}/controller?command=admin_update_user"
                                   class="admin-users-form">
-                                <input type="hidden" value="${user.login}" name="login">
                                 <input type="hidden" value="${user.id}" name="userId">
-                                <input type="hidden" value="${user.role}" name="role">
-                                <input type="hidden" value="${user.isDisabled}" name="isDisabled">
-                                <button class="small-font" type="submit"><fmt:message
-                                        key="admin.user.status.${user.isDisabled}"/></button>
+                                <button class="small-font" type="submit">
+                                    <fmt:message key="admin.user.status.${user.isDisabled}"/>
+                                </button>
                             </form>
                         </td>
                     </tr>

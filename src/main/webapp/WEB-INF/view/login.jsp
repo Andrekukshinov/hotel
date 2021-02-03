@@ -23,6 +23,7 @@
                placeholder="<fmt:message key="input.name"/>">
         <p class="error-message space"><fmt:message key="error.login.with.spaces"/></p>
         <label class="login-label" for="pass"><fmt:message key="pass"/></label>
+<%--    max symbols & server    todo--%>
         <input required class="login-text" type="password" id="pass" name="password"
                placeholder="<fmt:message key="input.pass"/>">
         <p class="error-message space"><fmt:message key="error.password.with.spaces"/></p>

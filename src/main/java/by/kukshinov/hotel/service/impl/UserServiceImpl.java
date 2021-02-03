@@ -54,9 +54,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(User user) throws ServiceException {
+    public void updateCustomer(User user) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             UserDao dao = daoHelper.createUserDao();
+            Validation.validate(!Role.ADMIN.equals(user.getRole()), new ServiceException(WRONG_USER));
             dao.save(user);
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
@@ -68,6 +69,7 @@ public class UserServiceImpl implements UserService {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             UserDao dao = daoHelper.createUserDao();
             User user = getUser(userId, daoHelper);
+            Validation.validate(!Role.ADMIN.equals(user.getRole()), new ServiceException(WRONG_USER));
             boolean isDisabled = user.getIsDisabled();
             user.setIsDisabled(!isDisabled);
             dao.save(user);
