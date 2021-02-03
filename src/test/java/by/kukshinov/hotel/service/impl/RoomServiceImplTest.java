@@ -129,6 +129,29 @@ public class RoomServiceImplTest {
         Assert.assertEquals(actual, FIRST);
     }
 
+    @Test
+    public void testRoomNumberIsPresentShouldReturnTrueWhenRoomIsFound() throws DaoException, ServiceException {
+        //given
+        RoomService userService = new RoomServiceImpl(helperFactory);
+        Optional<Room> expected = Optional.of(FIRST);
+        when(roomDao.findByRoomNumber(NUMBER)).thenReturn(expected);
+        //when
+        boolean actual = userService.roomNumberIsPresent(NUMBER);
+        //then
+        Assert.assertTrue(actual);
+    }
+
+    @Test
+    public void testRoomNumberIsPresentShouldReturnFalseWhenRoomIsNotFound() throws DaoException, ServiceException {
+        //given
+        RoomService userService = new RoomServiceImpl(helperFactory);
+        when(roomDao.findByRoomNumber(NUMBER)).thenReturn(Optional.empty());
+        //when
+        boolean actual = userService.roomNumberIsPresent(NUMBER);
+        //then
+        Assert.assertFalse(actual);
+    }
+
     @Test(expectedExceptions = ServiceException.class)//then
     public void testFindByIdShouldThrowServiceExceptionWhenRoomIsNotFound() throws ServiceException, DaoException {
         //given

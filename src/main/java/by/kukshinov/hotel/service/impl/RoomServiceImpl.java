@@ -64,6 +64,17 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public boolean roomNumberIsPresent(int number) throws ServiceException {
+        try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
+            RoomDao dao = daoHelper.createRoomDao();
+            Optional<Room> roomNumber = dao.findByRoomNumber(number);
+            return roomNumber.isPresent();
+        } catch (DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
     public int getRoomAmount() throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             RoomDao roomDao = daoHelper.createRoomDao();

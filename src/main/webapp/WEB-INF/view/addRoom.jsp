@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="locale"/>
@@ -64,6 +65,10 @@
         <label class="input-booking" for="number"><fmt:message key="admin.room.create.room"/>
             <input maxlength="7" required class="room-number room" type="number" id="number" name="number">
         </label>
+        <p class="error-message space"><fmt:message key="error.number"/></p>
+        <c:if test="${error != null}">
+            <p class="error space">${number} <fmt:message key="error.number.exists"/></p>
+        </c:if>
         <p class="error-message space"><fmt:message key="error.number"/></p>
         <div>
             <br>

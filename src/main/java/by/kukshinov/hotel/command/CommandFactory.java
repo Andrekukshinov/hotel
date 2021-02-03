@@ -76,7 +76,7 @@ public class CommandFactory {
             case ADMIN_CHANGE_ROOM_ACTIVITY:
                 return new ChangeRoomActivityCommand(new RoomServiceImpl(new DaoHelperFactory()));
             case ADMIN_CREATE_ROOM:
-                return new ForwardCommand(ADD_ROOM_PAGE);
+                return new AddRoomPageCommand();
             case ADMIN_SAVE_UPDATED_ROOM:
                 return new SaveUpdatedRoomCommand(new RoomValidator(), new RoomServiceImpl(new DaoHelperFactory()));
             case ADMIN_UPDATE_USER:

@@ -18,13 +18,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 public class AddRoomCommandTest {
+    private static final String NUMBER_VALUE = "1";
+    private static final String ADD_ROOM_PAGE_COMMAND = "/hotel/controller?command=admin_create_room&error=number_is_present&number=" + NUMBER_VALUE;
     private static final String INVALID_ROOM = "invalid room!";
     private static final String URL = "/hotel/controller?command=admin_rooms&page=1";
     private static final String ROOM_CAPACITY = "capacity";
     private static final String APARTMENT_TYPE = "apartment-type";
     private static final String ROOM_NUMBER = "number";
     private static final String PRICE = "price";
-    private static final String NUMBER_VALUE = "1";
     private static final String NEGATIVE_VALUE = "-1";
     private static final String LUX = "LUX";
     private static final String UNKNOWN = "no";
@@ -41,9 +42,8 @@ public class AddRoomCommandTest {
         validator = mock(RoomValidator.class);
     }
 
-
     @Test
-    public void testExecuteReturnRedirectToAllRooms() throws ServiceException {
+    public void testExecuteReturnRedirectToAllRoomsWhenDataIsValid() throws ServiceException {
         //given
         Map<String, String> param = new HashMap<>();
         param.put(ROOM_NUMBER, NUMBER_VALUE);
@@ -52,6 +52,7 @@ public class AddRoomCommandTest {
         param.put(PRICE, PRICE_VALUE);
         context = new RequestContext(param, new HashMap<>(), null);
         CommandResult expected = CommandResult.redirect(URL);
+        when(service.roomNumberIsPresent(anyInt())).thenReturn(false);
         doNothing().when(service).saveRoom(any());
         when(validator.validateRoom(any())).thenReturn(true);
         AddRoomCommand command = new AddRoomCommand(service, validator);
@@ -60,6 +61,26 @@ public class AddRoomCommandTest {
         //then
         Assert.assertEquals(actual, expected);
         verify(service, times(1)).saveRoom(any());
+    }
+
+    @Test
+    public void testExecuteReturnRedirectAddRoomPageCommandIfRoomExists() throws ServiceException {
+        //given
+        Map<String, String> param = new HashMap<>();
+        param.put(ROOM_NUMBER, NUMBER_VALUE);
+        param.put(ROOM_CAPACITY, NUMBER_VALUE);
+        param.put(APARTMENT_TYPE, LUX);
+        param.put(PRICE, PRICE_VALUE);
+        context = new RequestContext(param, new HashMap<>(), null);
+        CommandResult expected = CommandResult.redirect(ADD_ROOM_PAGE_COMMAND);
+        doNothing().when(service).saveRoom(any());
+        when(service.roomNumberIsPresent(anyInt())).thenReturn(true);
+        when(validator.validateRoom(any())).thenReturn(true);
+        AddRoomCommand command = new AddRoomCommand(service, validator);
+        //when
+        CommandResult actual = command.execute(context);
+        //then
+        Assert.assertEquals(actual, expected);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)

@@ -78,4 +78,12 @@ public interface RoomService {
      */
     void switchRoomActivity(Long roomId, boolean isAvailable) throws ServiceException;
 
+
+    /**
+     * This is the method for checking if room with such number exists
+     * @param number to look for room with
+     * @return true if exists otherwise false
+     * @throws ServiceException when business logics error occur
+     */
+    boolean roomNumberIsPresent(int number) throws ServiceException;
 }

@@ -70,6 +70,8 @@ public abstract class AbstractDao<T extends Entity> implements Dao<T> {
         executeForSave(query, values);
     }
 
+
+
     @Override
     public Optional<T> findById(Long id) throws DaoException {
         String getById = GET_ENTITIES + tableName + ID_CONDITION;

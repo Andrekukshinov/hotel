@@ -5,6 +5,7 @@ import by.kukshinov.hotel.model.Room;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *  Interface for managing room entities with different data sources
@@ -50,4 +51,12 @@ public interface RoomDao extends Dao<Room> {
      * @throws DaoException in case of errors
      */
     int getAvailableRoomAmountForPeriod(LocalDate arrivalDate, LocalDate leavingDate) throws DaoException;
+
+    /**
+     * Method for getting room by its number
+     * @param number to look room for with
+     * @return Optioonal of room
+     * @throws DaoException in case of errors
+     */
+    Optional<Room> findByRoomNumber(int number) throws DaoException;
 }

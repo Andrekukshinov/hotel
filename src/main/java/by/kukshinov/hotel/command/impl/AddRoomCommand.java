@@ -18,6 +18,8 @@ public class AddRoomCommand implements Command {
     private static final String NUMBER = "number";
     private static final String PRICE = "price";
     private static final String INVALID_ROOM = "invalid room!";
+    private static final String ADD_ROOM_PAGE_COMMAND = "/hotel/controller?command=admin_create_room&error=number_is_present&number=";
+    private static final String URL_PATTERN = "%s%s";
 
     private final RoomService roomService;
     private final RoomValidator validator;
@@ -44,8 +46,12 @@ public class AddRoomCommand implements Command {
         if (!validator.validateRoom(room)) {
             throw new ServiceException(INVALID_ROOM);
         }
+
+        if (roomService.roomNumberIsPresent(number)) {
+            return CommandResult.redirect(String.format(URL_PATTERN, ADD_ROOM_PAGE_COMMAND, number));
+        }
+
         roomService.saveRoom(room);
         return CommandResult.redirect(ALL_ROOMS_PAGE);
     }
 }
-
