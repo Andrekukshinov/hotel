@@ -46,6 +46,7 @@
                                   action="${pageContext.request.contextPath}/controller?command=admin_update_user"
                                   class="admin-users-form">
                                 <input type="hidden" value="${user.id}" name="userId">
+                                <input type="hidden" value="${!user.isDisabled}" name="isDisabled">
                                 <button class="small-font" type="submit">
                                     <fmt:message key="admin.user.status.${user.isDisabled}"/>
                                 </button>

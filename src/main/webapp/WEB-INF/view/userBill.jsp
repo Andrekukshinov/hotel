@@ -77,7 +77,6 @@
                     <form class="admin-users-form  margin-bill-form" method="post"
                           action="${pageContext.request.contextPath}/controller?command=user_reject_application">
                         <input type="hidden" value="${application.applicationId}" name="applicationId">
-                        <input type="hidden" value="${application.roomId}" name="roomId">
                         <button type="submit" class="history-button"><fmt:message key="bill.deny"/></button>
                     </form>
                 </div>

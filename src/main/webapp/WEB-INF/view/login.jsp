@@ -19,12 +19,11 @@
     </c:if>
     <form method="post" id="login-form" action="${pageContext.request.contextPath}/controller?command=login">
         <label class="login-label" for="login"><fmt:message key="login.button"/></label>
-        <input required class="login-text" type="text" id="login" name="login"
+        <input required maxlength="50" class="login-text" type="text" id="login" name="login"
                placeholder="<fmt:message key="input.name"/>">
         <p class="error-message space"><fmt:message key="error.login.with.spaces"/></p>
         <label class="login-label" for="pass"><fmt:message key="pass"/></label>
-<%--    max symbols & server    todo--%>
-        <input required class="login-text" type="password" id="pass" name="password"
+        <input required maxlength="50" class="login-text" type="password" id="pass" name="password"
                placeholder="<fmt:message key="input.pass"/>">
         <p class="error-message space"><fmt:message key="error.password.with.spaces"/></p>
         <button class="login-submit" id="submit" type="submit"><fmt:message key="submit"/></button>

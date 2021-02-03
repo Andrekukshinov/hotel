@@ -65,14 +65,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void switchUserStatus(Long userId) throws ServiceException {
+    public void switchUserStatus(Long userId, boolean isDisabled) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             UserDao dao = daoHelper.createUserDao();
             User user = getUser(userId, daoHelper);
             Validation.validate(!Role.ADMIN.equals(user.getRole()), new ServiceException(WRONG_USER));
-            boolean isDisabled = user.getIsDisabled();
-            user.setIsDisabled(!isDisabled);
-            dao.save(user);
+            boolean isUserDisabled = user.getIsDisabled();
+            if(!(isDisabled == isUserDisabled)) {
+                user.setIsDisabled(isDisabled);
+                dao.save(user);
+            }
         } catch (DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }

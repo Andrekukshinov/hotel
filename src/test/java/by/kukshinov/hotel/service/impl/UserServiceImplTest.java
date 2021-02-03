@@ -87,7 +87,7 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void testSwitchUserStatusShouldUpdateUserActivity() throws DaoException, ServiceException {
+    public void testSwitchUserStatusShouldUpdateUserActivityWhenStatusIsOpposite() throws DaoException, ServiceException {
         //given
         User actual = new User(USER_ID, LOGIN, false, Role.USER);
         User expected = new User(USER_ID, LOGIN, true, Role.USER);
@@ -95,7 +95,21 @@ public class UserServiceImplTest {
         doNothing().when(dao).save(actual);
         when(dao.findById(anyLong())).thenReturn(Optional.of(actual));
         //when
-        userService.switchUserStatus(USER_ID);
+        userService.switchUserStatus(USER_ID, true);
+        //then
+        Assert.assertEquals(actual, expected);
+    }
+
+    @Test
+    public void testSwitchUserStatusShouldNotUpdateUserActivityWhenStatusTheSame() throws DaoException, ServiceException {
+        //given
+        User actual = new User(USER_ID, LOGIN, false, Role.USER);
+        User expected = new User(USER_ID, LOGIN, false, Role.USER);
+        UserService userService = new UserServiceImpl(helperFactory);
+        doNothing().when(dao).save(actual);
+        when(dao.findById(anyLong())).thenReturn(Optional.of(actual));
+        //when
+        userService.switchUserStatus(USER_ID, false);
         //then
         Assert.assertEquals(actual, expected);
     }
@@ -137,7 +151,7 @@ public class UserServiceImplTest {
         UserService userService = new UserServiceImpl(helperFactory);
         doThrow(new DaoException(EMPTY)).when(dao).save(any());
         //when
-        userService.switchUserStatus(FIFTH_USER_ID);
+        userService.switchUserStatus(FIFTH_USER_ID, false);
     }
 
     @Test(expectedExceptions = ServiceException.class)//then
@@ -196,7 +210,7 @@ public class UserServiceImplTest {
         UserService userService = new UserServiceImpl(helperFactory);
         when(dao.findById(anyLong())).thenReturn(Optional.empty());
         //when
-        userService.switchUserStatus(USER_ID);
+        userService.switchUserStatus(USER_ID, false);
 
     }
 }

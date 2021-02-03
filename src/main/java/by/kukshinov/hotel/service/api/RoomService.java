@@ -71,10 +71,11 @@ public interface RoomService {
     void saveRoom(Room room) throws ServiceException;
 
     /**
-     * Method for changing room status on opposite one
+     * Method for changing room status on opposite one if room from source has opposite status
      * @param roomId of the room status to be changed
+     * @param isAvailable status for updating
      * @throws ServiceException when business logics errors occur
      */
-    void switchRoomActivity(Long roomId) throws ServiceException;
+    void switchRoomActivity(Long roomId, boolean isAvailable) throws ServiceException;
 
 }

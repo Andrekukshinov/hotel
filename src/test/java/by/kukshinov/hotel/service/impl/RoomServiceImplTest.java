@@ -90,7 +90,7 @@ public class RoomServiceImplTest {
     }
 
     @Test
-    public void testSwitchRoomActivityShouldUpdateRoomActivity() throws DaoException, ServiceException {
+    public void testSwitchRoomActivityShouldUpdateRoomActivityWhenStatusIsOpposite() throws DaoException, ServiceException {
         //given
         RoomService userService = new RoomServiceImpl(helperFactory);
         Room start = new Room(ROOM_ID, 303, ApartmentType.BUSINESS, new Byte("4"), true, new BigDecimal("505"));
@@ -98,7 +98,21 @@ public class RoomServiceImplTest {
         doNothing().when(roomDao).save(any());
         when(roomDao.findById(anyLong())).thenReturn(Optional.of(start));
         //when
-        userService.switchRoomActivity(ROOM_ID);
+        userService.switchRoomActivity(ROOM_ID, false);
+        //then
+        Assert.assertEquals(start, expected);
+    }
+
+    @Test
+    public void testSwitchRoomActivityShouldNotUpdateRoomActivityWhenStatusTheSame() throws DaoException, ServiceException {
+        //given
+        RoomService userService = new RoomServiceImpl(helperFactory);
+        Room start = new Room(ROOM_ID, 303, ApartmentType.BUSINESS, new Byte("4"), true, new BigDecimal("505"));
+        Room expected = new Room(ROOM_ID, 303, ApartmentType.BUSINESS, new Byte("4"), true, new BigDecimal("505"));
+        doNothing().when(roomDao).save(any());
+        when(roomDao.findById(anyLong())).thenReturn(Optional.of(start));
+        //when
+        userService.switchRoomActivity(ROOM_ID, true);
         //then
         Assert.assertEquals(start, expected);
     }
@@ -122,7 +136,7 @@ public class RoomServiceImplTest {
         doNothing().when(roomDao).save(any());
         when(roomDao.findById(anyLong())).thenReturn(Optional.empty());
         //when
-        userService.switchRoomActivity(ROOM_ID);
+        userService.switchRoomActivity(ROOM_ID, false);
     }
 
     @Test(expectedExceptions = ServiceException.class)//then

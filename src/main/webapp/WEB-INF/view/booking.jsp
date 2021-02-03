@@ -63,7 +63,7 @@
             <br>
         </div>
         <label class="input-booking" for="arrivalDate"><fmt:message key="booking.book.date.arrival"/>
-            <input required class="date-input-arr date" type="date" id="arrivalDate" name="arrivalDate">
+            <input max='2023-12-31' required class="date-input-arr date" type="date" id="arrivalDate" name="arrivalDate">
         </label>
         <p id="past" class="error-message"><fmt:message key="error.order.date.past"/></p>
 
@@ -72,14 +72,13 @@
             <br>
         </div>
         <label class="input-booking" for="leavingDate"><fmt:message key="booking.book.date.leave"/>
-            <input max="12" required class="date-input-leave date" type="date" id="leavingDate" name="leavingDate">
+            <input max='2023-12-31'  required class="date-input-leave date" type="date" id="leavingDate" name="leavingDate">
         </label>
         <p id="invalidDate" class="error-message space"><fmt:message key="error.early.leaving.date"/></p>
         <div>
             <br>
             <br>
         </div>
-        <input type="hidden" name="state" value="IN_ORDER">
         <button class="login-submit" type="submit"><fmt:message key="booking.book.button.leave"/></button>
     </form>
 </div>

@@ -43,11 +43,12 @@ public interface UserService {
     void updateCustomer(User user) throws ServiceException;
 
     /**
-     * Method for changing user status on opposite one
+     * Method for changing user status on opposite one if received status differs from source object status
      * @param userId to change status
+     * @param isDisabled status fro updating
      * @throws ServiceException when business logics errors occur
      */
-    void switchUserStatus(Long userId) throws ServiceException;
+    void switchUserStatus(Long userId, boolean isDisabled) throws ServiceException;
 
     /**
      * Method for getting total amount of enabled customers

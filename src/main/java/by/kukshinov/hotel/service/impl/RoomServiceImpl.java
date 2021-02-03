@@ -26,13 +26,14 @@ public class RoomServiceImpl implements RoomService {
 
 
     @Override
-    public void switchRoomActivity(Long roomId) throws ServiceException {
+    public void switchRoomActivity(Long roomId, boolean isAvailable) throws ServiceException {
         try (DaoHelper daoHelper = helperFactory.createDaoHelper()) {
             Room room = findById(roomId, daoHelper);
-            Validation.validate(!room.getIsAvailable(), new ServiceException(WRONG_ROOM));
-            Boolean isAvailable = room.getIsAvailable();
-            room.setIsAvailable(!isAvailable);
-            saveAndUpdate(room, daoHelper);
+            Boolean isRoomAvailable = room.getIsAvailable();
+            if(!(isAvailable == isRoomAvailable)) {
+                room.setIsAvailable(isAvailable);
+                saveAndUpdate(room, daoHelper);
+            }
         }
     }
 

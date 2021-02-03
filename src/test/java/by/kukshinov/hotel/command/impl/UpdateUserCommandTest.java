@@ -56,7 +56,7 @@ public class UpdateUserCommandTest {
     @Test
     public void testExecuteShouldReturnRedirectToHomePage() throws ServiceException {
         //given
-        doNothing().when(service).switchUserStatus(any());
+        doNothing().when(service).switchUserStatus(any(), anyBoolean());
         Command command = new UpdateUserCommand(service);
         CommandResult expected = CommandResult.redirect(ALL_USERS);
         User value = new User(ONE_LONG, UpdateUserCommandTest.LOGIN_VALUE, false, Role.ADMIN);
@@ -70,7 +70,7 @@ public class UpdateUserCommandTest {
     @Test(expectedExceptions = ServiceException.class)//then
     public void testExecuteShouldReturnThrowServiceExceptionWhenDaoExceptionIsThrown() throws ServiceException {
         //given
-        doThrow(ServiceException.class).when(service).switchUserStatus(any());
+        doThrow(ServiceException.class).when(service).switchUserStatus(any(), anyBoolean());
         Command command = new UpdateUserCommand(service);
         //when
         command.execute(context);

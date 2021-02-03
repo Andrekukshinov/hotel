@@ -63,6 +63,7 @@
                             <form class="admin-users-form" method="post"
                                   action="${pageContext.request.contextPath}/controller?command=admin_change_room_activity">
                                 <input type="hidden" name="id" value="${room.id}">
+                                <input type="hidden" name="isAvailable" value="${!room.isAvailable}">
                                 <c:choose>
                                     <c:when test="${room.isAvailable == true}">
                                         <button type="button" class="verdict-app-button open-modal">
@@ -105,6 +106,7 @@
                                     <form class="admin-users-form" method="post"
                                           action="${pageContext.request.contextPath}/controller?command=admin_change_room_activity">
                                         <input type="hidden" name="id" value="${room.id}">
+                                        <input type="hidden" name="isAvailable" value="${!room.isAvailable}">
                                         <button type="submit" class="users-submit">
                                             <fmt:message key="admin.room.change.true"/>
                                         </button>
