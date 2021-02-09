@@ -69,7 +69,6 @@
         <c:if test="${error != null}">
             <p class="error space">${number} <fmt:message key="error.number.exists"/></p>
         </c:if>
-        <p class="error-message space"><fmt:message key="error.number"/></p>
         <div>
             <br>
             <br>
@@ -77,7 +76,7 @@
         <label class="input-booking" for="price"><fmt:message key="admin.room.price"/>
             <input required class="room-price room" type="number" id="price" name="price">
         </label>
-        <p class="error-message space"><fmt:message key="error.price"/></p>
+        <p class="error-message space"><fmt:message key="error.number"/></p>
         <div>
             <br>
             <br>

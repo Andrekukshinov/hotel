@@ -12,14 +12,12 @@ function validateForm(errors, invalidFieldCounter, inputs, consumer) {
                 errors[i].style.display = 'none';
             }
         }
-
         if (invalidFieldCounter !== 0) {
             invalidFieldCounter = 0;
             event.preventDefault();
         }
     };
 }
-
 
 function validateLogin() {
     let loginForm = document.getElementById("login-form");
@@ -61,38 +59,12 @@ function validateBooking() {
     });
 }
 
-
 function validateNewRoom() {
     let roomForm = document.getElementById("room-form");
     let inputs = document.getElementsByClassName("room");
     let spaces = document.getElementsByClassName("space");
     let counter = 0;
     roomForm.addEventListener("submit", validateForm(spaces, counter, inputs, (value) => value <= 0));
-}
-
-function validateRoomUpdate() {
-    let modals = document.getElementsByClassName("modal");
-    for (let runner = 0; runner < modals.length; runner++) {
-        let form = document.getElementById("description" + (runner + 1));
-        let error = document.getElementById("error-price" + (runner + 1));
-        let input = document.getElementById("price" + (runner + 1));
-        console.log(input.value);
-        let counter = 0;
-        form.addEventListener("submit", (event) => {
-            error.style.display = 'none';
-            let value = input.value;
-            if (value <= 0) {
-                error.style.display = 'inline-block';
-                counter++;
-            } else {
-                error.style.display = 'none';
-            }
-            if (counter !== 0) {
-                counter = 0;
-                event.preventDefault();
-            }
-        });
-    }
 }
 
 function closeModal(i) {

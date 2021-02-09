@@ -22,7 +22,7 @@
 <div id="to-be-found" class="room-update-form" style="min-height: 80%">
     <jsp:include page="templates/leftMenu.jsp"/>
 
-    <form method="post" id="room-form" class="booking-div"
+    <form method="post"  id="room-form" class="booking-div"
           action="${pageContext.request.contextPath}/controller?command=admin_save_updated_room">
         <h2 class="align-center"><fmt:message key="admin.room.update"/> ${room.number}</h2>
         <p class="align-center"><fmt:message key="booking.book.select.people"/></p>
@@ -71,10 +71,10 @@
             <br>
         </div>
 
-        <input hidden disabled type="hidden" class="room-number room" id="number" name="number" value="${room.number}">
+        <input hidden disabled type="hidden" class="room-number" id="number" name="number" value="${room.number}">
 
         <label class="input-booking" for="price"><fmt:message key="admin.room.price"/>
-            <input min="0" required class="room-price room" type="number" id="price" name="price" value="${room.price}">
+            <input required class="room-price room" type="number" id="price" name="price" value="${room.price}">
         </label>
         <p class="error-message space"><fmt:message key="error.price"/></p>
         <div>
@@ -88,6 +88,6 @@
 </div>
 
 <jsp:include page="templates/footer.jsp"/>
-<script src="${pageContext.request.contextPath}/static/js/main.js"></script>
 </body>
+<script src="${pageContext.request.contextPath}/static/js/main.js"></script>
 </html>
