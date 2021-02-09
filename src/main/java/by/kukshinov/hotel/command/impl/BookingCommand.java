@@ -24,6 +24,10 @@ public class BookingCommand implements Command {
     private static final String WRONG_ARRIVAL_DATE = "wrong arrival date!";
     private static final String WRONG_LEAVING_DATE = "Wrong leaving date!";
     private static final String WRONG_CAPACITY = "Wrong capacity!";
+    private static final LocalDate NOW = LocalDate.now();
+    private static final LocalDate MAX_BOOKING_DATE = NOW.plusYears(3);
+    private static final int MAX_CAPACITY = 5;
+    private static final int LESS_MIN_CAPACITY = 0;
 
     private final ApplicationService service;
 
@@ -54,13 +58,20 @@ public class BookingCommand implements Command {
     }
 
     private void validateBookingData(byte capacity, LocalDate dateArrival, LocalDate dateLeaving) throws ServiceException {
-        if (dateArrival.isBefore(LocalDate.now())) {
+        boolean nowNotBeforeArrival = dateArrival.isBefore(NOW);
+        boolean arrivalAfterMax = dateArrival.isAfter(MAX_BOOKING_DATE);
+
+        if (nowNotBeforeArrival || arrivalAfterMax) {
             throw new ServiceException(WRONG_ARRIVAL_DATE);
         }
-        if (dateLeaving.isBefore(dateArrival)) {
+
+        boolean leavingAfterMax = dateLeaving.isAfter(MAX_BOOKING_DATE);
+        boolean leavingBeforeArrival = dateLeaving.isBefore(dateArrival);
+        if (leavingBeforeArrival || leavingAfterMax) {
             throw new ServiceException(WRONG_LEAVING_DATE);
         }
-        if (capacity <= 0 || capacity > 5) {
+
+        if (capacity <= LESS_MIN_CAPACITY || capacity > MAX_CAPACITY) {
             throw new ServiceException(WRONG_CAPACITY);
         }
     }
