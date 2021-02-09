@@ -5,7 +5,7 @@ import by.kukshinov.hotel.dao.extractor.RoomFieldsExtractor;
 import by.kukshinov.hotel.dao.mapper.RoomObjectMapper;
 import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.model.Room;
-import by.kukshinov.hotel.util.RequestBuilder;
+import by.kukshinov.hotel.util.RequestCreator;
 
 import java.sql.Connection;
 import java.time.LocalDate;
@@ -35,7 +35,7 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
     private static final String ROOM_LIMIT = "SELECT * FROM room LIMIT ?,?";
 
     protected RoomDaoImpl(Connection connection) {
-        super(new <Room>RequestBuilder(), TABLE_NAME, connection, new RoomObjectMapper(), new RoomFieldsExtractor());
+        super(new <Room>RequestCreator(), TABLE_NAME, connection, new RoomObjectMapper(), new RoomFieldsExtractor());
     }
 
     @Override

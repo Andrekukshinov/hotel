@@ -5,7 +5,7 @@ import by.kukshinov.hotel.dao.extractor.ApplicationFieldsExtractor;
 import by.kukshinov.hotel.dao.mapper.ApplicationObjectMapper;
 import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.model.Application;
-import by.kukshinov.hotel.util.RequestBuilder;
+import by.kukshinov.hotel.util.RequestCreator;
 
 import java.sql.Connection;
 import java.util.List;
@@ -24,7 +24,7 @@ public class ApplicationDaoImpl extends AbstractDao<Application> implements Appl
     private static final String GET_APPLICATIONS_RANGE = "SELECT * FROM Application WHERE application_state != 'CANCELLED' ORDER BY arrival_date DESC LIMIT ?, ?";
 
     protected ApplicationDaoImpl(Connection connection) {
-        super(new <Application>RequestBuilder(), BOOKING_TABLE, connection, new ApplicationObjectMapper(), new ApplicationFieldsExtractor());
+        super(new <Application>RequestCreator(), BOOKING_TABLE, connection, new ApplicationObjectMapper(), new ApplicationFieldsExtractor());
     }
 
     @Override

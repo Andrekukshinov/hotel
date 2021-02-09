@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  * Utility class for building save and update query (MySql)
  */
-public class RequestBuilder {
+public class RequestCreator {
 
     private static final String INSERT_INTO = "INSERT INTO ";
     private static final String OPEN_BRACKET = " (";

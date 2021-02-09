@@ -5,7 +5,7 @@ import by.kukshinov.hotel.dao.extractor.UserFieldExtractor;
 import by.kukshinov.hotel.dao.mapper.UserObjectMapper;
 import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.model.User;
-import by.kukshinov.hotel.util.RequestBuilder;
+import by.kukshinov.hotel.util.RequestCreator;
 
 import java.sql.Connection;
 import java.util.List;
@@ -33,7 +33,7 @@ public class UserDaoImpl extends AbstractDao<User> implements UserDao {
                     "LIMIT ?,?";
 
     public UserDaoImpl(Connection connection) {
-        super(new <User>RequestBuilder(), USER_TABLE, connection, new UserObjectMapper(), new UserFieldExtractor());
+        super(new <User>RequestCreator(), USER_TABLE, connection, new UserObjectMapper(), new UserFieldExtractor());
     }
 
     @Override

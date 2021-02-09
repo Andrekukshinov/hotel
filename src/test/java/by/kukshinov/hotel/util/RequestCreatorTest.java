@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class RequestBuilderTest {
+public class RequestCreatorTest {
     private static final String SAVE_APPLICATION = "INSERT INTO Application (id, capacity, arrival_date) VALUES(?, ?, ?)";
     private static final String UPDATE_APPLICATION = "UPDATE Application SET capacity=?, arrival_date=? WHERE id=?";
     private static final String ID = "id";
@@ -25,11 +25,11 @@ public class RequestBuilderTest {
         fields.put(ID, ONE);
         fields.put(CAPACITY, ONE);
         fields.put(ARRIVAL_DATE, NOW);
-        RequestBuilder requestBuilder = new RequestBuilder();
+        RequestCreator requestCreator = new RequestCreator();
         Application app = new Application();
         app.setId(null);
 
-        String query = requestBuilder.getSaveQuery("Application", fields);
+        String query = requestCreator.getSaveQuery("Application", fields);
 
         Assert.assertEquals(query, SAVE_APPLICATION);
 
@@ -41,11 +41,11 @@ public class RequestBuilderTest {
         fields.put(CAPACITY, ONE);
         fields.put(ARRIVAL_DATE, NOW);
         fields.put(ID, 17);
-        RequestBuilder requestBuilder = new RequestBuilder();
+        RequestCreator requestCreator = new RequestCreator();
         Application app = new Application();
         app.setId(17L);
 
-        String query = requestBuilder.getUpdateQuery(APPLICATION, fields);
+        String query = requestCreator.getUpdateQuery(APPLICATION, fields);
 
         Assert.assertEquals(query, UPDATE_APPLICATION);
 

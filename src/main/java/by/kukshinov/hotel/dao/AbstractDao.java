@@ -5,7 +5,7 @@ import by.kukshinov.hotel.dao.extractor.FieldsExtractor;
 import by.kukshinov.hotel.dao.mapper.ObjectMapper;
 import by.kukshinov.hotel.exceptions.DaoException;
 import by.kukshinov.hotel.model.Entity;
-import by.kukshinov.hotel.util.RequestBuilder;
+import by.kukshinov.hotel.util.RequestCreator;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,17 +24,17 @@ public abstract class AbstractDao<T extends Entity> implements Dao<T> {
     private final String entitiesCount = "SELECT COUNT(*) FROM ";
 
     private Connection connection;
-    private final RequestBuilder requestBuilder;
+    private final RequestCreator requestCreator;
     private ObjectMapper<T> objectMapper;
     private FieldsExtractor<T> fieldsExtractor;
 
 
-    protected AbstractDao(RequestBuilder requestBuilder, String tableName, Connection connection, ObjectMapper<T> objectMapper, FieldsExtractor<T> fieldsExtractor) {
+    protected AbstractDao(RequestCreator requestCreator, String tableName, Connection connection, ObjectMapper<T> objectMapper, FieldsExtractor<T> fieldsExtractor) {
         this.tableName = tableName;
         this.connection = connection;
         this.objectMapper = objectMapper;
         this.fieldsExtractor = fieldsExtractor;
-        this.requestBuilder = requestBuilder;
+        this.requestCreator = requestCreator;
     }
 
     protected void executeForSave(String query, Object... params) throws DaoException {
@@ -63,9 +63,9 @@ public abstract class AbstractDao<T extends Entity> implements Dao<T> {
         String query;
         Long id = item.getId();
         if (id == null || id == 0) {
-            query = requestBuilder.getSaveQuery(tableName, extracted);
+            query = requestCreator.getSaveQuery(tableName, extracted);
         } else {
-            query = requestBuilder.getUpdateQuery(tableName, extracted);
+            query = requestCreator.getUpdateQuery(tableName, extracted);
         }
         executeForSave(query, values);
     }
