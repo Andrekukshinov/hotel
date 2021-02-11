@@ -24,7 +24,7 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
                     " ) AND is_available = true" +
                     " LIMIT ?,?";
     private static final String NO_CONDITION = "";
-    private static final String ROOM_BY_NUMBER = "SELECT * FROM ROOM WHERE room_number=?";
+    private static final String ROOM_BY_NUMBER = "SELECT * FROM Room WHERE room_number=?";
     private static final String STATUS_AVAILABLE =
             " WHERE id NOT IN ( " +
                     " SELECT DISTINCT room_id FROM Application " +
@@ -32,7 +32,7 @@ public class RoomDaoImpl extends AbstractDao<Room> implements RoomDao {
                     " AND (? <= Application.leaving_date " +
                     " AND ? >= Application.arrival_date)) " +
                     " AND is_available = true";
-    private static final String ROOM_LIMIT = "SELECT * FROM room LIMIT ?,?";
+    private static final String ROOM_LIMIT = "SELECT * FROM Room LIMIT ?,?";
 
     protected RoomDaoImpl(Connection connection) {
         super(new <Room>RequestCreator(), TABLE_NAME, connection, new RoomObjectMapper(), new RoomFieldsExtractor());

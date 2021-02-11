@@ -11,11 +11,11 @@ import java.sql.Connection;
 import java.util.List;
 
 public class ApplicationDaoImpl extends AbstractDao<Application> implements ApplicationDao {
-    private static final String USER_APPS_AMOUNT_CONDITION = " LEFT JOIN room R ON application.room_id = R.id WHERE user_id=? AND application_state != 'CANCELLED'";
-    private static final String USER_BILLS_AMOUNT_CONDITION = " LEFT JOIN room R ON application.room_id = R.id WHERE user_id=? AND application_state = 'APPROVED'";
-    private static final String ALL_APPLICATIONS = " LEFT JOIN room R ON application.room_id = R.id WHERE application_state != 'CANCELLED'";
+    private static final String USER_APPS_AMOUNT_CONDITION = " LEFT JOIN Room R ON Application.room_id = R.id WHERE user_id=? AND application_state != 'CANCELLED'";
+    private static final String USER_BILLS_AMOUNT_CONDITION = " LEFT JOIN Room R ON Application.room_id = R.id WHERE user_id=? AND application_state = 'APPROVED'";
+    private static final String ALL_APPLICATIONS = " LEFT JOIN Room R ON R.id = Application.room_id WHERE Application.application_state != 'CANCELLED'";
     private static final String APPLICATION_STATE_IN_ORDER = " WHERE application_state='IN_ORDER'";
-    private static final String BOOKING_TABLE = "application";
+    private static final String BOOKING_TABLE = "Application";
 
     private static final String GET_ALL_USER_APPLICATIONS = "SELECT * FROM Application WHERE user_id=? AND application_state != 'CANCELLED' ORDER BY arrival_date DESC LIMIT ?, ?";
     private static final String GET_ALL_USER_BILLS = "SELECT * FROM Application WHERE user_id=? AND application_state = 'APPROVED' ORDER BY arrival_date DESC LIMIT ?, ?";

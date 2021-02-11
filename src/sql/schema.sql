@@ -1,4 +1,3 @@
-
 CREATE TABLE IF NOT EXISTS Role
 (
     id   BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -40,9 +39,9 @@ CREATE TABLE IF NOT EXISTS Application
     FOREIGN KEY (user_id) REFERENCES User (id)
 );
 
-ALTER TABLE application
+ALTER TABLE Application
     ADD room_id bigint DEFAULT NULL;
-ALTER TABLE application
+ALTER TABLE Application
     ADD total_price int;
-ALTER TABLE application
+ALTER TABLE Application
     ADD FOREIGN KEY (room_id) REFERENCES Room (id);
