@@ -58,7 +58,7 @@
                     <div><fmt:message key="admin.room.capacity"/> ${room.capacity}</div>
                     <div><fmt:message key="admin.room.status"/> <fmt:message
                             key="admin.room.status.${room.isAvailable}"/></div>
-                    <div><fmt:message key="admin.room.price"/> ${room.price}</div>
+                    <div><fmt:message key="admin.room.price"/> <ex:money-format money="${room.price}"/></div>
                     <div><fmt:message key="admin.room.Number"/> ${room.number}</div>
                     <div><fmt:message key="admin.room.type"/> <fmt:message
                             key="admin.room.type.${room.roomType}"/></div>
