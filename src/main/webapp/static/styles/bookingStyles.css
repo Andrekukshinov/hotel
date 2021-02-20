@@ -1,0 +1,198 @@
+.first-label {
+    padding-left: 2%;
+}
+
+.first-date {
+    margin-left: 1%;
+}
+
+.verdict-app-button {
+    background-color: #255a94;
+    color: white;
+    padding: 8px 8px;
+    margin: 3% 0 1% 2%;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.history-button {
+    box-shadow: 0 0 10px #111111;
+    background-color: #255a94;
+    color: white;
+    padding: 6px 8px 7px 8px;
+    margin-left: 30%;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: "Times New Roman", serif;
+    font-size: x-large;
+}
+
+.check-the-bill-button {
+    box-shadow: 0 0 10px #111111;
+    background-color: #255a94;
+    color: white;
+    padding: 5px 10%;
+    margin: 3% 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.full-width {
+    width: content-box;
+}
+
+.history-button:hover {
+    background-color: #1f4975;
+}
+
+.user-approve-link {
+    display: inline-block;
+    margin-top: 0;
+    text-decoration: none;
+    font-size: x-large;
+    padding: 6px 8px 7px 8px;
+}
+
+
+.floating-radio {
+    float: left;
+    margin-left: 10%;
+}
+
+.margin-date {
+    margin-left: 20%;
+    margin-top: 20%;
+}
+
+.last-label {
+    float: none;
+}
+
+.booking-div {
+    box-shadow: 0 0 10px #111111;
+    width: 50%;
+    margin-left: 17%;
+    margin-top: 1%;
+    background-color: #f2f2f2;
+    padding-bottom: 0;
+}
+
+.input-booking {
+    margin-left: 13%;
+    margin-top: 2%;
+    font-size: larger;
+}
+
+.apartment-type {
+    width: 33%;
+    padding: 7px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgba(102, 172, 224, 0.5);
+    font-size: large;
+    margin-left: 5%;
+    font-family: "Times New Roman", serif;
+}
+
+.date-input-arr {
+    width: 32%;
+    padding: 4px 5px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgba(102, 172, 224, 0.5);
+    font-size: large;
+    margin-left: 15%;
+    font-family: "Times New Roman", serif;
+}
+
+.date-input-leave {
+    width: 32%;
+    padding: 4px 5px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgba(102, 172, 224, 0.5);
+    font-size: large;
+    margin-left: 14%;
+    font-family: "Times New Roman", serif;
+}
+
+.room-number {
+    width: 32%;
+    padding: 4px 5px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgba(102, 172, 224, 0.5);
+    font-size: large;
+    margin-left: 25%;
+    font-family: "Times New Roman", serif;
+}
+
+
+.room-price {
+    width: 32%;
+    padding: 4px 5px;
+    border: none;
+    border-radius: 4px;
+    background-color: rgba(102, 172, 224, 0.5);
+    font-size: large;
+    margin-left: 27%;
+    font-family: "Times New Roman", serif;
+}
+
+.small-letters {
+    text-transform: lowercase;
+}
+
+.twenty-margin {
+    padding-left: 30%;
+}
+
+@media screen and (max-width: 780px) {
+    .first-label {
+        padding-left: 0;
+    }
+
+    .floating-radio {
+        float: left;
+        margin-left: 10%;
+    }
+
+    .first-label {
+        padding-left: 0;
+    }
+
+    .input-booking {
+        margin-left: 12%;
+        margin-top: 2%;
+        font-size: medium;
+    }
+
+    .booking-div {
+        background-color: #A7AFEF;
+        width: 84%;
+        margin-left: 8%;
+        padding-bottom: 2%;
+    }
+
+    .apartment-type {
+        width: 30%;
+    }
+
+    .small-font {
+        font-size: 10px;
+    }
+
+    .for-user-approve-link {
+        display: inline-block;
+        padding-top: 0;
+    }
+
+    .twenty-margin {
+        margin-left: 10%
+    }
+}

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app version="3.1"
+         xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         metadata-complete="false">
+    <display-name>Archetype Created Web Application</display-name>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <jsp-config>
+        <taglib>
+            <taglib-uri>
+                custom-tags
+            </taglib-uri>
+            <taglib-location>
+                /WEB-INF/tld/custom.tld
+            </taglib-location>
+        </taglib>
+    </jsp-config>
+    <servlet>
+        <servlet-name>controller</servlet-name>
+        <servlet-class>by.kukshinov.hotel.HotelController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>controller</servlet-name>
+        <url-pattern>/controller</url-pattern>
+    </servlet-mapping>
+
+    <error-page>
+        <error-code>401</error-code>
+        <location>/WEB-INF/errors/unauthenticated.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/WEB-INF/errors/unathorized.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/errors/notFound.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/WEB-INF/errors/error.jsp</location>
+    </error-page>
+    <error-page>
+        <location>/WEB-INF/errors/error.jsp</location>
+    </error-page>
+
+    <filter>
+        <filter-name>encoding</filter-name>
+        <filter-class>by.kukshinov.hotel.filter.EncodingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>encoding</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>language</filter-name>
+        <filter-class>by.kukshinov.hotel.filter.LocaleFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>language</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>authentication</filter-name>
+        <filter-class>by.kukshinov.hotel.filter.AuthenticationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>authentication</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!---->
+    <filter>
+        <filter-name>authorization</filter-name>
+        <filter-class>by.kukshinov.hotel.filter.AuthorizationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>authorization</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!---->
+
+</web-app>
