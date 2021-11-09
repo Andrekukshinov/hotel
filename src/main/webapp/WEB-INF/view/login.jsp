@@ -28,7 +28,7 @@
         <p class="error-message space"><fmt:message key="error.password.with.spaces"/></p>
         <button class="login-submit" id="submit" type="submit"><fmt:message key="submit"/></button>
     </form>
-    <p>new cum</p>
+    <p>new cumy</p>
 </div>
 <jsp:include page="templates/footer.jsp"/>
 <script src="${pageContext.request.contextPath}/static/js/main.js"></script>
